@@ -1,0 +1,38 @@
+package test;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractCommandController;
+
+import test.dao.StudentDAO;
+import test.dto.StudentDTO;
+
+public class FindStudentController extends AbstractCommandController {
+	private StudentDAO studentDAO;
+	
+	public void setStudentDAO(StudentDAO studentDAO) {
+		this.studentDAO = studentDAO;
+	}
+
+	@Override
+	protected ModelAndView handle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, BindException arg3)
+			throws Exception {
+		StudentDAO dao = (StudentDAO)arg2;
+		List<StudentDTO> list =  studentDAO.findStudent("name");
+		ModelAndView mav = new ModelAndView();
+		for(StudentDTO dto : list) {
+			mav.addObject("msg");
+			mav.addObject("url", "listStudent.do");
+		}
+		
+		return list;
+	}
+
+
+
+}

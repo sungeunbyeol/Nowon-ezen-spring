@@ -1,0 +1,14 @@
+package test;
+
+import test.dao.StudentDAO;
+
+public class FindStudentController extends AbstractCommandController {
+	private StudentDAO studentDAO;
+	
+	public void setStudentDAO(StudentDAO studentDAO) {
+		this.studentDAO = studentDAO;
+	}
+
+
+
+}

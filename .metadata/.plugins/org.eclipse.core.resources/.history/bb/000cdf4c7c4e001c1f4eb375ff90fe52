@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="prefix">
+         <value>WEB-INF/test/</value>
+      </property>
+      <property name="suffix">
+         <value>.jsp</value>
+      </property>
+   </bean>
+	
+	<bean id="dfataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>jdbc/oracle</value>
+		</property>
+		<property name="resourceRef" value="true"/>
+	</bean>
+	
+	<bean name="/student.do" class="test.SpringController"></bean>
+
+	<bean name="/insertStudent.do" class="test.InsertStudentController">
+		<property name="commandClass" value="test.dto.StudentDTO"/>
+		<property name="commandName" value="studentCmd"/>
+	</bean>
+
+</beans>
