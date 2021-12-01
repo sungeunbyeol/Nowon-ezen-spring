@@ -11,7 +11,7 @@ public class SearchLoginController implements Controller {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse arg1) throws Exception {
 		String mode = req.getParameter("mode");
-		String title = mode.equals("id") ? "아이디" : "비밀번호";
+		String title = mode.equals("id")? "아이디" : "비밀번호";
 		req.setAttribute("title", title);
 		return new ModelAndView("login/search");
 	}

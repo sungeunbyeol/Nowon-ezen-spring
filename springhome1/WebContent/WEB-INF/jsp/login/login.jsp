@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!-- login.jsp-->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<title>로그인</title>
@@ -35,7 +36,7 @@
 <p>
 <img src="images/tm_login.gif" width="100" height="13" border="0" 
 	align=center ALT="회원 로그인">
-<form name="f" action="login_ok.log" method="post">
+<form name="f" action="login_ok.do" method="post">
 	<table width="570" align="center" height="120">
 		<tr>
 			<td align="right" width="30%">
@@ -43,15 +44,24 @@
 				width="28" height="11" border="0" alt="아이디">&nbsp;&nbsp;
 			</td>
 			<td width="40%">
+		<c:if test="${empty cookie.saveId.value}">					
 				<input type="text" name="id" tabindex="1">
+		</c:if>		
+		<c:if test="${not empty cookie.saveId.value}">					
+				<input type="text" name="id" tabindex="1" value="${cookie.saveId.value}">
+		</c:if>		
 			</td>
 			<td rowspan="2" width="30%" valign="middle">
 				<a href="javascript:loginCheck()">
 					<img src="images/bt_login.gif" border="0" alt="로그인"  tabindex="3">&nbsp;&nbsp;<br>
 				</a>
 				<nobr>
+				<c:if test="${empty cookie.saveId.value}">
 					<input type="checkbox" name="saveId">
+				</c:if>
+				<c:if test="${not empty cookie.saveId.value}">
 					<input type="checkbox" name="saveId" checked>
+				</c:if>	
 					<font face="굴림" size="2">아이디 기억하기</font>
 				</nobr>
 			</td>

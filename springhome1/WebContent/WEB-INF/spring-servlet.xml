@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns="http://www.springframework.org/schema/beans">
-
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver">
 	<property name="prefix">
@@ -37,14 +35,17 @@ xmlns="http://www.springframework.org/schema/beans">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
-	<bean class="login.dao.LoginDAOImpl" id="loginOkBean">
+	<bean class="shop.admin.dao.CategoryBean" id="categoryDAO">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean class="shop.admin.dao.ProductBean" id="productDAO">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
 	<bean class="board.ListBoardController" name="/list_board.do">
 	<property name="boardDAO" ref="boardDAO"/>
 	</bean>
-	
 	<bean class="board.WriteFormBoardController" name="/writeForm_board.do"> </bean>
 	
 	<bean class="board.WriteProBoardController" name="/writePro_board.do">
@@ -56,7 +57,6 @@ xmlns="http://www.springframework.org/schema/beans">
 	<bean class="board.ContentBoardController" name="/content_board.do">
 	<property name="boardDAO" ref="boardDAO"/>
 	</bean>
-	
 	<bean class="board.DeleteFormBoardController" name="/deleteForm_board.do"> </bean>
 	
 	<bean class="board.DeleteProBoardController" name="/deletePro_board.do">
@@ -80,7 +80,6 @@ xmlns="http://www.springframework.org/schema/beans">
 	<bean class="member.CheckMemberController" name="/checkMember.do">
 	<property name="memberDAO" ref="memberDAO"/>
 	</bean>
-	
 	<bean class="member.InsertMemberController" name="/insertMember.do"/>
 	
 	<bean class="member.InsertMemberOkController" name="/insertMemberOk.do">
@@ -107,20 +106,81 @@ xmlns="http://www.springframework.org/schema/beans">
 	<property name="memberDAO" ref="memberDAO"/>
 	</bean>
 	
-	<bean name="/login.do" class="login.LoginController"></bean>
+	<bean class="login.LoginController" name="/login.do"> </bean>
 	
-	<bean name="/login_ok" class="login.LoginOkAbstractCommandController">
-	<property name="commandClass" value="member.dto.MemberDTO"/>
-	<property name="commandName" value="memberCmd"/>
-	<property name="loginOkBean" ref="loginOkBean"/>
-	</bean>
-
-	<bean name="searchLogin.do" class="login.SearchLoginController">
-	</bean>
+	<bean class="login.LogoutController" name="/logout.do"></bean>
 	
-	<bean name="searchCheckLogin.do" class="login.SearchCheckLoginController">
+	<bean class="login.SearchLoginController" name="/searchLogin.do"> </bean>
+	
+	<bean class="login.SearchCheckLoginController" name="/searchCheckLogin.do">
 	<property name="memberDAO" ref="memberDAO"/>
 	</bean>
 	
+	<bean class="login.LoginOKController" name="/login_ok.do">
+	<property name="loginCheck" ref="loginCheck"/>
+	<property name="loginOkBean" ref="loginOkBean"/>
+	</bean>
+	
+	<bean class="login.LoginCheck" id="loginCheck">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean class="login.LoginOkBean" id="loginOkBean">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	
+	
+	<bean name="/shop.do" class="shop.admin.ShopController"></bean>
+	
+	<bean name="/shop_main.do" class="shop.admin.ShopMainController"></bean>
+	
+	<bean name="/cate_input.do" class="shop.admin.CateInputController"></bean>
+	
+	<bean name="/cate_input_ok" class="shop.admin.CateInputOkController">
+	<property name="categoryDAO" ref="categoryDAO"/>
+	<property name="commandClass" value="shop.admin.dto.CategoryDTO"/>
+	<property name="commandName" value="CategoryCmd"/>
+	</bean>
+	
+	<bean name="/cate_list.do" class="shop.admin.CateListController">
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean name="/cate_delete.do" class="shop.admin.CateDeleteController">
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean name="/prod_input.do" class="shop.admin.ProdInputController"></bean>
+	
+	<bean name="/prod_input_ok.do" class="shop.admin.ProdInputOkController">
+	<property name="productDAO" ref="productDAO"/>
+	<property name="commandClass" value="shop.admin.dto.ProductDTO"/>
+	<property name="commandName" value="ProductCmd"/>
+	</bean>
+	
+	<bean name="/prod_list.do" class="shop.admin.ProdListController"></bean>
+	
+	<bean name="/prod_delete.do" class="shop.admin.ProdDeleteController">
+	<property name="productDAO" ref="productDAO"/>
+	</bean>
+	
+	<bean name="/prod_view.do" class="shop.admin.ProdViewController">
+	<property name="productDAO" ref="productDAO"/>
+	</bean>
+	
+	<bean name="/prod_update.do" class="shop.admin.ProdUpdateController">
+	<property name="productDAO" ref="productDAO"/>
+	</bean>
+	
+	<bean name="/prod_update_ok.do" class="shop.admin.ProdUpdateOkController">
+	<property name="productDAO" ref="productDAO"/>
+	<property name="commandClass" value="shop.admin.dto.ProductDTO"/>
+	<property name="commandName" value="ProductCmd"/>
+	</bean>
+
+	
+	
 	<bean class="IndexController" name="/main.do"> </bean>
+
 </beans>
