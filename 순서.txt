@@ -1,0 +1,24 @@
+lib에 .jar 다 복사해서 붙여넣기 -> WEB-INF 에 web.xml -> spring-servlet.xml 만들고, 
+DB연동할 게 있으면 src에 패키지로 dao, dao.databean, dto 만들기 -> spring-servlet.xml ->
+
+web.xml 에서 할 일 :
+1. spring으로 서블릿 만들어주고, class는 스프링에서 제공해주는 거 사용
+2. post 방식 한글처리 해주기
+
+spring-servlet.xml 에서 할 일 :
+3. viewResolver 명시해주기
+4. DB Driver 연동해주기
+5. jdbcTemplate - dataSource 명시해주기
+8. dao 선언해주기
+
+interface dao 에서 할 일 :
+6. 어떤일을 할 것인지 선언해주기
+
+databean 에서 할 일 : 
+7. databean을 만들 때에는 인터페이스 dao를 상속받아서 만들어준다
+ 
+
+
+이동할 페이지가 있으면 spring-serlvet에서 bean 만들어주고 java에서 controller 만들기
+
+
