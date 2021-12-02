@@ -35,7 +35,7 @@ xmlns="http://www.springframework.org/schema/beans">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
-	<bean class="shop.admin.dao.CategoryBean" id="categoryDAO">
+	<bean class="shop.admin.dao.CategoryDAOImpl" id="categoryDAO">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
@@ -129,34 +129,32 @@ xmlns="http://www.springframework.org/schema/beans">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
+	<bean name="/shopAdmin.do" class="shop.admin.ShopAdminIndexController"></bean>
 	
+	<bean name="/cate_input.do" class="shop.admin.CateInputAdminController"></bean>
 	
-	<bean name="/shop.do" class="shop.admin.ShopController"></bean>
-	
-	<bean name="/shop_main.do" class="shop.admin.ShopMainController"></bean>
-	
-	<bean name="/cate_input.do" class="shop.admin.CateInputController"></bean>
-	
-	<bean name="/cate_input_ok" class="shop.admin.CateInputOkController">
+	<bean name="/cate_input_ok.do" class="shop.admin.CateInputOkAdminController">
 	<property name="categoryDAO" ref="categoryDAO"/>
 	<property name="commandClass" value="shop.admin.dto.CategoryDTO"/>
-	<property name="commandName" value="CategoryCmd"/>
+	<property name="commandName" value="categoryCmd"/>
 	</bean>
 	
-	<bean name="/cate_list.do" class="shop.admin.CateListController">
+	<bean name="/cate_list.do" class="shop.admin.CateListAdminController">
 	<property name="categoryDAO" ref="categoryDAO"/>
 	</bean>
 	
-	<bean name="/cate_delete.do" class="shop.admin.CateDeleteController">
+	<bean name="/cate_delete.do" class="shop.admin.CateDeleteAdminController">
 	<property name="categoryDAO" ref="categoryDAO"/>
 	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 	<bean name="/prod_input.do" class="shop.admin.ProdInputController"></bean>
 	
 	<bean name="/prod_input_ok.do" class="shop.admin.ProdInputOkController">
 	<property name="productDAO" ref="productDAO"/>
 	<property name="commandClass" value="shop.admin.dto.ProductDTO"/>
-	<property name="commandName" value="ProductCmd"/>
+	<property name="commandName" value="productCmd"/>
 	</bean>
 	
 	<bean name="/prod_list.do" class="shop.admin.ProdListController"></bean>

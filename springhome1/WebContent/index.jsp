@@ -21,8 +21,16 @@
 				<a href="logout.do">·Î±×¾Æ¿ô</a>
 			</c:if>
 		</h3></li>
-		<li><h3><a href="shop.do">¼îÇÎ¸ô</a></h3></li>
+		<li><h3><a href="shopAdmin.do">¼îÇÎ¸ô</a></h3></li>
 		<li><h3><a href="list_board.do">°Ô½ÃÆÇ</a></h3></li>
 	</ul>
 </body>
 </html>
+
+
+
+
+
+
+
+

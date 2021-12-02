@@ -8,21 +8,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import shop.admin.dao.CategoryBean;
 import shop.admin.dao.CategoryDAO;
 import shop.admin.dto.CategoryDTO;
 
-public class CateListController implements Controller {
+public class CateListAdminController implements Controller {
+
 	private CategoryDAO categoryDAO;
+	
 	public void setCategoryDAO(CategoryDAO categoryDAO) {
 		this.categoryDAO = categoryDAO;
 	}
+
 	@Override
-	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse arg1) throws Exception {
-		CategoryBean dao = new CategoryBean();
-		List<CategoryDTO> list = dao.listCate();
-		req.setAttribute("cateList", list);
-		return new ModelAndView("shop/admin/cate_list");
+	public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		List<CategoryDTO> list = categoryDAO.listCate();
+		return new ModelAndView("shop/admin/cate_list", "cateList", list);
 	}
 
 }

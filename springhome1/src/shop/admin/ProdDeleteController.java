@@ -22,8 +22,7 @@ public class ProdDeleteController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse arg1) throws Exception {
 		String pnum = req.getParameter("pnum");
 		String pimage = req.getParameter("pimage");
-		ProductBean pdao = new ProductBean();
-		int res = pdao.deleteProduct(Integer.parseInt(pnum));
+		int res = productDAO.deleteProduct(Integer.parseInt(pnum));
 		if (res>0){
 			String upPath = req.getServletContext().getRealPath("prodImages");
 			File file = new File(upPath, pimage);

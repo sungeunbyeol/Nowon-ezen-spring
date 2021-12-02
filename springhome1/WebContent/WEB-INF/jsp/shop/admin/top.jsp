@@ -10,7 +10,7 @@
 	<div align="center">
 		<font size="7">碱俏隔(包府磊)</font><br>
 		<font size="4">
-			<a href="shop_main.do">碱俏隔权</a> | 
+			<a href="shop.do">碱俏隔权</a> | 
 			<a href="main.do">皋牢权</a>
 		</font><br>
 		<table border="1" width="800" height="650">
@@ -19,7 +19,7 @@
 				<td align="center" width="20%"><a href="cate_list.do">墨抛绊府格废</a></td>
 				<td align="center" width="20%"><a href="prod_input.do">惑前殿废</a></td>
 				<td align="center" width="20%"><a href="prod_list.do">惑前格废</a></td>
-				<td align="center" width="20%"><a href="shop_main.do">碱俏隔权</a></td>
+				<td align="center" width="20%"><a href="shop.do">碱俏隔权</a></td>
 			</tr>
 			<tr>
 				<td colspan="5">
