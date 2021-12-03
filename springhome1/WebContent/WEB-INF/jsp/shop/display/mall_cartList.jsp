@@ -1,10 +1,8 @@
-<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!-- mall_cartList.jsp -->
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="mall_top.jsp" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div align="center">
 	<table border="1" width="100%">
 		<tr class="m2">
@@ -20,61 +18,55 @@
 			<th width="20%">금액</th>
 			<th width="10%">삭제</th>
 		</tr>
-
-		<c:if test="${ht == null || ht.size() == 0}">
+		<c:if test="${empty cartList}">
 		<tr>
 			<td colspan="6">장바구니가 비었습니다.</td>
 		</tr>
 		</c:if>
-		<c:if test="${ht != null || ht.size() != 0}">
-		<fmt:formatNumber value="${df}" type="currency" pattern="###,###"/>
 		<c:set var="cartTotalPrice" value="0"/>
 		<c:set var="cartTotalPoint" value="0"/>
-<%
-			Enumeration<Integer> enu = ht.keys();
-			while(enu.hasMoreElements()){
-				ProductDTO dto = ht.get(enu.nextElement());%>
+		
+		<c:forEach var="dto" items="${cartList}">
 		<tr>
-			<td align="center">${cart.pnum}</td>
+			<td align="center">${dto.value.pnum}</td>
 			<td align="center">
-				<img src="${upPath}${upPath}/${cate.pimage}" width="40" height="40"><br>
-				<b>${cate.pname}</b>
+				<img src="${upPath}/${dto.value.pimage}" width="40" height="40"><br>
+				<b>${dto.value.pname}</b>
 			</td>
 			<td align="center">
-				<form name="f2" action="cartEdit.mall" method="post">
-					<input type="text" size="3" name="pqty" value="${cate.pqty}">개<br>
-					<input type="hidden" name="pnum" value="${cate.pnum}"/>
+				<form name="f2" action="cartEdit.do" method="post">
+					<input type="text" size="3" name="pqty" value="${dto.value.pqty}">개<br>
+					<input type="hidden" name="pnum" value="${dto.value.pnum}"/>
 					<input type="submit" value="수정">
 				</form>
 			</td>
 			<td algin="right">
-				<b>${df.price}원</b><br>
-				<b>[${cate.point}]point</b>
+				<b><fmt:formatNumber value="${dto.value.price}" pattern="000,000" />원</b><br>
+				<b>[${dto.value.point}]point</b>
 			</td>
 			<td align="right">
-				<b>${df.cate.price*df.cate.pqyt}원</b><br>
-				<b>[${cate.point*cate.pqyt}]point</b>
+				<b><fmt:formatNumber value="${dto.value.price*dto.value.pqty}" pattern="000,000" />원</b><br>
+				<b>[${dto.value.point*dto.value.pqty}]point</b>
 			</td>
-			<c:set var="cateTotalPrice" value="${cateTotalPrice+=cate.price*cate.pqty}"/>
-			<c:set var="cateTotalPoint" value="${cateTotalPoint+=cate.point*cate.pqty}"/>
+			<c:set var="cartTotalPrice" value="${cartTotalPrice + dto.value.price * dto.value.pqty}"/>
+			<c:set var="cartTotalPoint" value="${cartTotalPoint + dto.value.point * dto.value.pqty}"/>
 			<td align="center">
-				<a href="cartDel.mall?pnum=${cate.pnum}">삭제</a>
+				<a href="cartDel.do?pnum=${dto.value.pnum}">삭제</a>
 			</td>			
 		</tr>		
-<%		}//end while%>
+	</c:forEach>
 		<tr class="m1">
 			<td colspan="4">
 				<b>장바구니 총액 : </b>
-				<font color="red">${df.cartTotalPrice}원</font><br>
+				<font color="red"><fmt:formatNumber value="${cartTotalPrice}" pattern="000,000" />원</font><br>
 				<b>총 적립 포인트 : </b>
-				<font color="green">[${cateTotalPoint}]point</font>
+				<font color="green">[<fmt:formatNumber value="${cartTotalPoint}" pattern="000,000" />]point</font>
 			</td>
 			<td colspan="2">
-				<a href="order.mall">[주문하기]</a> | 
-				<a href="main.mall">[계속쇼핑]</a>
+				<a href="order.do">[주문하기]</a> | 
+				<a href="shop.do">[계속쇼핑]</a>
 			</td>
 		</tr>	
-	</c:if>			
 	</table>
 </div>
 <%@ include file="mall_bottom.jsp"%>				

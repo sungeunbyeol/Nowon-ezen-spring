@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ page import="java.util.*, shop.admin.dto.*" %>      
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>      
 <!-- mall_top.jsp -->
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-	<c:if test="${listCate == null || listCate.size() == 0 }">
-		<script type="text/javascript">
-			alert("쇼핑몰 준비중입니다.!!")
-			location.href="main.do"
-		</script>		
-	</c:if>
+<c:if test="${empty cateList}">
+	<script type="text/javascript">
+		alert("쇼핑몰 준비중 입니다.")
+		location.href="main.do"
+	</script>
+</c:if>
 <html>
 <head>
 	<title>쇼핑몰홈</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript">
 		function cateList(cname, code){
-			document.f.action = "mall_cgProdList.mall"
+			document.f.action = "mall_cgProdList.do"
 			document.f.cname.value = cname
 			document.f.code.value = code
 			document.f.submit()
@@ -29,22 +27,22 @@
 			<tr height="50">
 				<td colspan="2" align="center">
 					<a href="main.do">HOME</a> | 
-					<a href="main.shop">관리자홈</a> | 
-					<a href="main.mall">쇼핑몰홈</a> | 
-					<a href="cartList.mall">장바구니</a>
+					<a href="shopAdmin.do">관리자홈</a> | 
+					<a href="shop.do">쇼핑몰홈</a> | 
+					<a href="cartList.do">장바구니</a>
 				</td>
 			</tr>
 			<tr>
 				<td width="20%" valign="top" align="center">
 					tree/view
 					<table border="1" width="100%">
-					<c:forEach var="dto" items="${cateList}">
+				<c:forEach var="dto" items="${cateList}">	
 						<tr>
-							<td><a href="javascript:cateList('${cateList.cname}',${cateList.code}'">
-								${cateList.cname}[${cateList.code}]
+							<td><a href="javascript:cateList('${dto.cname}','${dto.code}')">
+								${dto.cname}[${dto.code}]
 							</a></td>
 						</tr>
-					</c:forEach>					
+				</c:forEach>
 					</table>
 					<form name="f" method="post">
 						<input type="hidden" name="cname">

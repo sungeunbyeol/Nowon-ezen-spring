@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ page import="java.util.*" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- prod_list.jsp -->
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="top.jsp"%>
 <script type="text/javascript">
 	function checkDel(pnum, pimage){
@@ -25,12 +24,12 @@
 			<th>수량</th>
 			<th>수정|삭제</th>
 		</tr>
-		<c:if test="${empty list}">
+	<c:if test="${empty listProd}">
 		<tr>
 			<td colspan="8">등록된 상품이 없습니다.</td>
 		</tr>
-		</c:if>
-			<c:forEach var="dto" items="${prodList}">
+	</c:if>
+	<c:forEach var="dto" items="${listProd}">
 		<tr>
 			<td>${dto.pnum}</td>
 			<td>${dto.pcategory_fk}</td>
@@ -47,7 +46,8 @@
 				<a href="prod_update.do?pnum=${dto.pnum}">수정</a> | 
 				<a href="javascript:checkDel('${dto.pnum}','${dto.pimage}')">삭제</a>
 			</td>	
-		</tr>			
+		</tr>	
+	</c:forEach>			
 	</table>
 </div>
 

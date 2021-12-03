@@ -1,8 +1,0 @@
-package test.dao;
-
-public interface StudentDAO {
-	public int insertStudent(Student DTO dto);
-	public int deleteStudent(String id);
-	public List<StudentDTO> listStudent();
-	public List<StudentDTO> findStudent(String name);
-}

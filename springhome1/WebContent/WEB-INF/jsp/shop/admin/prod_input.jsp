@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ page import="java.util.*" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!-- prod_input.jsp -->
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="top.jsp"%>
-<div align = "center">
 
+<%@ include file="top.jsp"%>
+<c:if test="${empty listCate}">
+	<script type="text/javascript">
+		alert("카테고리를 먼저 등록해 주세요!!")
+		location.href="cate_input.do"
+	</script>
+</c:if>
+<div align="center">
 <form name="f" action="prod_input_ok.do" method="post" enctype="multipart/form-data">
 	<table border="0" width="600" class="outline">
 		<caption>상품등록카테고리</caption>
@@ -13,11 +18,9 @@
 			<th class="m2">카테고리</th>
 			<td align="left">
 				<select name="pcategory_fk">
-					<c:forEach var="dto" items="${cateList}">
-					<option value="${dto.code}">
-						${dto.cname}[${dto.code}]
-					</option>
-					</c:forEach>					
+				<c:forEach var="dto" items="${listCate}">
+					<option value="${dto.code}">${dto.cname}[${dto.code}]</option>
+				</c:forEach>
 				</select>
 			</td>
 		</tr>

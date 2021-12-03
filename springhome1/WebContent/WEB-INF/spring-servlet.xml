@@ -39,7 +39,7 @@ xmlns="http://www.springframework.org/schema/beans">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
-	<bean class="shop.admin.dao.ProductBean" id="productDAO">
+	<bean class="shop.admin.dao.ProductDAOImpl" id="productDAO">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
@@ -149,34 +149,76 @@ xmlns="http://www.springframework.org/schema/beans">
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
-	<bean name="/prod_input.do" class="shop.admin.ProdInputController"></bean>
+	<bean name="/prod_input.do" class="shop.admin.ProdInputAdminController">
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
 	
-	<bean name="/prod_input_ok.do" class="shop.admin.ProdInputOkController">
+	<bean name="/prod_input_ok.do" class="shop.admin.ProdInputOkAbstractCommandController">
 	<property name="productDAO" ref="productDAO"/>
 	<property name="commandClass" value="shop.admin.dto.ProductDTO"/>
 	<property name="commandName" value="productCmd"/>
 	</bean>
 	
-	<bean name="/prod_list.do" class="shop.admin.ProdListController"></bean>
-	
-	<bean name="/prod_delete.do" class="shop.admin.ProdDeleteController">
+	<bean name="/prod_list.do" class="shop.admin.ProdListAdminController">
 	<property name="productDAO" ref="productDAO"/>
 	</bean>
 	
-	<bean name="/prod_view.do" class="shop.admin.ProdViewController">
+	<bean name="/prod_delete.do" class="shop.admin.ProdDeleteAdminController">
 	<property name="productDAO" ref="productDAO"/>
 	</bean>
 	
-	<bean name="/prod_update.do" class="shop.admin.ProdUpdateController">
+	<bean name="/prod_view.do" class="shop.admin.ProdViewAdminController">
 	<property name="productDAO" ref="productDAO"/>
 	</bean>
 	
-	<bean name="/prod_update_ok.do" class="shop.admin.ProdUpdateOkController">
+	<bean name="/prod_update.do" class="shop.admin.ProdUpdateAdminController">
+	<property name="productDAO" ref="productDAO"/>
+	</bean>
+	
+	<bean name="/prod_update_ok.do" class="shop.admin.ProdUpdateOkAbstractCommandController">
 	<property name="productDAO" ref="productDAO"/>
 	<property name="commandClass" value="shop.admin.dto.ProductDTO"/>
 	<property name="commandName" value="ProductCmd"/>
 	</bean>
 
+	<bean class="shop.display.ProductList" id="productList">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean class="shop.display.ShopMallController" name="/shop.do">
+	<property name="productList" ref="productList"/>
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean class="shop.display.CgProdListMallController" name="/mall_cgProdList.do">
+	<property name="productList" ref="productList"/>
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean class="shop.display.ProdViewMallController" name="/mall_prodView.do">
+	<property name="productList" ref="productList"/>
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean class="shop.display.CartBean" id="cartBean"> </bean>
+
+	<bean class="shop.display.CartAddMallController" name="/cartAdd.do">
+	<property name="productList" ref="productList"/>
+	<property name="cartBean" ref="cartBean"/>
+	</bean>
+	
+	<bean class="shop.display.CartListMallController" name="/cartList.do">
+	<property name="cartBean" ref="cartBean"/>
+	<property name="categoryDAO" ref="categoryDAO"/>
+	</bean>
+	
+	<bean class="shop.display.CartEditMallController" name="/cartEdit.do">
+	<property name="cartBean" ref="cartBean"/>
+	</bean>
+	
+	<bean class="shop.display.CartDelMallController" name="/cartDel.do">
+	<property name="cartBean" ref="cartBean"/>
+	</bean>
 	
 	
 	<bean class="IndexController" name="/main.do"> </bean>
