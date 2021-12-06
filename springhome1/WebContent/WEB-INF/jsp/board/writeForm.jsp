@@ -32,10 +32,10 @@
 </head>
 <body>
 <div align="center">
-	<form name="f" action="writePro_board.do" method="post" onsubmit="return check()">
-		<input type="hidden" name="num" value="${num}"/>
-		<input type="hidden" name="re_step" value="${re_step}"/>
-		<input type="hidden" name="re_level" value="${re_level}"/>
+	<form name="f" action="write_board.do" method="post" onsubmit="return check()">
+		<input type="hidden" name="num" value="${param.num}"/>
+		<input type="hidden" name="re_step" value="${param.re_step}"/>
+		<input type="hidden" name="re_level" value="${param.re_level}"/>
 		<table border="1" width="500">
 			<tr bgcolor="yellow">
 				<td align="center" colspan="2">±Û ¾² ±â</td>

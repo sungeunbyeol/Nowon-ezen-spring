@@ -40,25 +40,29 @@
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 	
-	<bean name="/student.do" class="test.SpringController"></bean>
+	<bean class="test.studentController">
+		<property name="studentDAO" ref="studentDAO" />
+	</bean>
+	
+	<!--  <bean name="/student.do" class="test.SpringController"></bean>  -->
 
-	<bean name="/insertStudent.do" class="test.InsertStudentController">
-		<property name="commandClass" value="test.dto.StudentDTO"/> <!-- DTO라고 알려줄 때 사용하는 이름이 commandClass -->
+	<!--  <bean name="/insertStudent.do" class="test.InsertStudentController">
+		<property name="commandClass" value="test.dto.StudentDTO"/>  DTO라고 알려줄 때 사용하는 이름이 commandClass 
 		<property name="commandName" value="studentCmd"/>
 		<property name="studentDAO" ref="studentDAO" />
-	</bean>
+	</bean>  -->
 
-	<bean name="/listStudent.do" class="test.ListStudentController">
+	<!--  <bean name="/listStudent.do" class="test.ListStudentController">
 		<property name="studentDAO" ref="studentDAO" />
-	</bean>
+	</bean> -->
 
-	<bean name="/deleteStudent.do" class="test.DeleteStudentController">
+	<!-- <bean name="/deleteStudent.do" class="test.DeleteStudentController">
 		<property name="studentDAO" ref="studentDAO" />
-	</bean>
+	</bean>  -->
 
-	<bean name="/findStudent.do" class="test.FindStudentController">
+	<!-- <bean name="/findStudent.do" class="test.FindStudentController">
 		<property name="studentDAO" ref="studentDAO" />
-	</bean>
+	</bean>  -->
 	
 	<bean name="/fileUpload_ok2.do" class="fileUpload.FileUploadController">
 	</bean>

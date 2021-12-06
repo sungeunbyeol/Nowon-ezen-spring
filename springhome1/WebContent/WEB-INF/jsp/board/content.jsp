@@ -37,7 +37,7 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" value="글수정" onclick="window.location='updateForm_board.do?num=${getBoard.num}'">
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="button" value="글삭제" onclick="window.location='deleteForm_board.do?num=${getBoard.num}'">
+				<input type="button" value="글삭제" onclick="window.location='delete_board.do?num=${getBoard.num}'">
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" value="글목록" onclick="window.location='list_board.do'">
 			</td>
