@@ -10,7 +10,7 @@
 <div align="center">
 	<b>±€ªË¡¶</b>
 	<br><br>
-	<form name="f" action="deletePro_board.do" method="post">
+	<form name="f" action="delete_board.do" method="post">
 		<input type="hidden" name="num" value="${param.num}"/>
 		<table border="1" width="400">
 			<tr bgcolor="yellow">

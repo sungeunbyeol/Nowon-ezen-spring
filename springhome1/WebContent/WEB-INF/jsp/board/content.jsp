@@ -33,9 +33,9 @@
 		<tr>
 			<td colspan="4" bgcolor="yellow" align="right">
 				<input type="button" value="답글쓰기" 
-				onclick="window.location='writeForm_board.do?num=${getBoard.num}&re_step=${getBoard.re_step}&re_level=${getBoard.re_level}'">
+				onclick="window.location='write_board.do?num=${getBoard.num}&re_step=${getBoard.re_step}&re_level=${getBoard.re_level}'">
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="button" value="글수정" onclick="window.location='updateForm_board.do?num=${getBoard.num}'">
+				<input type="button" value="글수정" onclick="window.location='update_board.do?num=${getBoard.num}'">
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" value="글삭제" onclick="window.location='delete_board.do?num=${getBoard.num}'">
 				&nbsp;&nbsp;&nbsp;&nbsp;

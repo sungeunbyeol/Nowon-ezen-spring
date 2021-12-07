@@ -1,7 +1,6 @@
 package board;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,30 +15,33 @@ import org.springframework.web.servlet.ModelAndView;
 
 import board.dao.BoardDAO;
 import board.dto.BoardDBBean;
+import board.mybatis.BoardMapper;
 
 @Controller
 public class BoardController {
-	@Autowired
+
+	
+	@Autowired 
 	private BoardDAO boardDAO;
 	
-	
+
 	@RequestMapping("/list_board.do")
-	public String listBoard(HttpServletRequest req, @RequestParam(required = false) String pageNum){
-		
-		if(pageNum == null) {
+	public String listBoard(HttpServletRequest req, @RequestParam(required = false) String pageNum) {
+		if (pageNum == null) {
 			pageNum = "1";
 		}
-		
 		int pageSize = 5;
 		int currentPage = Integer.parseInt(pageNum);
 		int startRow = (currentPage-1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
 		int number = 0;
 		int rowCount = 0;
-		rowCount = boardDAO.getCount();
+		//rowCount = boardDAO.getCount();
+		rowCount = BoardMapper.getCount();
 		if (endRow>rowCount) endRow = rowCount;
 		number = rowCount - startRow + 1;
-		List<BoardDBBean> list = boardDAO.listBoard(startRow, endRow);
+		//List<BoardDBBean> list = boardDAO.listBoard(startRow, endRow);
+		List<BoardDBBean> list = BoardMapper.listBoard(startRow, endRow);
 		req.setAttribute("listBoard", list);
 		req.setAttribute("number", number);
 		req.setAttribute("rowCount", rowCount);
@@ -61,20 +63,21 @@ public class BoardController {
 		return "board/list";
 	}
 	
-	@RequestMapping(value="/write_board.do",method=RequestMethod.GET)
+	@RequestMapping(value="/write_board.do", method=RequestMethod.GET)
 	public String writeForm() {
 		return "board/writeForm";
 	}
 	
-	@RequestMapping(value="/write_board.do",method=RequestMethod.POST)
+	@RequestMapping(value="/write_board.do", method=RequestMethod.POST)
 	public String writePro(HttpServletRequest req, @ModelAttribute BoardDBBean dto, BindingResult result) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			dto.setNum(0);
-			dto.setRe_level(0);
 			dto.setRe_step(0);
+			dto.setRe_level(0);
 		}
 		dto.setIp(req.getRemoteAddr());
-		int res = boardDAO.insertBoard(dto);
+		//int res = boardDAO.insertBoard(dto);
+		int res = BoardMapper.insertBoard(dto);
 		if (res>0) {
 			req.setAttribute("msg", "게시글 등록 성공!! 게시글 목록페이지로 이동합니다.");
 			req.setAttribute("url", "list_board.do");
@@ -85,58 +88,83 @@ public class BoardController {
 		return "forward:message.jsp";
 	}
 	
-	@RequestMapping("/content_board.do")
+	@RequestMapping(value="/delete_board.do", method=RequestMethod.GET)
+	public String deleteFormBoard() {
+		return "board/deleteForm";
+	}
+	
+	@RequestMapping(value="/content_board.do")
 	public ModelAndView contentBoard(@RequestParam int num) {
-		BoardDBBean dto = boardDAO.getBoard(num, "content");
+		//BoardDBBean dto = boardDAO.getBoard(num, "content");
+		BoardDBBean dto = BoardMapper.getBoard(num, "content");
 		return new ModelAndView("board/content", "getBoard", dto);
 	}
 	
-	@RequestMapping("/deleteForm_board.do")
-	public ModelAndView deleteFormBoard() {
-		return new ModelAndView("board/deleteForm");
+	@RequestMapping(value="/update_board.do", method=RequestMethod.GET)
+	public ModelAndView updateForm(@RequestParam int num) {
+		BoardDBBean dto = boardDAO.getBoard(num, "update");
+		return new ModelAndView("board/update", "getBoard", dto);
 	}
 	
-	@RequestMapping("/deletePro_board.do")
-	public ModelAndView deleteProBoard(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		int res = boardDAO.deleteBoard(Integer.parseInt(params.get("num")), params.get("passwd"));
+	@RequestMapping(value="/delete_board.do", method=RequestMethod.POST)
+	public String deleteProBoard(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		//int res = boardDAO.deleteBoard(Integer.parseInt(params.get("num")), params.get("passwd"));
+		int res = BoardMapper.deleteBoard(Integer.parseInt(params.get("num")), params.get("passwd"));
 		String msg = null, url = null;
 		if (res>0){
 			msg = "글삭제성공!! 글목록페이지로 이동합니다.";
 			url = "list_board.do";
 		}else if (res<0){
 			msg = "비밀번호가 틀렸습니다. 다시 입력해 주세요!!";
-			url = "deleteForm_board.do?num=" + params.get("num");
+			url = "delete_board.do?num=" + params.get("num");
 		}else {
 			msg = "글삭제실패!! 글내용보기페이지로 이동합니다.";
 			url = "content_board.do?num=" + params.get("num");
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
-		return new ModelAndView("forward:message.jsp");
+		return "forward:message.jsp";
 	}
 	
-	@RequestMapping("/updateForm_board.do")
-	public ModelAndView updateFormBoard(@RequestParam int num) {
-		BoardDBBean dto = boardDAO.getBoard(num, "update");
-		return new ModelAndView("board/updateForm","getBoard",dto);
-	}
-	
-	@RequestMapping("/updatePro_board.do")
-	public String updateProBoard(HttpServletRequest req, BoardDBBean dto) {
-		int res = boardDAO.updateBoard(dto);
+	@RequestMapping(value="/update_board.do", method=RequestMethod.POST)
+	public String updatePro(HttpServletRequest req, BoardDBBean dto) {
+		//int res = boardDAO.updateBoard(dto);
+		int res = BoardMapper.updateBoard(dto);
 		String msg = null, url = null;
 		if (res>0){
-			msg = "글수정성공!! 글목록페이지로 이동합니다.";
+			msg = "글수정제성공!! 글목록페이지로 이동합니다.";
 			url = "list_board.do";
 		}else if (res<0){
 			msg = "비밀번호가 틀렸습니다. 다시 입력해 주세요!!";
-			url = "updateForm_board.do?num=" + dto.getNum();
+			url = "update_board.do?num=" + dto.getNum();
 		}else {
 			msg = "글수정실패!! 글내용보기페이지로 이동합니다.";
 			url = "content_board.do?num=" + dto.getNum();
 		}
+		
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "forward:message.jsp";
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="board.mybatis.BoardMapper">
+
+	<select id="listMember">
+		select * from jspmember
+	</select>
+
+	<select id="getMember" parameterType="int" >
+		select * from jspmember where no = #{no}
+	</select>
+
+	<insert id="insertMember" parameterType="MemberDTO">
+		insert into jspmember values(member_seq.nextval, 
+		#{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},#{hp1},#{hp2},#{hp3},sysdate)
+	</insert>
+	
+	<delete id="deleteMember" parameterType="int">
+		delete from jspmember where no = #{no}
+	</delete>
+
+	<update id="updateMember" parameterType="MemberDTO">
+		update jspmember set passwd=
+		#{passwd}, email=#{email}, hp1=#{hp1}, hp2=#{hp2}, hp3=#{hp3} where no = #{no}
+	</update>
+	
+	<select id="findMember" parameterType="java.util.Map">
+		select * from jspMember where " + search + " = #{searchString}
+	</select>
+	
+	<select id="checkMember" parameterType="java.util.Map">
+		select * from jspmember where ssn1=#{ssn1} and ssn2=#{ssn2}
+	</select>
+		
+</mapper>

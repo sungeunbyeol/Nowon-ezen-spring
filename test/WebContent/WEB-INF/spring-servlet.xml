@@ -41,7 +41,7 @@
 	</bean>
 	
 	<bean class="test.studentController">
-		<property name="studentDAO" ref="studentDAO" />
+		<!--  <property name="studentDAO" ref="studentDAO" />-->
 	</bean>
 	
 	<!--  <bean name="/student.do" class="test.SpringController"></bean>  -->
