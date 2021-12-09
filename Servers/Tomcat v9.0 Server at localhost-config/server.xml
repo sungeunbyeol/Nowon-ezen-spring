@@ -155,7 +155,7 @@
 
       <Context docBase="test" path="/test" reloadable="true" source="org.eclipse.jst.jee.server:test"/>
       
-      <Context docBase="springhome1" path="/springhome1" reloadable="true" source="org.eclipse.jst.jee.server:springhome1"/></Host>
+      <Context docBase="springhome1" path="/springhome1" reloadable="true" source="org.eclipse.jst.jee.server:springhome1"/><Context docBase="mavenTest" path="/maverTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/></Host>
     </Engine>
   </Service>
 </Server>

@@ -18,7 +18,7 @@
 		}
 	</script>
 	<body>
-		<form name="f" method="POST" action="insertMemberOk.do">
+		<form name="f" method="POST" action="insertMember.do">
 			<table width="600" align="center" class="outline">
   				<tr>
 					<td colspan="2" align=center class="m2">회원가입</td>

@@ -12,7 +12,7 @@
 			document.f.submit()
 		}
 	</script>
-		<form name="f" method="POST" action="editMemberOk.do">
+		<form name="f" method="POST" action="editMember.do">
 			<input type="hidden" name="no" value="${getMember.no}"/>
 			<table width="600" align="center" class="outline">
   				<tr>

@@ -2,7 +2,6 @@ package member.mybatis;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -27,66 +26,92 @@ public class MemberMapper {
 		}
 	}
 	
-	public List<MemberDTO> listMember(){
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static boolean checkMember(Map<String, String> map) {
+		SqlSession session = sqlMapper.openSession();
 		try {
-			return
+			MemberDTO dto = session.selectOne("checkMember", map);
+			if (dto != null) {
+				return true;
+			}else {
+				return false;
+			}
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
 	
-	public MemberDTO getMember(int no) {
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static int insertMember(MemberDTO dto) {
+		SqlSession session = sqlMapper.openSession();
 		try {
-			
-			return
+			int res = session.insert("insertMember", dto);
+			session.commit();
+			return res;
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
 	
-	public int insertMember(MemberDTO dto) {
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static List<MemberDTO> listMember(Map<String, String> map){
+		SqlSession session = sqlMapper.openSession();
+		List<MemberDTO> list = null;
 		try {
-			sqlSession.commit();
+			if (map.get("mode") == null) {
+				list = session.selectList("listMember");
+			}else {
+				if (map.get("search") == null) {
+					map.put("search", "id");
+					map.put("searchString", "");
+				}
+				list = session.selectList("findMember", map);
+			}
+			return list;
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
 	
-	
-	public int deleteMember(int no) {
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static int deleteMember(int no) {
+		SqlSession session = sqlMapper.openSession();
 		try {
-			sqlSession.commit();
+			int res = session.delete("deleteMember", no);
+			session.commit();
+			return res;
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
 	
-	public int updateMember(MemberDTO dto) {
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static MemberDTO getMember(int no) {
+		SqlSession session = sqlMapper.openSession();
 		try {
-			sqlSession.commit();
+			MemberDTO dto = session.selectOne("getMember", no);
+			return dto;
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
 	
-	public List<MemberDTO> findMember(String search, String searchString){
-		SqlSession sqlSession = sqlMapper.openSession();
+	public static int updateMember(MemberDTO dto) {
+		SqlSession session = sqlMapper.openSession();
 		try {
-			Map<String, Integer> map = new Hashtable<>();
-			 
-			 List<memberDTO> find = 
+			int res = session.update("updateMember", dto);
+			session.commit();
+			return res;
 		}finally {
-			sqlSession.close();
+			session.close();
 		}
 	}
-	
-	
-	
-	
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

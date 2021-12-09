@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.ezen.mavenTest.StudentMapper">
+	<select parameterType="java.util.Map" resultType="boardDTO" id="listBoard">
+		select * from 
+		(select rownum rn, A.* from(select * from board order by re_step asc)A)
+		where rn between #{start} and #{end} 
+	</select>
+
+	<select resultType="int" id="getCount">
+		select count(*) from board 
+	</select>
+
+	<update parameterType="java.util.Map" id="readcount">
+		${sql} 
+	</update>
+
+	<insert parameterType="boardDTO" id="insertBoard">
+		insert into board values
+		(board_seq.nextval, #{writer},#{email},#{subject},#{passwd},sysdate,0,
+		#{content},#{ip},#{re_step},#{re_level}) 
+	</insert>
+
+	<select parameterType="int" resultType="boardDTO" id="getBoard">
+		select * from board where num = #{num}
+	</select>
+
+	<delete parameterType="int" id="deleteBoard">
+		delete from board where num = #{num} 
+	</delete>
+	
+	<update parameterType="int" id="plusReadcount">
+		update board set readcount = readcount + 1 where num = #{num}
+	</update>
+	
+	<update parameterType="boardDTO" id="updateBoard">
+		update board set writer=#{writer}, email=#{email}, subject=#{subject}, 
+		content=#{content} where num=#{num} 
+	</update>
+
+</mapper>

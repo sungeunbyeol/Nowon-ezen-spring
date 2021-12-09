@@ -5,10 +5,10 @@
 <%@ include file="top.jsp"%>
 <div align="center">
 	<hr color="green" width="300">
-	<c:if test="${mode == 'all'}">
+	<c:if test="${empty param.mode}">
 		<h2>회 원 목 록 보 기</h2>
 	</c:if>
-	<c:if test="${mode == 'find'}">
+	<c:if test="${not empty param.mode}">
 		<h2>회 원 찾 기</h2>
 		<form name="f" method="post" action="memberAll.do">
 			<input type="hidden" name="mode" value="find"/>
