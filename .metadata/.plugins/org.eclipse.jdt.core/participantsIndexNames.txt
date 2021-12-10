@@ -11,6 +11,8 @@ C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\335
 \test\src
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\933712216.index
 \mavenTest\src\main\java
+C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3224172666.index
+\mavenTest\src\main\java
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\275104603.index
 \springhome1\src
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3129876376.index

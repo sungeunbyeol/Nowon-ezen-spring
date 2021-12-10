@@ -20,10 +20,10 @@ public class studentController {
 	@Autowired
 	StudentMapper studentMapper;
 	
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public String indexStudent() {
-		return "student";
-	}
+	/*
+	 * @RequestMapping(value="/", method=RequestMethod.GET) public String
+	 * indexStudent() { return "student"; }
+	 */
 	
 	@RequestMapping("/listStudent.do")
 	public ModelAndView listStrudent() {

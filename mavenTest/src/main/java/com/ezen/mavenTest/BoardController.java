@@ -1,6 +1,5 @@
 package com.ezen.mavenTest;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +21,16 @@ import com.ezen.mavenTest.service.BoardMapper;
 public class BoardController {
 
 	
-	@Autowired 
+	@Autowired
 	BoardMapper boardMapper;
 	
+	
+	@RequestMapping(value="/", method=RequestMethod.GET) 
+	public String index() { 
+		return "index"; 
+	}
+	
+
 	@RequestMapping("/list_board.do")
 	public String listBoard(HttpServletRequest req, @RequestParam(required = false) String pageNum) {
 		if (pageNum == null) {
@@ -77,7 +83,7 @@ public class BoardController {
 		}
 		dto.setIp(req.getRemoteAddr());
 		//int res = boardDAO.insertBoard(dto);
-		int res = boardMapper.insertBoard(dto);;
+		int res = boardMapper.insertBoard(dto);
 		if (res>0) {
 			req.setAttribute("msg", "게시글 등록 성공!! 게시글 목록페이지로 이동합니다.");
 			req.setAttribute("url", "list_board.do");
@@ -85,7 +91,7 @@ public class BoardController {
 			req.setAttribute("msg", "게시글 등록 실패!! 게시글 등록페이지로 이동합니다.");
 			req.setAttribute("url", "writeForm_board.do");
 		}
-		return "forward:message.jsp";
+		return "message";
 	}
 	
 	@RequestMapping(value="/delete_board.do", method=RequestMethod.GET)
@@ -102,8 +108,8 @@ public class BoardController {
 	
 	@RequestMapping(value="/update_board.do", method=RequestMethod.GET)
 	public ModelAndView updateForm(@RequestParam int num) {
-		BoardDBBean dto = boardDAO.getBoard(num, "update");
-		return new ModelAndView("board/update", "getBoard", dto);
+		BoardDBBean dto = boardMapper.getBoard(num, "update");
+		return new ModelAndView("board/updateForm", "getBoard", dto);
 	}
 	
 	@RequestMapping(value="/delete_board.do", method=RequestMethod.POST)
@@ -123,7 +129,7 @@ public class BoardController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
-		return "forward:message.jsp";
+		return "message";
 	}
 	
 	@RequestMapping(value="/update_board.do", method=RequestMethod.POST)
@@ -144,7 +150,7 @@ public class BoardController {
 		
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
-		return "forward:message.jsp";
+		return "message";
 	}
 }
 
