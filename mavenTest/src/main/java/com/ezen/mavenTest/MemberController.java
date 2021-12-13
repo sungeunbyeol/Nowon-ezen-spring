@@ -35,7 +35,8 @@ public class MemberController {
 	
 	@RequestMapping("/checkMember.do")
 	public String CheckMember(HttpServletRequest req, @RequestParam Map<String, String>params) {
-		boolean isMember = memberMapper.checkMember(params.get("name"), params.get("ssn1"), params.get("ssn2"));
+		//isMember = memberDAO.isCheckMember(name, ssn1, ssn2);
+		boolean isMember = memberMapper.checkMember(params);
 		if(isMember) {
 			req.setAttribute("msg", "회원이십니다. 로그인해주세요");
 			req.setAttribute("url", "member.do");
@@ -70,10 +71,11 @@ public class MemberController {
 	
 	@RequestMapping(value="/memberAll.do")
 	public ModelAndView MemberAll(HttpServletRequest req, @RequestParam String mode ) {
-		List<MemberDTO> list = null;
+		ModelAndView mav= new ModelAndView();
 		if (mode == null) {
 			mode = "all";
 		}
+		List<MemberDTO> list = null;
 		if (mode.equals("all")) {
 			list = memberMapper.listMember();
 		}else {
@@ -81,13 +83,15 @@ public class MemberController {
 			String searchString = req.getParameter("searchString");
 			list = memberMapper.findMember(search, searchString);
 		}
-		req.setAttribute("mode", mode);
-		return new ModelAndView("member/memberAll", "listMember", list);
+		mav.addObject("listMember",list);
+		mav.addObject("mode",mode);
+		mav.setViewName("member/memberAll");
+		return mav;
 	}
 	
 	@RequestMapping(value="/deleteMember.do")
 	public  String DeleteMember(HttpServletRequest req, @RequestParam int num) {
-		int res = memberMapper.deleteMember(Integer.parseInt("num"));
+		int res = memberMapper.deleteMember(num);
 		if (res>0) {
 			req.setAttribute("msg", "회원삭제성공!! 회원목록페이지로 이동합니다.");
 			req.setAttribute("url", "memberAll.do");
