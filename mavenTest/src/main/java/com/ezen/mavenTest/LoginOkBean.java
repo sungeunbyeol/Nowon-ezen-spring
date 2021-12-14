@@ -1,14 +1,14 @@
 package com.ezen.mavenTest;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Controller;
 
 import com.ezen.mavenTest.model.MemberDTO;
+import com.ezen.mavenTest.service.LoginMapper;
 
+@Controller
 public class LoginOkBean {
 	private int no;
 	private String name;
@@ -21,6 +21,9 @@ public class LoginOkBean {
 	private String hp2;
 	private String hp3;
 	private String joindate;
+	
+	@Autowired
+	private LoginMapper loginMapper;
 	
 	public void setId(String id) {
 		this.id = id;
@@ -59,37 +62,19 @@ public class LoginOkBean {
 		return joindate;
 	}
 	
-	private JdbcTemplate jdbcTemplate;
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-	
-	public boolean isMemberSetting() {
-		String sql = "select * from jspmember where id = ?";
-		RowMapper<MemberDTO> mapper = new RowMapper<MemberDTO>(){
-			@Override
-			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
-				MemberDTO dto = new MemberDTO();
-				no = rs.getInt("no");
-				name = rs.getString("name");
-				//id = rs.getString("id");
-				passwd = rs.getString("passwd");
-				ssn1 = rs.getString("ssn1");
-				ssn2 = rs.getString("ssn2");
-				email = rs.getString("email");
-				hp1 = rs.getString("hp1");
-				hp2 = rs.getString("hp2");
-				hp3 = rs.getString("hp3");
-				joindate = rs.getString("joindate");
-				return dto;
-			}
-		};	
-		try {
-			MemberDTO dto = jdbcTemplate.queryForObject(sql, mapper, id);
-			return true;
-		}catch(EmptyResultDataAccessException e) {
-			return false;
-		}	
+	public void isMemberSetting() {
+			MemberDTO dto = loginMapper.isMemberSetting(id);
+			no = dto.getNo();
+			name = dto.getName();
+			id = dto.getId();
+			passwd = dto.getPasswd();
+			ssn1 = dto.getSsn1();
+			ssn2 = dto.getSsn2();
+			email = dto.getEmail();
+			hp1 = dto.getHp1();
+			hp2 = dto.getHp2();
+			hp3 = dto.getHp3();
+			joindate = dto.getJoindate();
 	}
 }
 

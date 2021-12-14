@@ -30,6 +30,11 @@ public class BoardController {
 		return "index"; 
 	}
 	
+	@RequestMapping("/main.do")
+	public String main() {
+		return "index";
+	}
+	
 
 	@RequestMapping("/list_board.do")
 	public String listBoard(HttpServletRequest req, @RequestParam(required = false) String pageNum) {

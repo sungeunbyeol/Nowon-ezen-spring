@@ -3,13 +3,20 @@ package com.ezen.mavenTest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Controller;
 
 import com.ezen.mavenTest.model.MemberDTO;
 
+@Controller
 public class LoginCheck {
+	
+	@Autowired
+	private SqlSession sqlSession;
 	
 	public static final int OK = 0;
 	public static final int NOT_ID = 1;
@@ -32,39 +39,16 @@ public class LoginCheck {
 		this.passwd = passwd;
 	}
 	
-	private JdbcTemplate jdbcTemplate;
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-	
 	public int checkLogin() {
-		String sql = "select * from jspmember where id = ?";
-		RowMapper<MemberDTO> mapper = new RowMapper<MemberDTO>(){
-			@Override
-			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
-				MemberDTO dto = new MemberDTO();
-				dto.setNo(rs.getInt("no"));
-				dto.setName(rs.getString("name"));
-				dto.setId(rs.getString("id"));
-				dto.setPasswd(rs.getString("passwd"));
-				dto.setSsn1(rs.getString("ssn1"));
-				dto.setSsn2(rs.getString("ssn2"));
-				dto.setEmail(rs.getString("email"));
-				dto.setHp1(rs.getString("hp1"));
-				dto.setHp2(rs.getString("hp2"));
-				dto.setHp3(rs.getString("hp3"));
-				dto.setJoindate(rs.getString("joindate"));
-				return dto;
-			}
-		};	
+		MemberDTO dto = sqlSession.selectOne("checkLogin", id);
 		try {
-			MemberDTO dto = jdbcTemplate.queryForObject(sql, mapper, id);
-			if (dto.getPasswd().equals(passwd)) {
+			if(dto.getPasswd().equals(passwd)) {
 				return OK;
-			}else {
+			}
+			else {
 				return NOT_PWD;
 			}
-		}catch(EmptyResultDataAccessException e) {
+		}catch(Exception e) {
 			return NOT_ID;
 		}
 	}

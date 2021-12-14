@@ -69,24 +69,32 @@ public class MemberController {
 		return "message";
 	}
 	
-	@RequestMapping(value="/memberAll.do")
-	public ModelAndView MemberAll(HttpServletRequest req, @RequestParam String mode ) {
-		ModelAndView mav= new ModelAndView();
+	@RequestMapping("/memberAll.do")
+	public String MemberAll(HttpServletRequest req) {
+//		ModelAndView mav= new ModelAndView();
+		String mode = req.getParameter("mode");
 		if (mode == null) {
 			mode = "all";
 		}
+
 		List<MemberDTO> list = null;
 		if (mode.equals("all")) {
+
+			System.out.println(1);
 			list = memberMapper.listMember();
+			System.out.println(list.size());
 		}else {
 			String search = req.getParameter("search");
 			String searchString = req.getParameter("searchString");
 			list = memberMapper.findMember(search, searchString);
 		}
-		mav.addObject("listMember",list);
-		mav.addObject("mode",mode);
-		mav.setViewName("member/memberAll");
-		return mav;
+//		mav.addObject("listMember",list);
+//		mav.addObject("mode",mode);
+//		mav.setViewName("member/memberAll");
+//		return mav;
+		req.setAttribute("listMember", list);
+		req.setAttribute("mode", mode);
+		return "member/memberAll";
 	}
 	
 	@RequestMapping(value="/deleteMember.do")

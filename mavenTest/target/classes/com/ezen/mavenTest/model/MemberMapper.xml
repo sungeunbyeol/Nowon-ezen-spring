@@ -13,8 +13,8 @@
 		insert into jspMember values(member_seq.nextval, #{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},#{hp1},#{hp2},#{hp3}, sysdate)
 	</select>
 	
-	<select id="listMember" resultType="memberDTO">
-		select * from jspMember 
+	<select id="listMember" resultType="MemberDTO">
+		select * from jspmember
 	</select>
 	
 	<select id="findMember" parameterType="java.util.Map" resultType="memberDTO" >

@@ -57,7 +57,7 @@ public class LoginController {
 		String msg = memberMapper.searchMember(params.get("name"), params.get("ssn1"), params.get("ssn2"), params.get("id"));
 		req.setAttribute("msg", msg);
 		if (msg != null) {
-			return new ModelAndView("forward:closeWindow.jsp");
+			return new ModelAndView("closeWindow");
 		}
 		if (params.get("id") == null) {
 			req.setAttribute("msg", "아이디를 찾을 수 없습니다. 다시 확인해 주세요!!");
@@ -71,10 +71,12 @@ public class LoginController {
 	
 	@RequestMapping("/login_ok.do")
 	public ModelAndView LoginOk(HttpServletRequest req, HttpServletResponse resp, @RequestParam String saveId) {
+		
 		loginCheck.setId(req.getParameter("id"));
 		loginCheck.setPasswd(req.getParameter("passwd"));
+		
 		Cookie ck = new Cookie("saveId", loginCheck.getId());
-		int res = loginCheck.checkLogin();
+		int res = loginMapper.checkLogin();
 		String msg = null, url = null;
 		switch(res){
 		case LoginCheck.OK :
@@ -86,7 +88,8 @@ public class LoginController {
 			resp.addCookie(ck);
 			
 			loginOkBean.setId(loginCheck.getId());
-			boolean isLogin = loginOkBean.isMemberSetting();
+			loginOkBean.isMemberSetting();
+			
 			HttpSession session = req.getSession();
 			session.setAttribute("loginOkBean", loginOkBean);
 			msg = "로그인 되었습니다.";

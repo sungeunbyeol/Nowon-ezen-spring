@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ezen.mavenTest.model.MemberDTO;
@@ -12,6 +13,7 @@ import com.ezen.mavenTest.model.MemberDTO;
 @Service
 public class MemberMapper {
 
+	@Autowired
 	private SqlSession sqlSession;
 	
 	public boolean checkMember(Map<String, String> map) {
