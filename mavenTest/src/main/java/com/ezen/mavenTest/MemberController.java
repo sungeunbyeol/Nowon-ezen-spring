@@ -79,10 +79,7 @@ public class MemberController {
 
 		List<MemberDTO> list = null;
 		if (mode.equals("all")) {
-
-			System.out.println(1);
 			list = memberMapper.listMember();
-			System.out.println(list.size());
 		}else {
 			String search = req.getParameter("search");
 			String searchString = req.getParameter("searchString");
@@ -98,8 +95,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/deleteMember.do")
-	public  String DeleteMember(HttpServletRequest req, @RequestParam int num) {
-		int res = memberMapper.deleteMember(num);
+	public  String DeleteMember(HttpServletRequest req, @RequestParam int no) {
+		int res = memberMapper.deleteMember(no);
 		if (res>0) {
 			req.setAttribute("msg", "회원삭제성공!! 회원목록페이지로 이동합니다.");
 			req.setAttribute("url", "memberAll.do");

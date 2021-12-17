@@ -57,7 +57,7 @@ public class LoginController {
 		String msg = memberMapper.searchMember(params.get("name"), params.get("ssn1"), params.get("ssn2"), params.get("id"));
 		req.setAttribute("msg", msg);
 		if (msg != null) {
-			return new ModelAndView("closeWindow");
+			return new ModelAndView("forward:closeWindow.jsp");
 		}
 		if (params.get("id") == null) {
 			req.setAttribute("msg", "아이디를 찾을 수 없습니다. 다시 확인해 주세요!!");
@@ -76,6 +76,7 @@ public class LoginController {
 		loginCheck.setPasswd(req.getParameter("passwd"));
 		
 		Cookie ck = new Cookie("saveId", loginCheck.getId());
+		
 		int res = loginMapper.checkLogin();
 		String msg = null, url = null;
 		switch(res){

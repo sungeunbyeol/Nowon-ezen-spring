@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <html>
 <head>
-	<title>mvc홈페이지</title>
+	<title>maven홈페이지</title>
 </head>
 <body>
 	<h1 align="center">MVC로 만들어 보는 홈페이지</h1>

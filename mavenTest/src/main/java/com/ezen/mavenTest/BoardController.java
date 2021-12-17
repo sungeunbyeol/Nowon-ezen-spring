@@ -25,10 +25,12 @@ public class BoardController {
 	BoardMapper boardMapper;
 	
 	
-	@RequestMapping(value="/", method=RequestMethod.GET) 
-	public String index() { 
-		return "index"; 
-	}
+	
+	 @RequestMapping(value="/", method=RequestMethod.GET)
+	 public String index() {
+	  return "index"; 
+	  }
+	
 	
 	@RequestMapping("/main.do")
 	public String main() {

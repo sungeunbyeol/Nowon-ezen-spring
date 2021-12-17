@@ -5,12 +5,12 @@
  	
 <mapper namespace="com.ezen.mavenTest.model.MemberMapper">
 
-	<select id="checkMember" parameterType="java.util.Map" resultType="memberDTO" >
-		select * from jspMember where ssn1=#{ssn1} and ssn2=#{ssn2} 
+	<select id="isCheckMember" parameterType="java.util.Map" resultType="memberDTO" >
+		select * from jspmember where ssn1=#{ssn1} and ssn2=#{ssn2} 
 	</select>
 
 	<select id="insertMember" parameterType="memberDTO" >
-		insert into jspMember values(member_seq.nextval, #{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},#{hp1},#{hp2},#{hp3}, sysdate)
+		insert into jspmember values(member_seq.nextval, #{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},#{hp1},#{hp2},#{hp3}, sysdate)
 	</select>
 	
 	<select id="listMember" resultType="MemberDTO">
@@ -18,11 +18,11 @@
 	</select>
 	
 	<select id="findMember" parameterType="java.util.Map" resultType="memberDTO" >
-		select * from jspMember where ${search} = #{searchString} 
+		select * from jspmember where ${search} = #{searchString} 
 	</select>
 	
 	<delete id="deleteMember" parameterType="int" >
-		delete from jspMember where no = #{no} 
+		delete from jspmember where no = #{no} 
 	</delete>
 	
 	<select id="getMember" parameterType="int" resultType="memberDTO" >

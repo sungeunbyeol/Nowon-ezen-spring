@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+	<mapper namespace="shop.admin.mybatis.ShopAdminMapper">
+		<insert parameterType="categoryDTO" id="insertCate">
+			insert into category values(cate_seq.nextval, #{code}, #{cname}) 
+		</insert>
+		
+		<select id="listCate" resultType="categoryDTO">
+			select * from category order by cnum asc 
+		</select>
+		
+		<update parameterType="int" id="deleteCate">
+			delete from category where cnum = #{cnum} 
+		</update>
+		
+		<insert parameterType="java.util.Map" id="insertProduct">
+			insert into product values(prod_seq.nextval,#{pname},#{pcategory_fk},
+			#{pcompany},#{pimage},#{pqty},#{price},#{pspec},#{pcontents},#{point},sysdate) 
+		</insert>
+		
+		<select id="listProduct" resultType="productDTO">
+			select * from product order by pnum asc 
+		</select>
+		
+		<delete parameterType="int" id="deleteProduct">
+			delete from product where pnum = #{pnum} 
+		</delete>
+		
+		<select parameterType="int" id="getProduct" resultType="productDTO">
+			select * from product where pnum = #{pnum} 
+		</select>
+		
+		<update parameterType="java.util.Map" id="updateProduct">
+			update product set pname= #{pname}, pcompany= #{pcompany},pimage = 
+			#{pimage}, pqty= #{pqty}, price = #{price},pspec = #{pspec}, pcontents = 
+			#{pcontents}, point =#{point} where pnum=#{pnum} 
+		</update>
+	
+	</mapper>
