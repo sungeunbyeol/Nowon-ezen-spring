@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.ezen.project.service.UserMapper">
+
+	<select id="checkUser" parameterType="java.util.Map" resultType="UserDTO" >
+	<!-- 이름, 전화번호로 회원 찾음 -->
+		select * from project_useraccount where u_name=#{u_name} and u_tel=#{u_tel}
+	</select>
+
+	<select id="insertUser" parameterType="UserDTO" >
+	<!-- 약관, 이메일, 비밀번호, 비밀번호 확인, 이름, 닉네임, 생년월일 -->
+		insert into project_useraccount values
+		(project_useraccount_seq.nextval ,#{u_name},#{u_password},#{u_email},#{u_birth}, '1',
+		'1', #{u_nickname}, '1', '1' , sysdate)
+	</select>
+	
+	<select id="checkLogin" resultType="UserDTO" parameterType="String">
+			select * from project_useraccount where u_email = #{u_email}
+	</select>
+	
+	<select id="listUser" resultType="UserDTO">
+		select * from project_useraccount 
+	</select>
+	
+	
+	
+	<!-- <select id="findUser" parameterType="java.util.Map" resultType="UserDTO" >
+		//select * from project_useraccount where ${search} = #{searchString} 
+	</select> -->
+	
+	<!-- <delete id="deleteUser" parameterType="int" >
+		delete from project_useraccount where //no = #{no} 
+	</delete>
+	
+	<select id="getUser" parameterType="int" resultType="UserDTO" >
+		select * from project_useraccount where //no = #{no} 
+	</select>
+	
+	<update id="updateUser" parameterType="UserDTO" >
+		update project_useraccount set passwd=#{passwd}, email=#{email}, hp1=#{hp1},hp2=#{hp2}, hp3=#{hp3} where no=#{no} 
+	</update>
+		 -->
+</mapper>

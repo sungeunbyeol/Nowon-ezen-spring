@@ -155,8 +155,8 @@
 
       
       
-      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\springhome1" path="/springhome1" reloadable="true" source="org.eclipse.jst.jee.server:springhome1"/>
-      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mavenTest" path="/mavenTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/></Host>
+      
+      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mavenTest" path="/mavenTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\project" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project"/></Host>
     </Engine>
   </Service>
 </Server>

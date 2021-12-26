@@ -155,8 +155,8 @@
 
       
       
-      <Context docBase="springhome1" path="/springhome1" reloadable="true" source="org.eclipse.jst.jee.server:springhome1"/>
-      <Context docBase="mavenTest" path="/mavenTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/><Context docBase="maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/></Host>
+      
+      <Context docBase="mavenTest" path="/mavenTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/><Context docBase="maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/><Context docBase="project" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project"/></Host>
     </Engine>
   </Service>
 </Server>

@@ -22,9 +22,6 @@ public class MemberController {
 	
 	@Autowired
 	MemberMapper memberMapper;
-	/*
-	 * @RequestMapping("/") public String main() { return "index"; }
-	 */
 	
 	@RequestMapping("/member.do")
 	public ModelAndView insertMember() {
