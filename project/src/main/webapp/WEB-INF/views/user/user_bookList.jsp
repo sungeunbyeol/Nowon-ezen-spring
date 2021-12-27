@@ -13,6 +13,7 @@
 			<tr>
 				<td>예약번호(book_num)</td>
 				<td>호텔이름(h_name)</td>
+				<td align = "right"><input type="button" value="리뷰쓰기" onclick="window.location=''"></td>
 			</tr>
 			<tr>
 				<td>?박</td>
