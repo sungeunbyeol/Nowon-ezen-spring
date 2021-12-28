@@ -13,6 +13,14 @@ public class BookingDTO {
 	private int book_totalprice;
 	private int book_savepoint;
 	private String book_status;
+	private String h_image1;
+	
+	public String getH_image1() {
+		return h_image1;
+	}
+	public void setH_image1(String h_image1) {
+		this.h_image1 = h_image1;
+	}
 	
 	public int getBook_num() {
 		return book_num;

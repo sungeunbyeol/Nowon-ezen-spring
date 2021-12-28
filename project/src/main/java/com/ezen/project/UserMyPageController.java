@@ -38,6 +38,11 @@ public class UserMyPageController {
 		return "user/user_bookList";
 	}
 	
+	@RequestMapping("/user_reviewform")
+	public String userReviewform() {
+		return "user/user_reviewform";
+	}
+	
 	@RequestMapping("/user_pointList")
 	public String userpointList() {
 		return "user/user_pointList";

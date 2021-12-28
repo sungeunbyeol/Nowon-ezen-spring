@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.ezen.project.service.UserMyPageMapper">
+
+	<select id="reservationView" resultType="BookingDTO" parameterType="BookingDTO">
+		select h_image1, book_indate, book_outdate, book_num, h_name, book_joindate,	hotel.h_name 
+		from project_booking book, project_hotel hotel
+		where u_num = #{u_num}
+		and book.h_num = hotel.h_num
+	</select>
+
+
+</mapper>
