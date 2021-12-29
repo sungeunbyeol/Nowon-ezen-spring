@@ -43,8 +43,5 @@
 		</table>
 		<c:if test="${empty bookList}">
 		<h3 align="center" style="color:red">예약하신 호텔이 없습니다.</h3>
-		</c:if>
-	</td>
-	</tr>
-	</div>		
+		</c:if>	
 <%@ include file="../bottom.jsp" %>

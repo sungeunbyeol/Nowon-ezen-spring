@@ -6,11 +6,18 @@
 <mapper namespace="com.ezen.project.service.UserMyPageMapper">
 
 	<select id="reservationView" resultType="BookingDTO" parameterType="BookingDTO">
-		select h_image1, book_indate, book_outdate, book_num, h_name, book_joindate,	hotel.h_name 
+		select h_image1, book_indate, book_outdate, book_num, h_name, book_joindate
 		from project_booking book, project_hotel hotel
 		where u_num = #{u_num}
 		and book.h_num = hotel.h_num
 	</select>
 
+	<select id="pointView" resultType="UserPointDTO" parameterType="UserPointDTO">
+		select p_status,  book_savepoint, p_contents, u_point, book_joindate
+		from project_userpoint point, project_booking book, project_useraccount user
+		where u_num = #{u_num}
+		and point.book_num = book.book_num
+		and point.u_num = user.u_num
+	</select>
 
 </mapper>
