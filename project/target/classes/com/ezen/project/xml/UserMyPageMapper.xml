@@ -5,19 +5,83 @@
  	
 <mapper namespace="com.ezen.project.service.UserMyPageMapper">
 
-	<select id="reservationView" resultType="BookingDTO" parameterType="BookingDTO">
-		select h_image1, book_indate, book_outdate, book_num, h_name, book_joindate
-		from project_booking book, project_hotel hotel
-		where u_num = #{u_num}
-		and book.h_num = hotel.h_num
+	<select id="reservationView" resultType="BookingDTO" parameterType="java.lang.Integer">
+		SELECT h_image1, book_indate, book_outdate, book_num, h_name, room_num, book_joindate
+		          , CONCAT(TO_DATE(book_outdate, 'YYYYMMDD') - TO_DATE(book_indate, 'YYYYMMDD'), '박') AS day
+		   FROM project_booking book, project_hotel hotel
+	   	 WHERE u_num = #{u_num}
+		     AND book.h_num = hotel.h_num
 	</select>
 
-	<select id="pointView" resultType="UserPointDTO" parameterType="UserPointDTO">
-		select p_status,  book_savepoint, p_contents, u_point, book_joindate
-		from project_userpoint point, project_booking book, project_useraccount user
-		where u_num = #{u_num}
-		and point.book_num = book.book_num
-		and point.u_num = user.u_num
+	<select id="pointView" resultType="UserPointDTO" parameterType="java.lang.Integer">
+		SELECT userPoint.p_status
+			     , booking.book_savepoint
+			     , userAccount.u_point
+			     , userPoint.p_contents
+			     , booking.book_joindate
+		 FROM project_userpoint userPoint
+		    , project_booking   booking 
+			, project_useraccount userAccount
+		WHERE userPoint.u_num = #{u_num}
+		  AND userPoint.u_num = userAccount.u_num
+		  AND userPoint.book_num = booking.book_num
+	</select>
+
+	<select id="wishListView" resultType="WishListDTO" parameterType="java.lang.Integer">
+		SELECT AA.h_image1
+			     , AA.h_name
+			     , AA.h_grade
+			     , AA.h_address     
+			     , CASE WHEN ROUND(AA.reviewAvg) = 1 THEN '★☆☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 2 THEN '★★☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 3 THEN '★★★☆☆'
+						WHEN ROUND(AA.reviewAvg) = 4 THEN '★★★★☆'
+						WHEN ROUND(AA.reviewAvg) = 5 THEN '★★★★★'
+						ELSE '☆☆☆☆☆' END AS reviewStar
+				 , NVL(AA.reviewAvg, 0) AS reviewAvg
+			     , AA.reviewCnt
+			  FROM (
+			    SELECT hotel.h_image1
+			     , hotel.h_name
+			     , hotel.h_grade
+			     , hotel.h_address
+			     , (SELECT AVG(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num
+			         GROUP BY sub1.h_num) AS reviewAvg
+			     , (SELECT COUNT(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num) AS reviewCnt
+			     FROM project_wishlist wishlist
+			        , project_hotel   hotel 
+			    WHERE wishlist.u_num = #{u_num}
+			      AND wishlist.h_num = hotel.h_num
+			  ) AA
+	</select>
+
+	<select id="roomType" resultType="String" parameterType="java.lang.Integer">
+		select room_type from project_room where room_num = #{room_num}
+	</select>
+
+	<insert id="insertReview" parameterType="java.util.Map">
+		insert into project_review values(project_review_seq.nextval, #{h_num}, #{u_num}, #{review_contents},
+		sysdate, #{review_image}, #{review_star}, #{review_nickname}, #{review_roomtype})
+	</insert>
+
+	<select id="review" resultType="ReviewDTO" parameterType="java.lang.Integer">
+		select * from project_review where u_num = #{u_num}
+	</select>
+	
+	<select id="userList" resultType="UserDTO" parameterType="java.lang.Integer">
+		SELECT *
+		FROM project_useraccount
+		WHERE u_num = #{u_num}
+	</select>
+	
+	<delete parameterType="int" id="deleteReview">
+		delete from project_review where review_num = #{review_num} 
+	</delete>
+	
+	<select id="getPicture" parameterType="int" resultType="String">
+		select review_image from project_review where review_num=#{review_num}
 	</select>
 
 </mapper>

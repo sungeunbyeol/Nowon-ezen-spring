@@ -14,6 +14,8 @@ public class BookingDTO {
 	private int book_savepoint;
 	private String book_status;
 	private String h_image1;
+	private String h_name;
+	private String day;
 	
 	public String getH_image1() {
 		return h_image1;
@@ -93,6 +95,18 @@ public class BookingDTO {
 	}
 	public void setBook_status(String book_status) {
 		this.book_status = book_status;
+	}
+	public String getH_name() {
+		return h_name;
+	}
+	public void setH_name(String h_name) {
+		this.h_name = h_name;
+	}
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
 	}
 	
 }

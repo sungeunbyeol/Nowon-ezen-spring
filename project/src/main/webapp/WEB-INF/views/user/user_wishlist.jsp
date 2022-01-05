@@ -12,28 +12,20 @@
 			<button style= "background:#79B8D6">낮은가격순</button>
 			<button style= "background:#79B8D6">높은가격순</button>
 		</div>
-			<c:forEach var="star" begin="0" end="15">
+			<c:forEach var="wdto" items="${wishList}">
 				<div class="column review border-bottom">	
 					<div class="row">
-						<img class="picture" src="resources/spa.jpg"/>
+						<img class="picture" src="resources/images/hotel/${wdto.h_image1}"/>
 						<div class="flex column">
 							<span>
-							<c:forEach var="star" begin="0" end="4">
-							<c:if test="${ star < 3}">
-							<i class="fas fa-star"></i>
-							</c:if>
-							<c:if test="${ star >= 3}">
-							<i class="far fa-star"></i>
-							</c:if>
-							</c:forEach>
-							<label> 후기갯수</label>
+								<label>${wdto.reviewStar} (${wdto.reviewAvg})  | 리뷰: ${wdto.reviewCnt}</label>
 							</span>
 							<span>
-							<label>호텔이름(h_name)</label>
-							<label>성급(h_garde)</label>
+							<label>호텔명 : ${wdto.h_name} | </label>
+							<label>등급: ${wdto.h_grade}</label>
 							</span>
 							<span>
-							주소(h_address)
+							주소: ${wdto.h_address}
 							</span>
 						</div>
 						<div>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="user_myPage.jsp" %>
 
 <!-- <strong>내 정보 관리</strong>
@@ -8,9 +9,9 @@
 			<caption><b>내정보관리</b></caption>
 			<tr>
 				<td>
-					이메일(u_email) <input type="text" name="email"><br>
-					닉네임(u_nickname) <input type="text" name="nickname"><br>
-					휴대폰 번호(u_tell) <input type="text" name="tel">
+					이메일<input type="text" name="email" value="${udto.u_email}" readonly><br>
+					닉네임 <input type="text" name="nickname" value="${udto.u_nickname}"><br>
+					휴대폰 번호 <input type="text" name="tel" value="${udto.u_tel}">
 					<input type="submit" value="수정">
 					<p>
 				</td>

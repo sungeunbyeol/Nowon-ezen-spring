@@ -13,8 +13,9 @@
 			<tr>
 				<td width="20%">
 					<h3><a href="user_info">내 정보관리</a></h3><br>
-					<h3><a href="user_bookList">예약내역</a></h3><br>
-					<h3><a href="user_pointList">포인트</a></h3><br>
+					<h3><a href="user_bookList?u_num=${sessionScope.loginOkBean.u_num}">예약내역</a></h3><br>
+					<h3><a href="user_reviewList?u_num=${sessionScope.loginOkBean.u_num}">내가쓴리뷰</a></h3><br>
+					<h3><a href="user_pointList?u_num=${sessionScope.loginOkBean.u_num}">포인트</a></h3><br>
 					<h3><a href="user_qna_list">Q&A</a></h3><br>
 				</td>
 				<td>

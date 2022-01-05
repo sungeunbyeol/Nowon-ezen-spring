@@ -82,8 +82,8 @@
 							<a href="user_login">로그인</a>
 						</c:if>	
 					</td>							<!-- 회원로그인페이지로 -->
-					<td width = "5%" class="topFont"><a href="user_wishlist">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
-					<td width = "3%" class="topFont"><a href="user_info">마이페이지</a></td>
+					<td width = "5%" class="topFont"><a href="user_needLogin">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
+					<td width = "3%" class="topFont"><a href="user_needLogin">마이페이지</a></td>
 					<td width = "3%" class="topFont"><a href="admin_user_top">관리자 페이지로</a></td>
 					<td width = "15%"></td>
 				</tr>

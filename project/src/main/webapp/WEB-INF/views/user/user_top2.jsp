@@ -70,7 +70,7 @@
 			<table align = "center" width = "100%" height = "50" bgcolor="red">
 				<tr>
 				<td width = "17%"></td>
-					<td align="left" width="20%" class="topFont">호텔대잔치</td>			<!-- 로고이미지 -->
+					<td align="left" width="20%" class="topFont"><a href="main">호텔대잔치</a></td>			<!-- 로고이미지 -->
 					<td width = "33%"></td>
 					<c:if test="${not empty loginOkBean}">
 					<td width = "3%" class="topFont">${loginOkBean.u_name}님 접속중<br></td></c:if>
@@ -80,7 +80,7 @@
 							<a href="user_logout">로그아웃</a>
 						</c:if>
 					</td> 					<!-- 로그아웃 후 회원메인 페이지로 -->				
-					<td width = "5%" class="topFont"><a href="user_wishlist">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
+					<td width = "5%" class="topFont"><a href="user_wishlist?u_num=${sessionScope.loginOkBean.u_num}">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
 					<td width = "10" class="topFont">관리자 페이지로<br><!-- (user_personal의 level이 3일경우) --></td>	<!-- 일반관리자접속시 -->
 				</tr>
 			</table>

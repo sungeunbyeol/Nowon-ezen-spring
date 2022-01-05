@@ -26,8 +26,6 @@ public class UserJoinController {
 	private LoginCheck loginCheck;
 	@Autowired
 	private LoginOkBean loginOkBean;
-	@Autowired
-	WishListController wishList;
 	
 	//회원가입 화면으로 이동
 	@RequestMapping(value="/user_join" , method=RequestMethod.GET)
@@ -138,7 +136,7 @@ public class UserJoinController {
 		HttpSession session = req.getSession();
 		session.invalidate();
 		req.setAttribute("msg", "로그아웃 되었습니다.");
-		req.setAttribute("url", "/");
+		req.setAttribute("url", "main.do");
 		return new ModelAndView("message");
 	}
 	
