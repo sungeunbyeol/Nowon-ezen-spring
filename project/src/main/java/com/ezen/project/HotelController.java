@@ -1,10 +1,22 @@
 package com.ezen.project;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.ezen.project.model.ReviewDTO;
+import com.ezen.project.service.DisplayHotelMapper;
 
 @Controller
 public class HotelController {
+	
+	@Autowired
+	DisplayHotelMapper displayHotelMapper;
 	
 	@RequestMapping("/hotel_main")
 	public String hotelMain() {
@@ -52,7 +64,21 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/review")
-	public String review() {
+	public String review(HttpServletRequest req, @RequestParam int h_num) {
+		
+//		호텔에 대한 리뷰 리스트
+		List<ReviewDTO> reviewList = displayHotelMapper.reviewList(h_num);
+		
+//		호텔 리뷰 갯수
+		int reviewCount = displayHotelMapper.reviewCount(h_num);
+		
+//		호텔 별점 평균
+		double starAverage = displayHotelMapper.reviewStar(h_num);
+		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+		
+		req.setAttribute("reviewCount", reviewCount);
+		req.setAttribute("reviewList", reviewList);
+		req.setAttribute("starAverage", starAverage);
 		return "board/review";
 	}
 }

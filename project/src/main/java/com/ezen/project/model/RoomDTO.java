@@ -13,6 +13,7 @@ public class RoomDTO {
 	private String room_count;
 	private String room_capacity;
 	private int room_extraprice;
+	private String room_enabled;
 	
 	public int getRoom_num() {
 		return room_num;
@@ -85,6 +86,12 @@ public class RoomDTO {
 	}
 	public void setRoom_extraprice(int room_extraprice) {
 		this.room_extraprice = room_extraprice;
+	}
+	public String getRoom_enabled() {
+		return room_enabled;
+	}
+	public void setRoom_enabled(String room_enabled) {
+		this.room_enabled = room_enabled;
 	}
 	
 	

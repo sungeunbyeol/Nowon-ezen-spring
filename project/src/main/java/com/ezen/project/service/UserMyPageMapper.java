@@ -21,15 +21,28 @@ public class UserMyPageMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BookingDTO> reservationView(int uNum) {
+	public List<BookingDTO> reservationView(int uNum, int start, int end) throws Exception {
+		Map<String, Integer> map = new Hashtable<>();
+		map.put("start", start);
+		map.put("end", end);		
 		return sqlSession.selectList("reservationView", uNum);
 	}
 	
-	public List<UserPointDTO> pointView(int uNum) {
+	public List<UserPointDTO> pointView(int uNum, int start, int end) throws Exception {
+		Map<String, Integer> map = new Hashtable<>();
+		map.put("start", start);
+		map.put("end", end);		
 		return sqlSession.selectList("pointView", uNum);
 	}
 	
-	public  List<WishListDTO> wishListView(int uNum) {
+	public int getCount() throws IllegalArgumentException{
+		return sqlSession.selectOne("getCount");
+	}
+	
+	public  List<WishListDTO> wishListView(int uNum, int start, int end) throws Exception{
+		Map<String, Integer> map = new Hashtable<>();
+		map.put("start", start);
+		map.put("end", end);		
 		return sqlSession.selectList("wishListView", uNum);
 	}
 	
@@ -52,6 +65,13 @@ public class UserMyPageMapper {
 	}
 	
 	public List<ReviewDTO> review(int u_num){
+		return sqlSession.selectList("review", u_num);
+	}
+	
+	public List<ReviewDTO> review2(int u_num, int start, int end) throws Exception{
+		Map<String, Integer> map = new Hashtable<>();
+		map.put("start", start);
+		map.put("end", end);		
 		return sqlSession.selectList("review", u_num);
 	}
 	

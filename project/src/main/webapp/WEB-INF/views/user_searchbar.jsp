@@ -28,7 +28,6 @@
  		});
  	});
  </script>
- <body>
 			<table align = "center" width = "100%" height = "200" bgcolor="pink">
 				<tr>
 					<td>
@@ -42,12 +41,6 @@
 							<br>
 							<tr>
 							<form name="f" action="" method="POST">
-								<td rowspan="3">
-									<select name="location_select">
-										<option>호텔명</option>
-										<option>주소</option>
-									</select>
-								</td>
 								<td rowspan="3">
 									<input type="text" name="location" placeholder="대잔치 검색" size = 40>
 								</td>
@@ -96,4 +89,3 @@
 					</td>
 				</tr>	
 			</table>
-</body>

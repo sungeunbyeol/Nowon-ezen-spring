@@ -1,7 +1,8 @@
 package com.ezen.project.model;
 
 public class UserDTO {
-	private int u_num; //회원 고유번호(기본키)
+	
+	private int u_num;
 	private String u_name;
 	private String u_password;
 	private String u_email;
@@ -49,6 +50,7 @@ public class UserDTO {
 	public void setU_tel(String u_tel) {
 		this.u_tel = u_tel;
 	}
+	
 	public String getA_level() {
 		return a_level;
 	}

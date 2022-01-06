@@ -13,6 +13,10 @@ public class BookingDTO {
 	private int book_totalprice;
 	private int book_savepoint;
 	private String book_status;
+	private String book_name;
+	private String book_tel;
+	private String book_roomtype;
+	private int book_extra;
 	private String h_image1;
 	private String h_name;
 	private String day;
@@ -23,7 +27,24 @@ public class BookingDTO {
 	public void setH_image1(String h_image1) {
 		this.h_image1 = h_image1;
 	}
-	
+	public String getH_name() {
+		return h_name;
+	}
+	public void setH_name(String h_name) {
+		this.h_name = h_name;
+	}
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
+	}
+	public int getBook_extra() {
+		return book_extra;
+	}
+	public void setBook_extra(int book_extra) {
+		this.book_extra = book_extra;
+	}
 	public int getBook_num() {
 		return book_num;
 	}
@@ -96,17 +117,27 @@ public class BookingDTO {
 	public void setBook_status(String book_status) {
 		this.book_status = book_status;
 	}
-	public String getH_name() {
-		return h_name;
+	public String getBook_name() {
+		return book_name;
 	}
-	public void setH_name(String h_name) {
-		this.h_name = h_name;
+	public void setBook_name(String book_name) {
+		this.book_name = book_name;
 	}
-	public String getDay() {
-		return day;
+	public String getBook_tel() {
+		return book_tel;
 	}
-	public void setDay(String day) {
-		this.day = day;
+	public void setBook_tel(String book_tel) {
+		this.book_tel = book_tel;
 	}
+	public String getBook_roomtype() {
+		return book_roomtype;
+	}
+	public void setBook_roomtype(String book_roomtype) {
+		this.book_roomtype = book_roomtype;
+	}
+	
+	
+	
+	
 	
 }

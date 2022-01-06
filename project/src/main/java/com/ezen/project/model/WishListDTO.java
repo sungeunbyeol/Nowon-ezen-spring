@@ -14,30 +14,6 @@ public class WishListDTO {
 	private String reviewCnt;
 	private String reviewStar;
 	
-	public int getW_num() {
-		return w_num;
-	}
-	public void setW_num(int w_num) {
-		this.w_num = w_num;
-	}
-	public int getU_num() {
-		return u_num;
-	}
-	public void setU_num(int u_num) {
-		this.u_num = u_num;
-	}
-	public int getH_num() {
-		return h_num;
-	}
-	public void setH_num(int h_num) {
-		this.h_num = h_num;
-	}
-	public String getW_check() {
-		return w_check;
-	}
-	public void setW_check(String w_check) {
-		this.w_check = w_check;
-	}
 	public int getReview_num() {
 		return review_num;
 	}
@@ -85,6 +61,30 @@ public class WishListDTO {
 	}
 	public void setReviewStar(String reviewStar) {
 		this.reviewStar = reviewStar;
+	}
+	public int getW_num() {
+		return w_num;
+	}
+	public void setW_num(int w_num) {
+		this.w_num = w_num;
+	}
+	public int getU_num() {
+		return u_num;
+	}
+	public void setU_num(int u_num) {
+		this.u_num = u_num;
+	}
+	public int getH_num() {
+		return h_num;
+	}
+	public void setH_num(int h_num) {
+		this.h_num = h_num;
+	}
+	public String getW_check() {
+		return w_check;
+	}
+	public void setW_check(String w_check) {
+		this.w_check = w_check;
 	}
 	
 	

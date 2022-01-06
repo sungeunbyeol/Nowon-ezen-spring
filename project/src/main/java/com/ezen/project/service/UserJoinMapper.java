@@ -1,5 +1,6 @@
 package com.ezen.project.service;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -41,6 +42,21 @@ public class UserJoinMapper {
 	
 	public UserDTO isMemberSetting(String email) {
 		return sqlSession.selectOne("checkLogin",email);
+	}
+	
+	public int UserdeleteUser(String u_num, String u_password) {
+		Map<String, String> map = new Hashtable<String, String>();
+		map.put("u_num", u_num);
+		map.put("u_password", u_password);
+		return sqlSession.update("UserdeleteUser",map);
+	}	
+	
+	public int updateUserPassword(UserDTO dto) {
+		return sqlSession.update("updateUserPassword", dto); 
+	}
+	
+	public UserDTO getUser(String u_email) {
+		return sqlSession.selectOne("getUser", u_email);
 	}
 	
 }

@@ -66,8 +66,44 @@ public class UserMyPageController {
 	}
 	
 	@RequestMapping("/user_bookList")
-	public ModelAndView userBookList(HttpServletRequest req, @RequestParam int u_num) {
-		List<BookingDTO> resultList = userMyPageMapper.reservationView(u_num) ;
+	public ModelAndView userBookList(HttpServletRequest req, @RequestParam (required = false)  String pageNum) throws Exception {
+		HttpSession session = req.getSession();
+		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
+		int u_num = loginokbean.getU_num();
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int pageSize = 5;
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage-1) * pageSize + 1;
+		int endRow = startRow + pageSize - 1;
+		int number = 0;
+		int rowCount = 0;
+		
+		rowCount = userMyPageMapper.getCount();
+		if (endRow>rowCount) endRow = rowCount;
+		number = rowCount - startRow + 1;
+		
+		List<BookingDTO> resultList = userMyPageMapper.reservationView(u_num, startRow, endRow) ;
+
+		req.setAttribute("listBoard", resultList);
+		req.setAttribute("number", number);
+		req.setAttribute("rowCount", rowCount);
+	
+		if (rowCount>0){
+			int pageBlock = 3;
+			int pageCount = rowCount / pageSize;
+			if (rowCount%pageSize != 0){
+				pageCount++;
+			}
+		int startPage = ((currentPage-1)/pageBlock) * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1;
+		if (endPage > pageCount) endPage = pageCount;
+			req.setAttribute("startPage", startPage);
+			req.setAttribute("endPage", endPage);
+			req.setAttribute("pageBlock", pageBlock);
+			req.setAttribute("pageCount", pageCount);
+		}
 		return new ModelAndView("user/user_bookList", "bookList", resultList);
 	}
 	
@@ -108,16 +144,48 @@ public class UserMyPageController {
 	}
 	
 	@RequestMapping("/user_reviewList")
-	public String user_reviewList(HttpServletRequest req) {
+	public String user_reviewList(HttpServletRequest req, @RequestParam (required = false)  String pageNum) throws Exception {
 		HttpSession session = req.getSession();
 		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
-		List<ReviewDTO> resultList = userMyPageMapper.review(u_num);
 		
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int pageSize = 5;
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage-1) * pageSize + 1;
+		int endRow = startRow + pageSize - 1;
+		int number = 0;
+		int rowCount = 0;
+		
+		rowCount = userMyPageMapper.getCount();
+		if (endRow>rowCount) endRow = rowCount;
+		number = rowCount - startRow + 1;
+		
+		List<ReviewDTO> resultList = userMyPageMapper.review2(u_num, startRow, endRow);
+
 		req.setAttribute("reviewList", resultList);
 		req.setAttribute("upPath", upPath);
-		
-		return "user/user_reviewList";
+		req.setAttribute("listBoard", resultList);
+		req.setAttribute("number", number);
+		req.setAttribute("rowCount", rowCount);
+	
+		if (rowCount>0){
+			int pageBlock = 3;
+			int pageCount = rowCount / pageSize;
+			if (rowCount%pageSize != 0){
+				pageCount++;
+			}
+		int startPage = ((currentPage-1)/pageBlock) * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1;
+		if (endPage > pageCount) endPage = pageCount;
+			req.setAttribute("startPage", startPage);
+			req.setAttribute("endPage", endPage);
+			req.setAttribute("pageBlock", pageBlock);
+			req.setAttribute("pageCount", pageCount);
+		}
+		return "user/user_reviewList";		
 	}
 	
 	@RequestMapping("/deleteReview")
@@ -155,8 +223,45 @@ public class UserMyPageController {
 	
 	
 	@RequestMapping("/user_pointList")
-	public ModelAndView userpointList(HttpServletRequest req, @RequestParam int u_num) {
-		List<UserPointDTO> resultList = userMyPageMapper.pointView(u_num);
+	public ModelAndView userpointList(HttpServletRequest req, @RequestParam(required = false) String pageNum) throws Exception{
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int pageSize = 5;
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage-1) * pageSize + 1;
+		int endRow = startRow + pageSize - 1;
+		int number = 0;
+		int rowCount = 0;
+		
+		rowCount = userMyPageMapper.getCount();
+		if (endRow>rowCount) endRow = rowCount;
+		number = rowCount - startRow + 1;
+		
+		HttpSession session = req.getSession();
+		LoginOkBean loginOkBean = (LoginOkBean)session.getAttribute("loginOkBean");
+		int u_num = loginOkBean.getU_num();
+		
+		List<UserPointDTO> resultList = userMyPageMapper.pointView(u_num, startRow, endRow);
+
+		req.setAttribute("listBoard", resultList);
+		req.setAttribute("number", number);
+		req.setAttribute("rowCount", rowCount);
+	
+		if (rowCount>0){
+			int pageBlock = 3;
+			int pageCount = rowCount / pageSize;
+			if (rowCount%pageSize != 0){
+				pageCount++;
+			}
+		int startPage = ((currentPage-1)/pageBlock) * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1;
+		if (endPage > pageCount) endPage = pageCount;
+			req.setAttribute("startPage", startPage);
+			req.setAttribute("endPage", endPage);
+			req.setAttribute("pageBlock", pageBlock);
+			req.setAttribute("pageCount", pageCount);
+		}
 		return new ModelAndView("user/user_pointList", "pointList", resultList);
 	}
 	
@@ -171,13 +276,45 @@ public class UserMyPageController {
 	}
 	
 	@RequestMapping("/user_wishlist")
-	public ModelAndView userWishlist(HttpServletRequest req) {
+	public ModelAndView userWishlist(HttpServletRequest req, @RequestParam (required = false) String pageNum) throws Exception {
 		HttpSession session = req.getSession();
 		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
-		System.out.println(u_num);
-		List<WishListDTO> wdto = userMyPageMapper.wishListView(u_num);
-		return new ModelAndView("user/user_wishlist", "wishList", wdto);
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int pageSize = 5;
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage-1) * pageSize + 1;
+		int endRow = startRow + pageSize - 1;
+		int number = 0;
+		int rowCount = 0;
+		
+		rowCount = userMyPageMapper.getCount();
+		if (endRow>rowCount) endRow = rowCount;
+		number = rowCount - startRow + 1;
+		
+		List<WishListDTO> resultList = userMyPageMapper.wishListView(u_num, startRow, endRow);
+
+		req.setAttribute("listBoard", resultList);
+		req.setAttribute("number", number);
+		req.setAttribute("rowCount", rowCount);
+	
+		if (rowCount>0){
+			int pageBlock = 3;
+			int pageCount = rowCount / pageSize;
+			if (rowCount%pageSize != 0){
+				pageCount++;
+			}
+		int startPage = ((currentPage-1)/pageBlock) * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1;
+		if (endPage > pageCount) endPage = pageCount;
+			req.setAttribute("startPage", startPage);
+			req.setAttribute("endPage", endPage);
+			req.setAttribute("pageBlock", pageBlock);
+			req.setAttribute("pageCount", pageCount);
+		}
+		return new ModelAndView("user/user_wishlist", "wishList", resultList);
 	}
 	
 	@RequestMapping("/user_needLogin")

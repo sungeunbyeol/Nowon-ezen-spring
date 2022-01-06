@@ -25,22 +25,16 @@
 		select * from project_useraccount 
 	</select>
 	
+	<update id="updateUserPassword" parameterType="UserDTO">
+		update project_useraccount set u_password = #{u_password} where u_email=#{u_email} 
+	</update>
 	
-	
-	<!-- <select id="findUser" parameterType="java.util.Map" resultType="UserDTO" >
-		//select * from project_useraccount where ${search} = #{searchString} 
-	</select> -->
-	
-	<!-- <delete id="deleteUser" parameterType="int" >
-		delete from project_useraccount where //no = #{no} 
+	<delete id="UserdeleteUser" parameterType="java.util.Map" > 
+		delete from project_useraccount where u_num = #{u_num} and u_password = #{u_password} 
 	</delete>
 	
-	<select id="getUser" parameterType="int" resultType="UserDTO" >
-		select * from project_useraccount where //no = #{no} 
+	<select id="getUser" resultType="UserDTO">
+		select * from project_useraccount where u_email = #{u_email}
 	</select>
 	
-	<update id="updateUser" parameterType="UserDTO" >
-		update project_useraccount set passwd=#{passwd}, email=#{email}, hp1=#{hp1},hp2=#{hp2}, hp3=#{hp3} where no=#{no} 
-	</update>
-		 -->
 </mapper>

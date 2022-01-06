@@ -112,43 +112,4 @@
 	
 </script>
 
-<!-- <script type="text/javascript">
-function checkLogin() {
-	if(f_join.u_email.value=="") {
-		alert("이메일을 입력해주세요.")
-		f_join.u_email.focus()
-		return
-	}
-	if(f_join.u_password.value=="") {
-		alert("비밀번호를 입력해주세요.")
-		f_join.u_password.focus()
-		return
-	}
-	if(f_join.u_password2.value=="") {
-		alert("비밀번호 확인을 입력해주세요")
-		f_join.u_password2.focus()
-		return
-	}
-	if(f_join.u_name.value=="") {
-		alert("이름을 입력해주세요.")
-		f_join.u_name.focus()
-		return
-	}
-	if(f_join.u_nickname.value=="") {
-		alert("닉네임을 입력해주세요.")
-		f_join.u_nickname.focus()
-		return
-	}
-	if(f_join.u_birth.value=="") {
-		alert("생년월일을 입력해주세요.")
-		f_join.u_birth.focus()
-		return
-	}
-	
-	document.f_join.submit()
-}
-</script> -->
-
-
-
 <%@ include file="../bottom.jsp" %>

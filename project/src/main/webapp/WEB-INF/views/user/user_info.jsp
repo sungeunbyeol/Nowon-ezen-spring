@@ -19,9 +19,9 @@
 			
 			<tr>
 				<td>
-					<a href="#">비밀번호 변경</a><!-- 비밀번호 재설정 페이지로 이동 -->
-					<a href="#">로그아웃</a><!-- 세션만료시키고 회원메인 페이지로 -->
-					<a href="#">회원탈퇴</a><!-- true값 반환되면 user_personal에서 삭제 -->
+					<a href="user_password_edit">비밀번호 변경</a><!-- 비밀번호 재설정 페이지로 이동 -->
+					<a href="user_logout">로그아웃</a><!-- 세션만료시키고 회원메인 페이지로 -->
+					<a href="user_delete">회원탈퇴</a><!-- true값 반환되면 user_personal에서 삭제 -->
 					<!-- script-- >
 						var result = confirm("정말로 탈퇴하시겠어요?");
 						if(result)

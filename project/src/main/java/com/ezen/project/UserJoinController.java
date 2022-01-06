@@ -53,38 +53,13 @@ public class UserJoinController {
 		return "user/user_login";
 	}
 	
-	
-
-	
-	
 	@RequestMapping("/searchLogin.do")
 	public String SearchLogin(HttpServletRequest req, @RequestParam String mode) {
 		String title = mode.equals("id")? "아이디" : "비밀번호";
 		req.setAttribute("title", title);
 		return "login/search";
 	}
-	
-	
-	
 
-	//이메일 비번 찾기
-//	@RequestMapping("/user_search")
-//	public ModelAndView SearchCheck(HttpServletRequest req, @RequestParam Map<String, String> params) {
-//		String msg = userjoinMapper.searchMember(params.get("name"), params.get("ssn1"), params.get("ssn2"), params.get("id"));
-//		req.setAttribute("msg", msg);
-//		if (msg != null) {
-//			return new ModelAndView("forward:closeWindow.jsp");
-//		}
-//		if (params.get("u_email") == null) {
-//			req.setAttribute("msg", "이메일을 찾을 수 없습니다. 다시 확인해 주세요!!");
-//			req.setAttribute("url", "searchLogin.do?mode=id");
-//		}else {
-//			req.setAttribute("msg", "해당하는 정보가 일치하지 않습니다. 다시 확인해 주세요!!");
-//			req.setAttribute("url", "searchLogin.do?mode=pw");
-//		}
-//		return new ModelAndView("message");
-//	}
-	
 	//로그인 시도했을 때
 	@RequestMapping("/user_login_ok")
 	public String userLoginOk(HttpServletRequest req, HttpServletResponse resp, @RequestParam(required = false) String saveEmail) {
@@ -140,21 +115,52 @@ public class UserJoinController {
 		return new ModelAndView("message");
 	}
 	
-	
-	
-
-	
-	//이메일 찾기 결과
-	@RequestMapping("/user_search_email_ok")
-	public String userSearchEmailOk() {
-		return "user/user_search_email_ok";
+	@RequestMapping("/user_delete")
+	public String deletePage() {
+		return "/user/user_delete";
 	}
 	
-	@RequestMapping("/user_update_password")
-	public String userUpdatePassword() {
-		return "user/user_update_password";
+	@RequestMapping("/user_delete_user") 
+	public String deleteOkPage(@RequestParam Map<String, String> params, HttpServletRequest req) {
+		String u_num = req.getParameter("u_num");
+		String u_password = req.getParameter("u_password");	
+		int res = userjoinMapper.UserdeleteUser(u_num, u_password);
+   
+		if(res>0){
+			req.setAttribute("msg", "회원 탈퇴되었습니다.");
+			req.setAttribute("url", "main");
+			HttpSession sessio = req.getSession();
+			sessio.invalidate();
+		}else { 
+			req.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			req.setAttribute("url", "user_delete");
+		}
+		
+		return "message"; 
 	}
 	
+	@RequestMapping("/user_password_edit")
+	public String updateUserPassword() {
+		return "/user/user_password_edit";
+	}
 
+	@RequestMapping("/user_update_password_ok")
+	public String updatepassword(HttpServletRequest req, 
+			@RequestParam String u_email ) {
+		
+		UserDTO dto = userjoinMapper.getUser(u_email);
+		dto.setU_password(req.getParameter("u_password")); 
+		int res = userjoinMapper.updateUserPassword(dto);
+		HttpSession session = req.getSession();
+		session.invalidate();
+		if (res>0) { 
+			req.setAttribute("msg", "비밀번호 변경 성공!! 다시 로그인해주세요");
+			req.setAttribute("url", "/project");
+		}else {
+			req.setAttribute("msg", "비밀번호 변경 실패!!");
+			req.setAttribute("url", "/project");
+		} 
+		return "message";
+	}
 	
 }

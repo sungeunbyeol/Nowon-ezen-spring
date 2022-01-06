@@ -27,6 +27,15 @@ public class HotelDTO {
 	private String h_manager;
 	private String h_joindate;
 	
+	private int wishList = 0;
+	
+	public int getWishList() {
+		return wishList;
+	}
+	public void setWishList(int wishList) {
+		this.wishList = wishList;
+	}
+	
 	public int getH_num() {
 		return h_num;
 	}

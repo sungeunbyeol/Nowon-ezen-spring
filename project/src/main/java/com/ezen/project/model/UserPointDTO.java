@@ -6,27 +6,27 @@ public class UserPointDTO {
 	private int u_num;
 	private String p_status;
 	private String p_contents;
-	private String book_savepoint;
-	private String u_point;
-	private String book_joindate;
-	
-	public String getBook_savepoint() {
-		return book_savepoint;
+	private int p_point;
+	private int p_remaining;
+	private String p_joindate;
+
+	public int getP_point() {
+		return p_point;
 	}
-	public void setBook_savepoint(String book_savepoint) {
-		this.book_savepoint = book_savepoint;
+	public void setP_point(int p_point) {
+		this.p_point = p_point;
 	}
-	public String getU_point() {
-		return u_point;
+	public int getP_remaining() {
+		return p_remaining;
 	}
-	public void setU_point(String u_point) {
-		this.u_point = u_point;
+	public void setP_remaining(int p_remaining) {
+		this.p_remaining = p_remaining;
 	}
-	public String getBook_joindate() {
-		return book_joindate;
+	public String getP_joindate() {
+		return p_joindate;
 	}
-	public void setBook_joindate(String book_joindate) {
-		this.book_joindate = book_joindate;
+	public void setP_joindate(String p_joindate) {
+		this.p_joindate = p_joindate;
 	}
 	public int getP_num() {
 		return p_num;

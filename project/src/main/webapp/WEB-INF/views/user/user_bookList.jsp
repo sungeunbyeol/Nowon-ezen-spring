@@ -48,4 +48,15 @@ $.ajax({
 		<c:if test="${empty bookList}">
 		<h3 align="center" style="color:red">예약하신 호텔이 없습니다.</h3>
 		</c:if>	
+		<c:if test="${rowCount>0}">
+		<c:if test="${startPage>pageBlock}">
+			<a href="user_bookList?pageNum=${startPage-pageBlock}">[이전]</a>
+		</c:if>
+		<c:forEach var="i" begin="${startPage}" end="${endPage}">			
+			<a href="user_bookList?pageNum=${i}">[${i}]</a>			
+		</c:forEach>			
+		<c:if test="${endPage < pageCount}">
+			<a href="user_bookList?pageNum=${startPage+pageBlock}">[다음]</a>			
+		</c:if>	
+		</c:if>
 <%@ include file="../bottom.jsp" %>
