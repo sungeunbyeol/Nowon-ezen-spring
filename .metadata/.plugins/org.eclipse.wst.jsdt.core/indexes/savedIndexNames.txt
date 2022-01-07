@@ -1,5 +1,4 @@
 INDEX VERSION 1.4+C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-2874249707.index
 1497724060.index
 3271193799.index
 2881825403.index

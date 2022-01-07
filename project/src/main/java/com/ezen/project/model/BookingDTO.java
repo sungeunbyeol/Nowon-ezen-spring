@@ -13,13 +13,10 @@ public class BookingDTO {
 	private int book_totalprice;
 	private int book_savepoint;
 	private String book_status;
-	private String book_name;
-	private String book_tel;
-	private String book_roomtype;
 	private int book_extra;
-	private String h_image1;
-	private String h_name;
-	private String day;
+	private String h_image1;	//호텔이미지 필요해서 bookDTO로 넣어주고 jsp에서 사용할때 여기서 바로 호텔이미지 꺼내오도록 사용
+	private String h_name;		//
+	private String day;				//몇박 하는지 계산할 때 사용
 	
 	public String getH_image1() {
 		return h_image1;
@@ -117,25 +114,6 @@ public class BookingDTO {
 	public void setBook_status(String book_status) {
 		this.book_status = book_status;
 	}
-	public String getBook_name() {
-		return book_name;
-	}
-	public void setBook_name(String book_name) {
-		this.book_name = book_name;
-	}
-	public String getBook_tel() {
-		return book_tel;
-	}
-	public void setBook_tel(String book_tel) {
-		this.book_tel = book_tel;
-	}
-	public String getBook_roomtype() {
-		return book_roomtype;
-	}
-	public void setBook_roomtype(String book_roomtype) {
-		this.book_roomtype = book_roomtype;
-	}
-	
 	
 	
 	

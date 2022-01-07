@@ -6,13 +6,22 @@
 <mapper namespace="com.ezen.project.service.UserMyPageMapper">
 
 	<select id="reservationView" resultType="BookingDTO" parameterType="java.lang.Integer">
-		SELECT h_image1, book_indate, book_outdate, book_num, h_name, room_num, book_joindate
-		          , CONCAT(TO_DATE(book_outdate, 'YYYY-MM-DD') - TO_DATE(book_indate, 'YYYY-MM-DD'), '박') AS day
-		   FROM project_booking book, project_hotel hotel
-	   	 WHERE u_num = #{u_num}
-		     AND book.h_num = hotel.h_num
+		SELECT hotel.h_image1, hotel.h_num, book.book_indate, book.book_outdate, 
+			book.book_num, hotel.h_name, book.room_num, book.book_joindate
+		, CONCAT(TO_DATE(book.book_outdate, 'YYYY-MM-DD') - TO_DATE(book.book_indate, 'YYYY-MM-DD'), '박') AS day
+		FROM project_booking book, project_hotel hotel,
+			(select rownum rn, A.* 
+			from(select * from project_booking WHERE u_num = #{u_num} order by book_num) A)
+		   	 WHERE rn between #{start} and #{end}
+			 AND book.h_num = hotel.h_num
 	</select>
 
+SELECT book.book_num, hotel.h_num 
+FROM project_booking book, project_hotel hotel,
+			(select rownum rn, A.* 
+			from(select * from project_booking WHERE u_num = 9001 order by book_num) A)
+		   	 WHERE rn between 6 and 10
+			 AND book.h_num = hotel.h_num
 	<select id="pointView" resultType="UserPointDTO" parameterType="java.lang.Integer">
 		SELECT userPoint.p_status
 			     , userPoint.p_point

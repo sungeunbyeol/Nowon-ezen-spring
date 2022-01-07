@@ -48,11 +48,13 @@ public class UserMyPageController {
 	@Resource(name = "uploadPath")
 	   private String upPath;
 
+	//마이페이지로 이동
 	@RequestMapping("/user_myPage")
 	public String userMyPage() {
 		return "user/user_myPage";
 	}
 	
+	// 내정보 페이지로
 	@RequestMapping("/user_info")
 	public String userInfo(HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -65,11 +67,13 @@ public class UserMyPageController {
 		return "user/user_info";
 	}
 	
+	//예약현황 페이지로
 	@RequestMapping("/user_bookList")
 	public ModelAndView userBookList(HttpServletRequest req, @RequestParam (required = false)  String pageNum) throws Exception {
 		HttpSession session = req.getSession();
 		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
+		
 		if (pageNum == null) {
 			pageNum = "1";
 		}
@@ -86,8 +90,6 @@ public class UserMyPageController {
 		
 		List<BookingDTO> resultList = userMyPageMapper.reservationView(u_num, startRow, endRow) ;
 
-		req.setAttribute("listBoard", resultList);
-		req.setAttribute("number", number);
 		req.setAttribute("rowCount", rowCount);
 	
 		if (rowCount>0){
@@ -107,11 +109,13 @@ public class UserMyPageController {
 		return new ModelAndView("user/user_bookList", "bookList", resultList);
 	}
 	
+	//리뷰쓰는 화면으로
 	@RequestMapping("/user_reviewform")
 	public String userReviewform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
 		HttpSession session = req.getSession();
 		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
+		
 		String review_nickname = loginokbean.getU_nickname();
 		String room_type = userMyPageMapper.getRoomType(room_num);
 		
@@ -123,6 +127,7 @@ public class UserMyPageController {
 		return "user/user_reviewform";
 	}
 	
+	//리뷰 실행될 때
 	@RequestMapping("/user_reviewOk")
 	public String user_reviewOk(HttpServletRequest req) throws IllegalStateException, Exception {
 		 MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
@@ -143,6 +148,7 @@ public class UserMyPageController {
 		return "user/user_reviewList";
 	}
 	
+	//내가쓴 리뷰 페이지로 이동
 	@RequestMapping("/user_reviewList")
 	public String user_reviewList(HttpServletRequest req, @RequestParam (required = false)  String pageNum) throws Exception {
 		HttpSession session = req.getSession();
@@ -167,8 +173,6 @@ public class UserMyPageController {
 
 		req.setAttribute("reviewList", resultList);
 		req.setAttribute("upPath", upPath);
-		req.setAttribute("listBoard", resultList);
-		req.setAttribute("number", number);
 		req.setAttribute("rowCount", rowCount);
 	
 		if (rowCount>0){
@@ -188,14 +192,9 @@ public class UserMyPageController {
 		return "user/user_reviewList";		
 	}
 	
+	//리뷰 삭제 버튼 눌렀을 때
 	@RequestMapping("/deleteReview")
 	   public String reviewdelete(HttpServletRequest req, @RequestParam int review_num) {
-		/*
-		 * String picture = null; try { picture =
-		 * java.net.URLDecoder.decode(req.getParameter("picture"),"UTF-8"); } catch
-		 * (UnsupportedEncodingException e) { e.printStackTrace(); }
-		 */
-	      
 	      String msg = null;
 	      String picture = userMyPageMapper.getPicture(review_num);
 	      String upPath2 = upPath+"\\review";
@@ -221,13 +220,13 @@ public class UserMyPageController {
 	      return "message";
 	   }
 	
-	
+	//포인트페이지로 이동할 때
 	@RequestMapping("/user_pointList")
 	public ModelAndView userpointList(HttpServletRequest req, @RequestParam(required = false) String pageNum) throws Exception{
 		if (pageNum == null) {
 			pageNum = "1";
 		}
-		int pageSize = 5;
+		int pageSize = 15;
 		int currentPage = Integer.parseInt(pageNum);
 		int startRow = (currentPage-1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
@@ -244,8 +243,6 @@ public class UserMyPageController {
 		
 		List<UserPointDTO> resultList = userMyPageMapper.pointView(u_num, startRow, endRow);
 
-		req.setAttribute("listBoard", resultList);
-		req.setAttribute("number", number);
 		req.setAttribute("rowCount", rowCount);
 	
 		if (rowCount>0){
@@ -265,16 +262,19 @@ public class UserMyPageController {
 		return new ModelAndView("user/user_pointList", "pointList", resultList);
 	}
 	
+	//QnA 리스트로 이동
 	@RequestMapping("/user_qna_list")
 	public String userQnaList() {
 		return "board/user_qna_list";
 	}
 	
+	//QnA 작성하기로 이동
 	@RequestMapping("/user_qna_writeform")
 	public String userQnaWriteform() {
 		return "board/user_qna_writeform";
 	}
 	
+	//위시리스트로 이동
 	@RequestMapping("/user_wishlist")
 	public ModelAndView userWishlist(HttpServletRequest req, @RequestParam (required = false) String pageNum) throws Exception {
 		HttpSession session = req.getSession();
@@ -296,8 +296,6 @@ public class UserMyPageController {
 		
 		List<WishListDTO> resultList = userMyPageMapper.wishListView(u_num, startRow, endRow);
 
-		req.setAttribute("listBoard", resultList);
-		req.setAttribute("number", number);
 		req.setAttribute("rowCount", rowCount);
 	
 		if (rowCount>0){
@@ -317,39 +315,11 @@ public class UserMyPageController {
 		return new ModelAndView("user/user_wishlist", "wishList", resultList);
 	}
 	
+	//로그인 하지 않고 마이페이지나 위시리스트로 넘어갔을 때 실행시키기
 	@RequestMapping("/user_needLogin")
 	   public ModelAndView LoginNeed(HttpServletRequest req) {
 	      req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
 	      req.setAttribute("url", "user_login");
 	      return new ModelAndView("message");
 	   }
-	
-	@RequestMapping("/user_bookWriteform")
-	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, String type, int u_num) {
-		HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
-		RoomDTO Room = displayHotelMapper.typeRoom(h_num, type);
-		UserDTO udto = displayHotelMapper.userInfo(u_num);
-		req.setAttribute("hdto", hdto);
-		req.setAttribute("Room", Room);
-		req.setAttribute("udto", udto);
-		return "user/user_bookWriteform";
-	}
-	
-	@RequestMapping("/user_bookDetail")
-	public String userBookDetail(HttpServletRequest req, @RequestParam int h_num, int u_num) {
-		HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
-		BookingDTO bdto = displayHotelMapper.bookInfo(u_num, h_num, 0);
-		req.setAttribute("hdto", hdto);
-		req.setAttribute("bdto", bdto);
-		return "user/user_bookDetail";
-	}
-	
-	@RequestMapping("/user_bookCancel")
-	public String userBookCancel(HttpServletRequest req, @RequestParam int room_price, int book_num) {
-		BookingDTO bdto = displayHotelMapper.bookInfo(0,0,book_num);
-//		session값으로 유저dto 가져와서 req로 내려보내줘야함
-		req.setAttribute("bdto", bdto);
-		req.setAttribute("room_price", room_price);
-		return "user/user_bookCancel";
-	}
 }

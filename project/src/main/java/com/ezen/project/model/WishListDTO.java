@@ -6,13 +6,13 @@ public class WishListDTO {
 	private int h_num;
 	private String w_check;
 	private int review_num;
-	private String h_image1;
-	private String h_name;
-	private String h_grade;
-	private String h_address;
-	private String reviewAvg;
-	private String reviewCnt;
-	private String reviewStar;
+	private String h_image1;	//호텔이미지 필요해서 wishlistDTO로 넣어주고 jsp에서 사용할때 여기서 바로 호텔이미지 꺼내오도록 사용
+	private String h_name;		//
+	private String h_grade;		//
+	private String h_address;	//
+	private String reviewAvg;	//xml에서 바로 리뷰 평점 구해주려고 만듦
+	private String reviewCnt;	//xml에서 바로 리뷰 개수 구해주려고 만듦
+	private String reviewStar;	//xml에서 바로 리뷰 별 구해주려고 만듦
 	
 	public int getReview_num() {
 		return review_num;

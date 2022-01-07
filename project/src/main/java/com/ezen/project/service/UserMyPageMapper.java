@@ -25,7 +25,7 @@ public class UserMyPageMapper {
 		Map<String, Integer> map = new Hashtable<>();
 		map.put("start", start);
 		map.put("end", end);		
-		return sqlSession.selectList("reservationView", uNum);
+		return sqlSession.selectList("reservationView", map);
 	}
 	
 	public List<UserPointDTO> pointView(int uNum, int start, int end) throws Exception {
