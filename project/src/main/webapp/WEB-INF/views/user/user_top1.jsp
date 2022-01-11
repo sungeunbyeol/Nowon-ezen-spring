@@ -68,24 +68,22 @@
 	<body>
 		<div align = "center">
 			
-			<table align = "center" width = "100%" height = "50" bgcolor="red">
+			<table align = "center" width = "100%" height = "50" bgcolor="red" border="1">
 				<c:if test="${empty loginOkBean}">
 				<tr>
 					<!-- 로그인 전 -->
-					<td width = "17%"></td>
-					<td align="left" width="20%" class="topFont"><a href="main">호텔대잔치</a></td>			<!-- 로고이미지 -->
-					<td width = "33%"></td>
-					<td width = "3%" class="topFont"><a href="company_main">숙소등록</a></td>						<!-- 기업회원 메인으로 -->
-					<td width = "3%" class="topFont"><a href="user_join">회원가입</a></td><!-- 일반회원 가입페이지로 -->
-					<td width = "3%" class="topFont">
+					<td width = "15%"></td>
+					<td align="left" width="6%" class="topFont"><a href="main">호텔대잔치</a></td>			<!-- 로고이미지 -->
+					<td width = "35%"></td>
+					<td width = "6%" class="topFont" align="left"><a href="company_main">숙소등록</a></td>						<!-- 기업회원 메인으로 -->
+					<td width = "6%" class="topFont" align="left"><a href="user_join">회원가입</a></td><!-- 일반회원 가입페이지로 -->
+					<td width = "6%" class="topFont" align="left">
 						<c:if test = "${empty loginOkBean}">
 							<a href="user_login">로그인</a>
 						</c:if>	
 					</td>							<!-- 회원로그인페이지로 -->
-					<td width = "5%" class="topFont"><a href="user_needLogin">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
-					<td width = "3%" class="topFont"><a href="user_needLogin">마이페이지</a></td>
-					<td width = "3%" class="topFont"><a href="admin_user_top">관리자 페이지로</a></td>
-					<td width = "15%"></td>
+					
+					<td width = "7%"></td>
 				</tr>
 				</c:if>
 			</table>

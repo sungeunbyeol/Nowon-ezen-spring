@@ -21,33 +21,56 @@ public class UserMyPageMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BookingDTO> reservationView(int uNum, int start, int end) throws Exception {
-		Map<String, Integer> map = new Hashtable<>();
-		map.put("start", start);
-		map.put("end", end);		
-		return sqlSession.selectList("reservationView", map);
+	public List<BookingDTO> reservationView(int uNum) {
+		return sqlSession.selectList("reservationView", uNum);
 	}
 	
-	public List<UserPointDTO> pointView(int uNum, int start, int end) throws Exception {
-		Map<String, Integer> map = new Hashtable<>();
-		map.put("start", start);
-		map.put("end", end);		
+	public List<UserPointDTO> pointView(int uNum) {
 		return sqlSession.selectList("pointView", uNum);
 	}
 	
-	public int getCount() throws IllegalArgumentException{
-		return sqlSession.selectOne("getCount");
+	public  List<WishListDTO> wishListView(int uNum) {
+		return sqlSession.selectList("wishListView", uNum);
 	}
 	
-	public  List<WishListDTO> wishListView(int uNum, int start, int end) throws Exception{
-		Map<String, Integer> map = new Hashtable<>();
+	public int getBookingCount(){
+		return sqlSession.selectOne("getBookingCount");
+	}
+	
+	public List<BookingDTO> listBoard(int start, int end, int u_num){
+		Map<String, Integer> map = new Hashtable<String, Integer>();
 		map.put("start", start);
-		map.put("end", end);		
-		return sqlSession.selectList("wishListView", uNum);
+		map.put("end", end);
+		map.put("u_num", u_num);
+		return sqlSession.selectList("bookingList", map);
 	}
 	
 	public String getRoomType(int room_num) {
 		return sqlSession.selectOne("roomType", room_num);
+	}
+	
+	public int getReviewCount(){
+		return sqlSession.selectOne("getReviewCount");
+	}
+	
+	public int getPointCount(){
+		return sqlSession.selectOne("getPointCount");
+	}
+	
+	public List<ReviewDTO> getReviewList(int start, int end, int u_num){
+		Map<String, Integer> map = new Hashtable<String, Integer>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("u_num", u_num);
+		return sqlSession.selectList("getReviewList", map);
+	}
+	
+	public List<ReviewDTO> getPointList(int start, int end, int u_num){
+		Map<String, Integer> map = new Hashtable<String, Integer>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("u_num", u_num);
+		return sqlSession.selectList("getPointList", map);
 	}
 	
 	public int insertReview(MultipartHttpServletRequest mr, String picture) throws Exception{
@@ -68,13 +91,6 @@ public class UserMyPageMapper {
 		return sqlSession.selectList("review", u_num);
 	}
 	
-	public List<ReviewDTO> review2(int u_num, int start, int end) throws Exception{
-		Map<String, Integer> map = new Hashtable<>();
-		map.put("start", start);
-		map.put("end", end);		
-		return sqlSession.selectList("review", u_num);
-	}
-	
 	public UserDTO userList(int u_num){
 		return sqlSession.selectOne("userList", u_num);
 	}
@@ -86,5 +102,10 @@ public class UserMyPageMapper {
 	public String getPicture(int review_num) {
 		return sqlSession.selectOne("getPicture",review_num);
 	}
+	
+	public int changeNickName(Map<String, String> params) {
+		return sqlSession.update("changeNickName",params);
+	}
+	
 	
 }

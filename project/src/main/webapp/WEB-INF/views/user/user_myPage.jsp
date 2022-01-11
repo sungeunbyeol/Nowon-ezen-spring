@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="style.css"> 
 <%@ include file="../user_top.jsp"%>
 	<div align="center">
-		<table border="1" width="800" height="650">
+		<table border="1" width="1000" height="850">
 			<tr height="10%">
 				<td align="center" colspan="2">
 				<h1>마이페이지</h1>

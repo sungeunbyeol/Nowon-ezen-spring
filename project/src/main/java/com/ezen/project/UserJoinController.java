@@ -52,6 +52,13 @@ public class UserJoinController {
 	public String userLogin() {
 		return "user/user_login";
 	}
+	
+	@RequestMapping("/searchLogin.do")
+	public String SearchLogin(HttpServletRequest req, @RequestParam String mode) {
+		String title = mode.equals("id")? "아이디" : "비밀번호";
+		req.setAttribute("title", title);
+		return "login/search";
+	}
 
 	//로그인 시도했을 때
 	@RequestMapping("/user_login_ok")
@@ -98,7 +105,7 @@ public class UserJoinController {
 		return "message";
 	}
 
-	//로그아웃 할때 
+	
 	@RequestMapping("/user_logout")
 	public ModelAndView Logout(HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -108,13 +115,11 @@ public class UserJoinController {
 		return new ModelAndView("message");
 	}
 	
-	// 회원탈퇴 페이지로
 	@RequestMapping("/user_delete")
 	public String deletePage() {
 		return "/user/user_delete";
 	}
 	
-	//회원탈퇴 시도했을 때
 	@RequestMapping("/user_delete_user") 
 	public String deleteOkPage(@RequestParam Map<String, String> params, HttpServletRequest req) {
 		String u_num = req.getParameter("u_num");
@@ -134,13 +139,11 @@ public class UserJoinController {
 		return "message"; 
 	}
 	
-	//비밀번호 변경 페이지로
 	@RequestMapping("/user_password_edit")
 	public String updateUserPassword() {
 		return "/user/user_password_edit";
 	}
 
-	// 비빌번호 변경 시도했을 때
 	@RequestMapping("/user_update_password_ok")
 	public String updatepassword(HttpServletRequest req, 
 			@RequestParam String u_email ) {

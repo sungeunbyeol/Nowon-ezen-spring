@@ -43,15 +43,7 @@ function checkLogin() {
 </tr>
 <tr>
 	<td>
-	<nobr>
-	<c:if test="${empty cookie.saveEmail.value}">
-		<input type="checkbox" name="saveEmail">
-	</c:if>
-	<c:if test="${not empty cookie.saveEmail.value}">
-		<input type="checkbox" name="saveEmail" checked>
-	</c:if>	
-		<font face="굴림" size="2">이메일 기억하기</font>
-	</nobr>
+		<input type="checkbox" name="saveEmail">이메일 기억
 	</td>
 	<td align="right">
 		<a href="user_search?mode=email">이메일 찾기</a> | 

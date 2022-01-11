@@ -5,19 +5,38 @@
 
 <!-- <strong>내 정보 관리</strong>
 	<div align="center"> -->
+<script type="text/javascript">
+	function edit(){
+		alert("추후 업데이트 예정입니다!");
+	}
+</script>
 		<table align="center" valign="top" border="0">
 			<caption><b>내정보관리</b></caption>
 			<tr>
 				<td>
-					이메일<input type="text" name="email" value="${udto.u_email}" readonly><br>
-					닉네임 <input type="text" name="nickname" value="${udto.u_nickname}"><br>
-					휴대폰 번호 <input type="text" name="tel" value="${udto.u_tel}">
-					<input type="submit" value="수정">
-					<p>
+					<form name="info" method="post" action="user_infoChange">
+						이메일<input type="text" name="email" value="${loginOkBean.u_email}" readonly><br>
+						닉네임 <input type="text" name="nickname" value="${loginOkBean.u_nickname}">
+						<input type="submit" value="수정">
+					</form>
+						휴대폰 번호 <input type="text" name="tel" value="${loginOkBean.u_tel}">
+						<button onclick="javascript:edit()">수정</button>
 				</td>
 			</tr>
-			
 			<tr>
+				<td>
+					<br>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<br>
+				</td>
+			</tr><tr>
+				<td>
+					<br>
+				</td>
+			</tr>
 				<td>
 					<a href="user_password_edit">비밀번호 변경</a><!-- 비밀번호 재설정 페이지로 이동 -->
 					<a href="user_logout">로그아웃</a><!-- 세션만료시키고 회원메인 페이지로 -->

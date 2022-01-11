@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*"%>
+    pageEncoding="UTF-8"%>
 <div align="center">
 <%@ include file="../user_top.jsp"%>
 <form name="f_userJoin" method="POST" action="user_join" onsubmit="return send(this)">

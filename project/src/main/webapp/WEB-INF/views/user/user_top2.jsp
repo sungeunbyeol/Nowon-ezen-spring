@@ -67,21 +67,22 @@
 <body>
 	<div align = "center">
 			<!-- 로그인 한 후 -->
-			<table align = "center" width = "100%" height = "50" bgcolor="red">
+			<table align = "center" width = "100%" height = "50" bgcolor="red" border="1">
 				<tr>
-				<td width = "17%"></td>
-					<td align="left" width="20%" class="topFont"><a href="main">호텔대잔치</a></td>			<!-- 로고이미지 -->
-					<td width = "33%"></td>
+				<td width = "14%"></td>
+					<td align="left" width="6%" class="topFont"><a href="main">호텔대잔치</a></td>			<!-- 로고이미지 -->
+					<td width = "15%"></td>
 					<c:if test="${not empty loginOkBean}">
-					<td width = "3%" class="topFont">${loginOkBean.u_name}님 접속중<br></td></c:if>
-					<td width = "3%" class="topFont"><a href="user_info">마이페이지</td>						<!-- front쪽에서 리스트 적용하여(내 정보관리, 예약내역, 포인트, Q&A) -->
-					<td width = "3%" class="topFont">
+					<td width = "8%" class="topFont">${loginOkBean.u_nickname}님 접속중<br></td></c:if>
+					<td width = "6%" class="topFont"><a href="user_info">마이페이지</a></td>						<!-- front쪽에서 리스트 적용하여(내 정보관리, 예약내역, 포인트, Q&A) -->
+					<td width = "6%" class="topFont">
 						<c:if test = "${not empty loginOkBean}">
 							<a href="user_logout">로그아웃</a>
 						</c:if>
 					</td> 					<!-- 로그아웃 후 회원메인 페이지로 -->				
-					<td width = "5%" class="topFont"><a href="user_wishlist?u_num=${sessionScope.loginOkBean.u_num}">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
-					<td width = "10" class="topFont">관리자 페이지로<br><!-- (user_personal의 level이 3일경우) --></td>	<!-- 일반관리자접속시 -->
+					<td width = "8%" class="topFont"><a href="user_wishlist">위시리스트</a></td>						<!-- 위시리스트 페이지로 -->
+					<td width = "8%" class="topFont">관리자 페이지로<br><!-- (user_personal의 level이 3일경우) --></td>	<!-- 일반관리자접속시 -->
+					<td width="8%"></td>
 				</tr>
 			</table>
 	</div>	

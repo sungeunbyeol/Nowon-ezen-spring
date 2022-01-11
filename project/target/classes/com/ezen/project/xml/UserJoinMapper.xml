@@ -18,7 +18,7 @@
 	</select>
 	
 	<select id="checkLogin" resultType="UserDTO" parameterType="String">
-			select * from project_useraccount where u_email = #{u_email}
+		select * from project_useraccount where u_email = #{u_email}
 	</select>
 	
 	<select id="listUser" resultType="UserDTO">
