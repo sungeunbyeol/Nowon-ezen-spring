@@ -49,6 +49,8 @@ C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\259
 \project_1\src\main\java
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2661624684.index
 \springhome1\src
+C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\415121985.index
+\Normal\src\main\java
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2699850508.index
 \kakao\src\main\java
 C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\275104603.index
