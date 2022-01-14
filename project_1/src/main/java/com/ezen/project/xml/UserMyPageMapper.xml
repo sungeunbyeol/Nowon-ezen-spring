@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.ezen.project.service.UserMyPageMapper">
+
+	<select id="pointView" resultType="UserPointDTO" parameterType="java.lang.Integer">
+		select * from project_userpoint order by p_num desc
+	</select>
+	
+	<select resultType="int" id="getBookingCount">
+		select count(*) from project_booking
+	</select>
+	
+	<select resultType="int" id="getReviewCount">
+		select count(*) from project_review
+	</select>
+	
+	<select resultType="int" id="getPointCount">
+		select count(*) from project_userpoint
+	</select>
+
+	 <select id="bookingList" parameterType = "java.util.Map" resultType="BookingDTO">
+      select * from (select rownum rn, A.* from
+      (SELECT h_image1, hotel.h_num, book_indate,book_status, book_outdate, book_num, h_name, room_num, book_joindate
+        , CONCAT(TO_DATE(book_outdate, 'YYYY-MM-DD') - TO_DATE(book_indate, 'YYYY-MM-DD'), '박') AS day
+         FROM project_booking book, project_hotel hotel where u_num=#{u_num} AND book.h_num = hotel.h_num order by book_num desc)A)
+      where rn between #{start} and #{end}
+   </select>
+
+	<select id="getReviewList" parameterType = "java.util.Map" resultType="ReviewDTO">
+		select * from (select rownum rn, A.* from
+		(select * from project_review where u_num=#{u_num} order by review_joindate)A)
+		where rn between #{start} and #{end}
+	</select>
+	
+	<select id="getPointList" parameterType = "java.util.Map" resultType="UserPointDTO">
+		select * from (select rownum rn, A.* from
+		(select * from project_userpoint where u_num=#{u_num} order by p_num desc)A)
+		where rn between #{start} and #{end}
+	</select>
+
+	<select id="wishListView" resultType="WishListDTO" parameterType="java.lang.Integer">
+		SELECT AA.h_image1
+			     , AA.h_name
+			     , AA.h_grade
+			     , AA.h_address   
+			     , AA.w_num  
+			     , CASE WHEN ROUND(AA.reviewAvg) = 1 THEN '★☆☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 2 THEN '★★☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 3 THEN '★★★☆☆'
+						WHEN ROUND(AA.reviewAvg) = 4 THEN '★★★★☆'
+						WHEN ROUND(AA.reviewAvg) = 5 THEN '★★★★★'
+						ELSE '☆☆☆☆☆' END AS reviewStar
+				 , NVL(AA.reviewAvg, 0) AS reviewAvg
+			     , AA.reviewCnt
+			  FROM (
+			    SELECT hotel.h_image1
+			     , hotel.h_name
+			     , hotel.h_grade
+			     , hotel.h_address
+			     , wishlist.w_num
+			     , (SELECT AVG(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num
+			         GROUP BY sub1.h_num) AS reviewAvg
+			     , (SELECT COUNT(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num) AS reviewCnt
+			     FROM project_wishlist wishlist
+			        , project_hotel   hotel 
+			    WHERE wishlist.u_num = #{u_num}
+			      AND wishlist.h_num = hotel.h_num
+			  ) AA
+	</select>
+
+	<select id="roomType" resultType="String" parameterType="java.lang.Integer">
+		select room_type from project_room where room_num = #{room_num}
+	</select>
+
+	<insert id="insertReview" parameterType="java.util.Map">
+		insert into project_review values(project_review_seq.nextval, #{h_num}, #{u_num},
+		#{review_contents}, sysdate, #{review_image}, #{review_star}, #{review_nickname}, 
+		#{review_roomtype})
+	</insert>
+
+	<select id="review" resultType="ReviewDTO" parameterType="int">
+		select * from project_review where u_num = #{u_num}
+	</select>
+	
+	<select id="userList" resultType="UserDTO" parameterType="java.lang.Integer">
+		SELECT *
+		FROM project_useraccount
+		WHERE u_num = #{u_num}
+	</select>
+	
+	<delete parameterType="int" id="deleteReview">
+		delete from project_review where review_num = #{review_num} 
+	</delete>
+	
+	<select id="getPicture" parameterType="int" resultType="String">
+		select review_image from project_review where review_num=#{review_num}
+	</select>
+
+	<update id="changeNickName" parameterType="java.util.Map">
+		update project_useraccount set u_nickname = #{nickname} where u_num=#{u_num} 
+	</update>
+</mapper>
