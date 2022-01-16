@@ -156,7 +156,7 @@
       
       
       
-      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mavenTest" path="/mavenTest" reloadable="true" source="org.eclipse.jst.jee.server:mavenTest"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\kakao" path="/my" reloadable="true" source="org.eclipse.jst.jee.server:kakao"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\project_1" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project_1"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Normal" path="/pay" reloadable="true" source="org.eclipse.jst.jee.server:Normal"/></Host>
+      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\project_1" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project_1"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\individaul" path="/individaul" reloadable="true" source="org.eclipse.jst.jee.server:individaul"/></Host>
     </Engine>
   </Service>
 </Server>
