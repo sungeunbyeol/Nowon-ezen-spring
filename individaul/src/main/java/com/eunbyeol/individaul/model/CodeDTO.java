@@ -1,16 +1,16 @@
 package com.eunbyeol.individaul.model;
 
 public class CodeDTO {
-	private int code_division;
+	private String code_division;
 	private String code_value;
 	private String code_name;
 	private int code_order;
 	private String code_use;
 	
-	public int getCode_division() {
+	public String getCode_division() {
 		return code_division;
 	}
-	public void setCode_division(int code_division) {
+	public void setCode_division(String code_division) {
 		this.code_division = code_division;
 	}
 	public String getCode_value() {

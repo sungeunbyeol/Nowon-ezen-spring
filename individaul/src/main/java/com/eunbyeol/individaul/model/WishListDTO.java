@@ -3,7 +3,7 @@ package com.eunbyeol.individaul.model;
 public class WishListDTO {
 
 	private int w_no;
-	private int u_id;
+	private int user_no;
 	
 	public int getW_no() {
 		return w_no;
@@ -11,11 +11,11 @@ public class WishListDTO {
 	public void setW_no(int w_no) {
 		this.w_no = w_no;
 	}
-	public int getU_id() {
-		return u_id;
+	public int getUser_no() {
+		return user_no;
 	}
-	public void setU_id(int u_id) {
-		this.u_id = u_id;
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 	
 }

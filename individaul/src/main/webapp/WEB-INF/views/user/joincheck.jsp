@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
+<!-- user_join_check.jsp -->
 <style>
 .outer {
   display: flex;
@@ -11,14 +10,59 @@
 } 
 </style>
 <%@ include file="../top.jsp"%>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>   
-<!-- 회원가입 이메일 중복체크 전 ajax로 처리하지 않으면 페이지 2개 사용 
-ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 예정 
-2페이지로 진행시 입력후 페이지 넘어가면 입력했던 값 모두 삭제 
-해결방법은 controller에서 입력한 값들 넘겨주면 되긴 하지만 ajax로 script문 하나로 설정 가능
-(코드 간결하게 진행 할 수 있을 것으로 보임)
--->
-<form name="f_Join" method="POST" action="userjoinok" onsubmit="return send(this)">
+<script>
+		function check(){
+			if(f_Joincheck.agree.checked==false){
+				alert("약관에 동의해주시기 바랍니다.");
+				return
+			}
+			
+			if (f_Joincheck.email.value==""){
+				alert("아이디를 입력하셔야 합니다.")
+				f_userJoin_check.u_email.focus() 
+				return
+			}
+			if (f_Joincheck.password.value==""){
+				alert("비밀번호를 입력하셔야 합니다.")
+				f_userJoin_check.u_password.focus()
+				return
+			}
+			if (f_Joincheck.password.value!=f_Joincheck.password2.value){
+				alert("비밀번호가 일치하지 않습니다.")
+				f_userJoin_check.u_password2.focus()
+				return
+			}
+			if (f_Joincheck.name.value==""){
+				alert("이름을 입력하셔야 합니다.")
+				f_userJoin_check.u_name.focus()
+				return
+			} 
+			if (f_Joincheck.nickname.value==""){
+				alert("닉네임을 입력하셔야 합니다.")
+				f_userJoin_check.u_nickname.focus()
+				return
+			}
+			if (f_Joincheck.tel.value==""){
+				alert("전화번호를 입력하셔야 합니다.")
+				f_userJoin_check.u_tel.focus()
+				return
+			}
+			if (f_Joincheck.birthday.value==""){
+				alert("생년월일을 입력하셔야 합니다.")
+				f_userJoin_check.u_birth.focus()
+				return
+			}
+
+			document.f_Joincheck.submit()
+		}
+		
+</script>
+		 
+<form name="f_Joincheck" method="POST" action="userjoinok" >
+	<!-- <input type="hidden" name="a_level" value="1"/>
+	<input type="hidden" name="u_point" value="0"/>
+	<input type="hidden" name="u_black" value="None"/> -->
+	 
 <table border="0" align="center">
 <tr>
 	<td colspan="3" align="center"><h3>회원 가입</h3></td>
@@ -95,7 +139,7 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
 	<td width="130" align="right">이메일</td>
 	<td width="200">
-		<input type="text" id="email_input" name="email"
+		<input type="text" id="email_input" name="email" value="${email}" 
 		style="width:200px;height:40px">
 	</td>
 	<td width="100">
@@ -106,7 +150,7 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
 	<td width="130" align="right">비밀번호</td>
 	<td width="200">
-		<input type="password" name="password" id="password1" class="pw"
+		<input type="password" name="password" id="password1" class="pw" value="${password}"
 		placeholder="비밀번호를 입력해 주세요." tabindex="1" 
 		style="width:200px;height:40px">
 	</td>
@@ -114,7 +158,7 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
 	<td width="130" align="right">비밀번호 확인</td>
 	<td width="200">
-		<input type="password" name="password2" id="password2" class="pw"
+		<input type="password" name="password2" id="password2" class="pw" value="${password2}"
 		placeholder="비밀번호를 다시 입력해 주세요." tabindex="1" 
 		style="width:200px;height:40px">
 
@@ -123,28 +167,28 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
 	<td width="130" align="right">이름</td>
 	<td width="300" colspan="2">
-		<input type="text" name="name" placeholder="이름을 입력해 주세요." tabindex="1"
+		<input type="text" name="name" placeholder="이름을 입력해 주세요." tabindex="1" value="${name}"
 		style="width:200px;height:40px">
 	</td>
 </tr>
 <tr>
 	<td width="130" align="right">닉네임</td>
 	<td width="200">
-		<input type="text" name="nickname" placeholder="별명을 입력해 주세요." tabindex="1"
+		<input type="text" name="nickname" placeholder="별명을 입력해 주세요." tabindex="1" value="${nickname}"
 		style="width:200px;height:40px">
 	</td>
 </tr>
 <tr>
 	<td width="130" align="right">핸드폰 번호</td>
 	<td width="200">
-		<input type="text" name="tel" placeholder="-없이 입력해주세요." tabindex="1" 
+		<input type="text" name="tel" placeholder="-없이 입력해주세요." tabindex="1" value="${tel}"
 		style="width:200px;height:40px">
 	</td>
 </tr>
 <tr>
 	<td width="130" align="right">생년월일</td>
 	<td width="200">
-		<input type="text" name="birthday" placeholder="생년월일을 입력해 주세요." tabindex="1"
+		<input type="text" name="birthday" placeholder="생년월일을 입력해 주세요." tabindex="1" value="${birthday}"
 		style="width:200px;height:40px">
 	</td>
 </tr>

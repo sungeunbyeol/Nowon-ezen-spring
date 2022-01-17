@@ -3,7 +3,7 @@ package com.eunbyeol.individaul.model;
 public class ReviewDTO {
 
 	private int review_no;
-	private int id;
+	private int user_no;
 	private String review_contents;
 	
 	public int getReview_no() {
@@ -12,11 +12,11 @@ public class ReviewDTO {
 	public void setReview_no(int review_no) {
 		this.review_no = review_no;
 	}
-	public int getId() {
-		return id;
+	public int getUser_no() {
+		return user_no;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 	public String getReview_contents() {
 		return review_contents;

@@ -3,7 +3,7 @@ package com.eunbyeol.individaul.model;
 public class UserQnADTO {
 
 	private int qna_no;
-	private int id;
+	private int user_no;
 	private String qna_subject;
 	private String qna_contents;
 	private String qna_target_type;
@@ -15,11 +15,11 @@ public class UserQnADTO {
 	public void setQna_no(int qna_no) {
 		this.qna_no = qna_no;
 	}
-	public int getId() {
-		return id;
+	public int getUser_no() {
+		return user_no;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 	public String getQna_subject() {
 		return qna_subject;

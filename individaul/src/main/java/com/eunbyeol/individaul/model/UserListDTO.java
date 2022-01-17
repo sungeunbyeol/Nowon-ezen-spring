@@ -2,21 +2,22 @@ package com.eunbyeol.individaul.model;
 
 public class UserListDTO {
 
-	private int id;
+	private int user_no;
 	private String name;
 	private String email;
 	private String password;
+	private String brithday;
 	private String tel;
 	private String address;
 	private String nickname;
 	private String joindate;
 	private String user_type;
 	
-	public int getId() {
-		return id;
+	public int getUser_no() {
+		return user_no;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 	public String getName() {
 		return name;
@@ -35,6 +36,12 @@ public class UserListDTO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getBrithday() {
+		return brithday;
+	}
+	public void setBrithday(String brithday) {
+		this.brithday = brithday;
 	}
 	public String getTel() {
 		return tel;
@@ -66,6 +73,6 @@ public class UserListDTO {
 	public void setUser_type(String user_type) {
 		this.user_type = user_type;
 	}
-	
+
 	
 }
