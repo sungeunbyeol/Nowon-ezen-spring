@@ -7,7 +7,7 @@
 	
 	<insert id="inputHotel" parameterType="HotelDTO">
 		insert into project_hotel values(
-		LPAD(project_hotel_seq.nextval,3,'0'), #{c_num}, #{h_name}, #{h_tel}, 
+		project_hotel_seq.nextval, #{c_num}, #{h_name}, #{h_tel}, 
 		#{h_address}, #{h_grade}, #{h_notice}, #{h_info}, 
 		#{h_image1}, #{h_image2}, #{h_image3}, #{h_image4}, #{h_image5}, 
 		#{h_park}, #{h_meal}, #{h_wifi}, #{h_disabled}, #{h_ott}, #{h_pool}, 
@@ -104,11 +104,11 @@
        select * from project_room where room_code=#{room_code} order by room_num asc
     </select>
 	
-	<select id="getRoom" parameterType="int" resultType="RoomDTO">
+	<select id="getRoomByRoomNum" parameterType="int" resultType="RoomDTO">
 		select * from project_room where room_num=#{room_num}
 	</select>
 	
-	<select id="getRoom2" parameterType="String" resultType="RoomDTO">
+	<select id="listRoomInGroupByRoomCode" parameterType="String" resultType="RoomDTO">
 		select * from project_room where room_code=#{room_code}
 	</select>
 	
@@ -128,10 +128,6 @@
     	select h_name from project_hotel where h_num=#{h_num}
     </select>
     
-    <select id="getRoomDTOByRoomnum" parameterType="int" resultType="RoomDTO">
-    	select * from project_room where room_num=#{room_num}
-    </select>
-    
     <update id="confirmBooking" parameterType="int">
     	update project_booking set book_status='confirm' where book_num=#{book_num}
     </update>
@@ -140,7 +136,19 @@
     	update project_booking set book_status='deny' where book_num=#{book_num}
     </update>
     
-    <select id="getMaxRoomCode" parameterType="int" resultType="String">
+    <update id="checkinBooking" parameterType="int">
+    	update project_booking set book_status='checkin' where book_num=#{book_num}
+    </update>
+    
+    <update id="checkoutBooking" parameterType="int">
+    	update project_booking set book_status='checkout' where book_num=#{book_num}
+    </update>
+    
+    <select id="checkRoomCodeExists" parameterType="int" resultType="String">
     	select max(room_code) from project_room where room_code like #{h_num}
+    </select>
+    
+    <select id="getMaxRoomCode" parameterType="int" resultType="String">
+    	select max(room_code) from project_room where room_code like #{h_num} group by room_code
     </select>
 </mapper>

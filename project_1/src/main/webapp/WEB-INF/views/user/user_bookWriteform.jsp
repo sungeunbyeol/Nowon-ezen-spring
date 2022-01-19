@@ -6,6 +6,8 @@
 <!-- ICon만들때 적어줘야함! -->
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -27,10 +29,6 @@
            $("#finalPrice").attr('value', result2);
            $("#savePoint").attr('value', savepoint);
            
-           alert(total);
-           alert(result2);
-           alert(savepoint);
-           
            
         });
         $("#usePoint").change(function(){
@@ -43,8 +41,9 @@
             $("#savePoint").attr('value', savepoint);
             
          });
+
         //한번 지연시키고 다시 보내보기
-        $("#bwform").submit(function(){
+        $("#check_module").click(function(){
         	event.preventDefault();
         	var isSubmit = false;
         	var check;
@@ -53,7 +52,63 @@
         	if( parseInt(userPoint) >= parseInt(usePoint) ){
         		check = confirm("결제 하시겠습니까?");
             	if(check) {
-            		this.submit();
+            		var h_name = $("#h_name").val();
+                	var room_type = $("#room_type").val();
+            		var IMP = window.IMP; // 생략가능
+            		var totalPrice = $("#totalPrice").val();
+            		var u_email = $("#u_email").val();
+            		var u_name = $("#u_name").val();
+            		
+                    IMP.init('imp24804575');
+                    // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+                    // i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
+                    IMP.request_pay({
+                    pg: 'html5_inicis', // version 1.1.0부터 지원.
+                    
+                    pay_method: 'card',
+                    
+                    /* 
+                    'samsung':삼성페이,
+                    'card':신용카드,
+                    'trans':실시간계좌이체,
+                    'vbank':가상계좌,
+                    'phone':휴대폰소액결제
+                     */
+                    merchant_uid: 'merchant_' + new Date().getTime(),
+                    /*
+                    merchant_uid에 경우
+                    https://docs.iamport.kr/implementation/payment
+                    위에 url에 따라가시면 넣을 수 있는 방법이 있습니다.
+                    참고하세요.
+                    나중에 포스팅 해볼게요.
+                    */
+                    name: h_name+'['+room_type+']',
+                    //결제창에서 보여질 이름
+                    amount: totalPrice,
+                    //가격
+                    buyer_email: u_email,
+                    buyer_name: u_name,
+                    /*
+                    모바일 결제시,
+                    결제가 끝나고 랜딩되는 URL을 지정
+                    (카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+                    */
+                    }, function (rsp) {
+	                    console.log(rsp);
+	                    if (rsp.success) {
+	                        var msg = '결제가 완료되었습니다.';
+	                        msg += '고유ID : ' + rsp.imp_uid;
+	                        msg += '상점 거래ID : ' + rsp.merchant_uid;
+	                        msg += '결제 금액 : ' + rsp.paid_amount;
+	                        msg += '카드 승인번호 : ' + rsp.apply_num;
+	                        alert(msg);
+	                        $("#bwform").submit();
+	                    } else {
+	                        var msg = '결제에 실패하였습니다.';
+	                        msg += '에러내용 : ' + rsp.error_msg;
+	                        alert(msg);
+	                    }
+                    });
             	}
         	}else{
         		isSubmit = false;
@@ -69,10 +124,13 @@
 <input type="hidden" name="h_num" value="${hdto.h_num}">
 <input type="hidden" name="u_num" value="${loginOkBean.u_num}">
 <input type="hidden" name="room_num" value="${Room.room_num}">
-<input type="hidden" id="room_price" value="${Room.room_price}">
+<input type="hidden" name="room_code" value="${Room.room_code}">
+<input type="hidden" id="room_price" name="room_price" value="${Room.room_price}">
 <input type="hidden" id="room_extraprice" value="${Room.room_extraprice}">
 <input type="hidden" id="userPoint" value="${udto.u_point}">
-
+<input type="hidden" id="u_email" value="${loginOkBean.u_email}">
+<input type="hidden" id="u_name" value="${loginOkBean.u_name}">
+<input type="hidden" id="u_tel" value="${loginOkBean.u_tel}">
 <input type="hidden" name="room_price" value="${Room.room_price}">
 	<div style="width: 650px; margin: 0 auto;">
 		<div class="row book-detail">
@@ -81,7 +139,7 @@
 					<div class="row" style="font-weight: bold; font-size:20px; padding-left: 35px;">예약자 정보</div>
 					<div class="row">
 						<label>예약자이름</label>
-						<label><input type="text" name="book_name" value="${udto.u_name}"/></label>
+						<label><input type="text" id="book_name" name="book_name" value="${udto.u_name}"/></label>
 					</div>
 					<div class="row">
 						<label>휴대폰번호</label>
@@ -138,7 +196,7 @@
 				<div class="section">
 					<div class="row" style="font-weight: bold; font-size:20px; padding-left: 35px;">결제수단 선택</div>
 					<div class="column align-center gutter-y-10" style="height: auto;">
-						<button style="width: 200px; background:#F5C736;">카카오 페이(book_payment)</button>
+						<button type="button" style="width: 200px; background:#F5C736;">카카오 페이(book_payment)</button>
 						<input type="hidden" name="book_payment" value="카카오페이">
 						<button style="width: 200px; background:#4AEB54;">네이버 페이(book_payment)</button>
 					</div>
@@ -150,11 +208,12 @@
 					<div class="column">
 						<label>호텔이름</label>
 						<label>${hdto.h_name}</label>
+						<input type="hidden" id="h_name" value="${hdto.h_name}">
 					</div>
 					<div class="column">
 						<label>방타입</label>
 						<label>${Room.room_type}</label>
-						<input type="hidden" name="book_roomtype" value="${Room.room_type}">
+						<input id="room_type" type="hidden" name="book_roomtype" value="${Room.room_type}">
 					</div>
 					<!-- indate, outdate session에서 받아오는걸로 처리해야할것같음 -->
 					<div class="column">
@@ -193,7 +252,7 @@
 						</label>
 					</div>
 					<div class="row justify-center" style="padding: 15px;">
-						<button style="background:#F58B7B; width: 100%;">결제하기(book_payment)</button>
+						<button id="check_module" type="button" style="background:#F58B7B; width: 100%;">결제하기</button>
 					</div>					
 				</div>
 			</div>

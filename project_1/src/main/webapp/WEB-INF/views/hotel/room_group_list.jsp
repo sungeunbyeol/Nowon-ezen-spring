@@ -54,11 +54,11 @@
 								<input type="hidden" name="room_images" value="${rdto.room_image1}">
 								<input type="hidden" name="room_images" value="${rdto.room_image2}">
 								<input type="hidden" name="room_images" value="${rdto.room_image3}">
-								<input type="submit" value="객실 삭제">
+								<input type="submit" value="그룹 삭제">
 							</form>
 							<form name="f_roomGroupEdit" method="post" action="room_group_edit" style="margin:5px">
 								<input type="hidden" name="room_num" value="${rdto.room_num}">
-								<input type="submit" value="객실 수정">
+								<input type="submit" value="그룹 수정">
 							</form>
 						</td>
 					</tr>

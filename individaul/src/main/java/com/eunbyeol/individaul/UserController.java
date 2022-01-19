@@ -1,5 +1,9 @@
 package com.eunbyeol.individaul;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +35,14 @@ public class UserController {
 	
 	//이메일 중복체크 
 	@RequestMapping("/checkUseremail")
-	public String CheckUserEmail() {
+	public String CheckUserEmail(HttpServletRequest req, Map<String, String> map) {
+		
+		if(map.equals("")) {
+			req.setAttribute("msg", "이메일을 입력해주세요");
+			req.setAttribute("url", "joinform");
+			return "message";
+		}
+		boolean isUser = 
 		
 		return "message";
 	}

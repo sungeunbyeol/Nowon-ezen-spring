@@ -4,7 +4,15 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 	
 <mapper namespace="com.ezen.project.model.DisplayHotelMapper"> 
-
+	<!-- 자동완성 -->
+	<select id="getHotelNames" resultType="String">
+		select h_name from project_hotel order by h_num
+	</select>
+	
+	<select id="getHotelAddresses" resultType="String">
+		select h_address from project_hotel order by h_num
+	</select>
+	
 	<!-- 호텔검색결과 -->
 	<select id="searchHotel" resultType="HotelDTO" parameterType="java.util.Map">
 		${sql}
@@ -23,7 +31,7 @@
 		select * from project_review
 	</select>
 	
-	<!-- 위시리스크 체크 확인 -->
+	<!-- 위시리스트 체크 확인 -->
 	<select id="isWishCheck" resultType="int" parameterType="java.util.Map">
 		select count(*) from project_wishlist where h_num=#{h_num} and u_num=#{u_num}
 	</select>
@@ -97,9 +105,9 @@
 	<insert id="insertBook" parameterType="java.util.Map">
 		insert into project_booking values(project_booking_seq.nextval,
 		 #{room_num}, #{h_num}, #{u_num}, #{indate}, #{outdate}
-		 ,sysdate, #{book_payment}, #{inputPoint}, #{book_totalprice},
+		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{book_payment}, #{inputPoint}, #{book_totalprice},
 		  #{book_savepoint}, 'wait', #{book_name}, #{book_tel},
-		   #{book_roomtype}, #{book_extra})
+		   #{book_roomtype}, #{book_extra}, #{room_code})
 	</insert>
 	
 	<select id="roomCountCheck" resultType="int" parameterType="java.util.Map">
@@ -171,7 +179,7 @@
 	<!-- 포인트적립db -->
 	<insert id="savePointDB" parameterType="java.util.Map">
 		insert into project_userpoint values(project_userpoint_seq.nextval, #{book_num}, #{u_num}, 
-		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, sysdate)
+		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
 	</insert>
 	
 	<!-- 예약정보 가져오기 -->
@@ -187,7 +195,7 @@
 	<!-- 예약취소시 포인트db -->
 	<insert id="cancelPoint" parameterType="java.util.Map">
 		insert into project_userpoint values(project_userpoint_seq.nextval, #{book_num}, #{u_num}, 
-		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, sysdate)
+		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
 	</insert>
 	
 	<!-- 위시리스트 찜하기 해제 -->
@@ -199,4 +207,7 @@
 		${sql}
 	</select>
 	
+	<select id="isBookedRoom" parameterType="java.util.Map" resultType="int">
+		${sql}
+	</select>
 </mapper>

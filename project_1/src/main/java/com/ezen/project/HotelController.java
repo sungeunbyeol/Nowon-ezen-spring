@@ -337,15 +337,11 @@ public class HotelController {
 		// 객실 그룹용 변수 (h_num + 식별번호)
 		String room_code = null;
 		
-		if(hotelMapper.getMaxRoomCode(rdto.getH_num())==null) {
+		if(hotelMapper.checkRoomCodeExists(rdto.getH_num())==null) {
 			// DB에 해당 호텔에 대한 room_code가 없을 경우 "호텔고유번호_1"로 설정
 			room_code = rdto.getH_num()+"_"+"1";
 		}else {
-			// DB에 해당 호텔에 대한 room_code가 있을 경우 꺼내와서 _를 기준으로 String을 자름
-			String[] arr = hotelMapper.getMaxRoomCode(rdto.getH_num()).split("_");
-			
-			// 
-			room_code = rdto.getH_num()+"_"+(Integer.parseInt(arr[1])+1);
+			room_code = rdto.getH_num()+"_"+(hotelMapper.getMaxRoomCode(rdto.getH_num())+1);
 		}
 		
 		// 객실 그룹 정보를 DTO에 담는다
@@ -381,11 +377,11 @@ public class HotelController {
 	
 	@RequestMapping("/room_input_ok")
 	public String roomInputOk(HttpServletRequest req, String room_code) {
-		// 객실 등록을 위해 동일한 정보를 가진 DTO를 room_code를 통해 생성
-		RoomDTO rdto = hotelMapper.getRoomByRoomCode(room_code);
+		// 객실 등록을 위해 동일한 정보를 가진 객실리스트를 room_code를 통해 가져옴
+		List<RoomDTO> rList = hotelMapper.listRoomInGroupByRoomCode(room_code);
 		
 		// 객실 등록
-		int res = hotelMapper.inputRoom(rdto);
+		int res = hotelMapper.inputRoom(rList.get(0));
 		
 		if(res>0) {
 			req.setAttribute("msg", "객실추가 성공!! 객실 목록 페이지로 이동합니다.");
@@ -549,7 +545,7 @@ public class HotelController {
 		List<BookingDTO> bookList = hotelMapper.listBooking(h_num);
 		
 		for(BookingDTO bdto : bookList) {
-			RoomDTO rdto = hotelMapper.getRoomDTOByRoomnum(bdto.getRoom_num());
+			RoomDTO rdto = hotelMapper.getRoomByRoomNum(bdto.getRoom_num());
 			
 			bdto.setH_name(hotelMapper.getHnameByHnum(h_num));
 			bdto.setRoom_image1(rdto.getRoom_image1());
@@ -592,4 +588,33 @@ public class HotelController {
 		return "message";
 	}
 	
+	@RequestMapping("/checkin_booking")
+	public String checkinBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.checkinBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "체크인 상태로 변경 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "체크인 상태로 변경 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
+	
+	@RequestMapping("/checkout_booking")
+	public String checkoutBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.checkoutBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "체크아웃 상태로 변경 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "체크아웃 상태로 변경 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
 }

@@ -30,7 +30,9 @@
 							연락처 : ${hdto.h_tel}&nbsp;&nbsp; | 
 							&nbsp;&nbsp;등급 : ${hdto.h_grade}성<br><br>
 							&lt;주소&gt;<br>
-							${hdto.h_address}
+							<c:set var="fullAddr" value="${fn:split(hdto.h_address,'@')}"/>
+							${fullAddr[0]} ${fullAddr[1]} ${fullAddr[2]}<br>
+							${fullAddr[3]}
 						</td>
 						<td align="center">
 							<form name="f_roomList" method="post" action="room_group_list" style="margin:5px">

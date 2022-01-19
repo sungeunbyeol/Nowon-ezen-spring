@@ -18,16 +18,5 @@
 					<h3><a href="company_edit?c_num=${companyLoginOkBean.c_num}">기업 정보 수정</a></h3><br>
 					<h3><a href="hotel_main" target="_blank">호텔 관리</a></h3><br>
 					<h3><a href="list_companyQnA">Q&A</a></h3><br>
-					<form name = "changePassword" method="post" action = "company_update_password">
-						<table align="center" align="top">
-							<tr>
-								<td>
-									<a href="company_password_edit">비밀번호 변경</a><br>
-									<a href="company_logout">로그아웃</a><br>
-									<a href="company_delete">회원탈퇴</a><br>
-								</td>
-							</tr>
-						</table>
-					</form>		
 				</td>
 				<td>

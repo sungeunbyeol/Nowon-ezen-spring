@@ -32,10 +32,10 @@ public class UserController {
 		int res = userMapper.insertUser(dto);
 		if (res>0) {
 			mav.addObject("msg", "회원가입성공!! 메인페이지로 이동합니다.");
-			mav.addObject("url", "/project");
+			mav.addObject("url", "main");
 		}else {
 			mav.addObject("msg", "회원가입실패!! 다시 입력해 주세요!!");
-			mav.addObject("url", "/user_join");
+			mav.addObject("url", "user_join");
 		}
 		
 		mav.setViewName("message");
@@ -45,13 +45,13 @@ public class UserController {
 	
 	//회원 탈퇴페이지 user_mypage.jsp에서 보냄 
 	@RequestMapping("/user_delete")
-	public String deletePage() {
+	public String userDelete() {
 		return "/user/user_delete";
 	}
 	
 	//user_delete.jsp에서 보냄 회원탈퇴 실행
 	@RequestMapping("/user_delete_user")  
-	public String deleteOkPage(HttpServletRequest req) {
+	public String userDeleteUser(HttpServletRequest req) {
 		String u_num = req.getParameter("u_num");
 		String u_password = req.getParameter("u_password");	
 		int res = userMapper.UserdeleteUser(u_num, u_password);
@@ -71,7 +71,7 @@ public class UserController {
 	
 	//user_join에서 보냄 email 중복검사 진행 
 	@RequestMapping("/checkUseremail")
-	public String checkUser(@RequestParam String u_email, 
+	public String checkUserEmail(@RequestParam String u_email, 
 			String u_password, String u_password2, String u_name, String u_nickname, 
 			String u_tel, String u_birth, HttpServletRequest req) {
 
@@ -109,9 +109,7 @@ public class UserController {
 	
 	//user_info.jsp에서 보냄 회원정보 수정 
 	@RequestMapping("user_edit_ok")
-	public String editUserOkForm(HttpServletRequest req,
-			@ModelAttribute UserDTO dto) {
-
+	public String userEditOk(HttpServletRequest req, @ModelAttribute UserDTO dto) {
 		int res = userMapper.updateUser(dto);  
 		if (res>0) {
 			req.setAttribute("msg", "회원수정성공!! 마이페이지로 이동합니다.");
@@ -163,17 +161,21 @@ public class UserController {
 
 	}
 	
-	//user_mypage.jsp에서 넘김 
+	//마이페이지에서 비밀번호 변경을 눌렀을 때 
 	@RequestMapping("/user_password_edit")
-	public String updateUserPassword() {
+	public String userPasswordEdit() {
 		return "/user/user_password_edit";
 	} 
 	
+	// 로그인 전에 비밀번호 찾기에서 비밀번호를 변경할 때
+	@RequestMapping("/user_update_password")
+	public String userUpdatePassword() {
+		return "user/user_update_password";
+	}
+	
 	//user_password_edit에서 넘김 
 	@RequestMapping("/user_update_password_ok")
-	public String updatepassword(HttpServletRequest req, 
-			@RequestParam String u_email ) {
-		
+	public String userUpdatePasswordOk(HttpServletRequest req, @RequestParam String u_email ) {
 		UserDTO dto = userMapper.getUser(u_email);
 		dto.setU_password(req.getParameter("u_password")); 
 		int res = userMapper.updateUserPassword(dto);
@@ -181,10 +183,10 @@ public class UserController {
 		session.invalidate();
 		if (res>0) { 
 			req.setAttribute("msg", "비밀번호 변경 성공!! 다시 로그인해주세요");
-			req.setAttribute("url", "/project");
+			req.setAttribute("url", "main");
 		}else {
 			req.setAttribute("msg", "비밀번호 변경 실패!!");
-			req.setAttribute("url", "/project");
+			req.setAttribute("url", "main");
 		} 
 		return "message";
 	}
@@ -198,11 +200,6 @@ public class UserController {
 	@RequestMapping("/user_search_email_ok")
 	public String userSearchEmailOk() {
 		return "user/user_search_email_ok";
-	}
-
-	@RequestMapping("/user_update_password")
-	public String userUpdatePassword() {
-		return "user/user_update_password";
 	}
 
 	@RequestMapping("/user_join")

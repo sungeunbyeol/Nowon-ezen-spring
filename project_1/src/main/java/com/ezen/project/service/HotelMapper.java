@@ -1,5 +1,7 @@
 package com.ezen.project.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -72,9 +74,26 @@ public class HotelMapper {
 		return sqlSession.insert("inputRoom", rdto);
 	}
 	
+	// 
+	public String checkRoomCodeExists(int h_num) {
+		return sqlSession.selectOne("checkRoomCodeExists", h_num+"%");
+	}
+	
 	// 신규 객실 그룹 등록시, room_code 뒷자리수에 +1을 하기 위해 기존 객실 그룹의 room_code중 가장 큰 값을 꺼내오는 메소드
-	public String getMaxRoomCode(int h_num) {
-		return sqlSession.selectOne("getMaxRoomCode", h_num+"%");
+	public int getMaxRoomCode(int h_num) {
+		List<String> rcodeList = sqlSession.selectList("getMaxRoomCode", h_num+"%");
+		
+		String[] arr = rcodeList.toArray(new String[rcodeList.size()]);
+		int[] numarr = new int[rcodeList.size()];
+		
+		for(int i=0; i<rcodeList.size(); ++i) {
+			String[] arr2 = arr[i].split("_");
+			numarr[i] = Integer.parseInt(arr2[1]);
+		}
+		
+		Arrays.sort(numarr);
+		
+		return numarr[numarr.length-1];
 	}
 	
 	// 기업용 페이지에서 객실을 그룹 단위로 삭제할 때 사용하는 메소드
@@ -102,15 +121,14 @@ public class HotelMapper {
 		return sqlSession.selectList("listRoom", room_code);
 	}
 
-	// 객실 그룹에서 room_num이 가장 낮은 객실 1개의 정보를 대표로 가져오는 메소드 (객실 그룹 정보를 수정할 때 사용)
+	// 객실 그룹에서 room_num이 가장 낮은 객실 1개의 정보를 대표로 가져오는 메소드
 	public RoomDTO getRoomByRoomNum(int room_num) {
-		return sqlSession.selectOne("getRoom", room_num);
+		return sqlSession.selectOne("getRoomByRoomNum", room_num);
 	}
 	
-	// room_code를 통해 객실의 정보를 가져오기 위한 메소드
-	public RoomDTO getRoomByRoomCode(String room_code) {
-		List<RoomDTO> rList = sqlSession.selectList("getRoom2", room_code);
-		return rList.get(0);
+	// room_code를 통해 특정 객실그룹의 객실리스트를 가져오는 메소드
+	public List<RoomDTO> listRoomInGroupByRoomCode(String room_code) {
+		return sqlSession.selectList("listRoomInGroupByRoomCode", room_code);
 	}
 	
 	// 객실 비활성화를 위한 메소드
@@ -133,11 +151,6 @@ public class HotelMapper {
 		return sqlSession.selectOne("getHnameByHnum", h_num);
 	}
 	
-	// 객실 번호로 RoomDTO를 가져오는 메소드
-	public RoomDTO getRoomDTOByRoomnum(int room_num) {
-		return sqlSession.selectOne("getRoomDTOByRoomnum", room_num);
-	}
-	
 	// 기업이 예약 리스트 페이지에서 예약 확정시 사용하는 메소드
 	public int confirmBooking(int book_num) {
 		return sqlSession.update("confirmBooking", book_num);
@@ -148,15 +161,14 @@ public class HotelMapper {
 		return sqlSession.update("denyBooking", book_num);
 	}
 	
-	// 예약이 취소되면 방개수를 증가시키는 메소드
-	public int plusRoomCount(int room_num) {
-		return sqlSession.update("plusRoomCount", room_num);
+	public int checkinBooking(int book_num) {
+		return sqlSession.update("checkinBooking", book_num);
 	}
 	
-	// 예약이 들어오면 방개수를 감소시키는 메소드
-	public int minusRoomCount(int room_num) {
-		return sqlSession.update("minusRoomCount", room_num);
+	public int checkoutBooking(int book_num) {
+		return sqlSession.update("checkoutBooking", book_num);
 	}
+	
 	
 	// 테스트
 	public List<HotelDTO> listHotel2() {

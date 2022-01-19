@@ -1,41 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <script type="text/javascript">
-		function wishCheck1(h_num, u_num, location){
-			var child = window.open("wishRelease2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search","width=10, height=10");
-			window.parent.location.reload();
-			child.close();
+ 	function sleep(ms) {
+	  const wakeUpTime = Date.now() + ms;
+	  while (Date.now() < wakeUpTime) {}
+	}
+	function wishCheck1(h_num, u_num, location){
+		var child = window.open("wishRelease2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search","width=10, height=10");
+		window.parent.location.reload();
+		sleep(300);
+		child.close();
+	}
+	function wishCheck2(h_num, u_num, location){
+		var child = window.open("wishCheck2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search", "width=10, height=10");
+		window.parent.location.reload();
+		sleep(300);
+		child.close();
+	}
+	function checkNextPage(room_code, h_num, indate, today, tmr, outdate){
+			if(indate == today && outdate == tmr){
+				window.open("display_selectDate?room_code="+room_code+"&h_num="+h_num, "date", "width=350, height=220");
+			}else{
+				location.href="display_roomContent?room_code="+room_code+"&h_num="+h_num;
+			}
+			
 		}
-		function wishCheck2(h_num, u_num, location){
-			var child = window.open("wishCheck2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search", "width=10, height=10");
-			window.parent.location.reload();
-			child.close();
-		}
+	
  	$(document).ready(function(){
- 		$("#plus").click(function(){
- 			var inwon = $("#inwon").val();
- 			var inwon2 = parseInt(inwon) + 1;
- 			if(inwon2>6){
- 				alert("6명 이상은 입력할 수 없습니다.");
- 				e.stopPropagation();
- 				e.preventDefault();
- 			}else{
- 				$("#inwon").attr('value',inwon2);
- 			}
- 		});
- 		$("#minus").click(function(e){
- 			var inwon = $("#inwon").val();
- 			var inwon2 = parseInt(inwon) - 1;
- 			if(inwon2<2){
- 				alert("2명 이하는 입력할 수 없습니다.");
- 				e.stopPropagation();
- 				e.preventDefault();
- 			}else{
- 				$("#inwon").attr('value',inwon2);
- 			}
- 		});
  		$("#mForm").submit(function(){
  			var indate2 = $("#indate1").val();
  			var outdate2 = $("#outdate1").val();
@@ -67,11 +61,13 @@
  		});
  	});
  </script>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	
 <%@ include file="../user_top.jsp" %>
+<%@ include file="../user_searchbar.jsp" %>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>	<div style="width: 80%; margin: 0 auto;">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+	<div style="width: 80%; margin: 0 auto;">
 		<div class="booking">
 			<div class="selectedImage">
 				<img src="resources/no1.gif" id="selectedImage">
@@ -83,22 +79,6 @@
 				<img src="resources/images/hotel/${hdto.h_image4}">
 				<img src="resources/images/hotel/${hdto.h_image5}">
 			</div>
-		</div>
-		<div>
-			<form name="f" action="display_hotelSearchOk" method="post" id="mForm">
-				<table>
-					<tr>
-						<td width="20">
-							체크인 
-							<input type="date" id="indate1" name="indate" value="${sessionScope.indate}">
-						</td>
-						<td width="20">
-							체크아웃
-							<input type="date" id="outdate1" name="outdate" value="${sessionScope.outdate}">
-						</td>
-					</tr>
-				</table>
-			</form>
 		</div>
 			<!-- 추가내용 -->
 		<div class="row align-center" style="margin-top: 10px; justify-content:flex-end;">
@@ -118,7 +98,7 @@
 						<a href="javascript:wishCheck2('${hdto.h_num}','${loginOkBean.u_num}','${param.location}')"><i class="far fa-heart"></i></a>
 					</c:if>
 				</c:if>
-			</span>		
+			</span>
 		</div>
 		<div class="border-bottom">
 			<span class="spanLeft">
@@ -138,15 +118,8 @@
 			</span>
 		</div> 
 		<div>
-			${hdto.h_address}
+			${fn:replace(hdto.h_address, '@', ' ')}
 		</div>
-		
-		<%-- <c:if test="${empty twinRoom}">
-			<div class="flex">
-			등록된 방이 없습니다<br><br>
-			</div>
-		</c:if>
-		<c:if test="${not empty twinRoom}"> --%>
 		<c:if test="${empty twinRoom}">
 			<h2 align="center">등록된 방이 없습니다</h2>
 		</c:if>
@@ -155,7 +128,7 @@
 				<table align="center" width = "80%">
 					<tr>
 						<td rowspan="7">
-							<a href = "display_roomContent?room_num=${tRoom.room_num}&h_num=${hdto.h_num}">
+							<a href="javascript:checkNextPage('${tRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
 								<img class="picture" src="resources/images/room/${tRoom.room_image1}" width="160" height="90"/>
 							</a>
 						</td>
@@ -187,10 +160,11 @@
 		</c:if>
 		<c:if test="${not empty doubleRoom}">
 			<c:forEach var="dbRoom" items="${doubleRoom}">
+				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon}">
 				<table align="center" width = "80%">
 					<tr>
 						<td rowspan="7">
-							<a href = "display_roomContent?room_num=${dbRoom.room_num}&h_num=${hdto.h_num}">
+							<a href="javascript:checkNextPage('${dbRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
 								<img class="picture" src="resources/images/room/${dbRoom.room_image1}" width="160" height="90"/>
 							</a>
 						</td>
@@ -214,6 +188,7 @@
 						<td align="right">${dbRoom.room_price}원</td>
 					</tr>
 				</table>
+				</c:if>
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty deluxeRoom}">
@@ -224,7 +199,7 @@
 				<table align="center" width = "80%">
 					<tr>
 						<td rowspan="7">
-							<a href = "display_roomContent?room_num=${dxRoom.room_num}&h_num=${hdto.h_num}">
+							<a href="javascript:checkNextPage('${dxRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
 								<img class="picture" src="resources/images/room/${dxRoom.room_image1}" width="160" height="90"/>
 							</a>
 						</td>
@@ -250,58 +225,69 @@
 				</table>
 			</c:forEach>
 		</c:if>
-		<%-- <a href = "display_roomContent"><img class="picture" src="resources/${twinRoom.room_image1}"/></a>	
-			<div class="flex">
-			<a href = "display_roomContent">
-				${twinRoom.room_type}&nbsp;[${twinRoom.room_name}]<br>
-				Late&nbsp;Check-in&nbsp;18시<br>
-				기준&nbsp;${twinRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${twinRoom.room_capacity}명<br><br>
-				숙박&nbsp;18:00&nbsp;부터<br>
-				판매가<br>
-				${twinRoom.room_price}원<br><br>
-			</a>
-			</div>
-		</c:if>
-		<c:if test="${empty doubleRoom}">
-			<div class="flex">
-			등록된 방이 없습니다<br><br>
-			</div>
-		</c:if>
-		<c:if test="${not empty doubleRoom}">
-			<a href = "display_roomContent"><img class="picture" src="resources/${doubleRoom.room_image1}"/></a>	
-			<div class="flex">
-			<a href = "display_roomContent">
-				${doubleRoom.room_type}&nbsp;[${doubleRoom.room_name}]<br>
-				Late&nbsp;Check-in&nbsp;18시<br>
-				기준&nbsp;${doubleRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${doubleRoom.room_capacity}명<br><br>
-				숙박&nbsp;18:00&nbsp;부터<br>
-				판매가<br>
-				${doubleRoom.room_price}원<br><br>
-			</a>
-			</div>
-		</c:if>
-		<c:if test="${empty deluxeRoom}">
-			<div class="flex">
-			등록된 방이 없습니다<br><br>
-			</div>
-		</c:if>
-		<c:if test="${not empty deluxeRoom}">
-			<a href = "display_roomContent"><img class="picture" src="resources/${deluxeRoom.room_image1}"/></a>	
-			<div class="flex">
-			<a href = "display_roomContent">
-				${deluxeRoom.room_type}&nbsp;[${deluxeRoom.room_name}]<br>
-				Late&nbsp;Check-in&nbsp;18시<br>
-				기준&nbsp;${deluxeRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${deluxeRoom.room_capacity}명<br><br>
-				숙박&nbsp;18:00&nbsp;부터<br>
-				판매가<br>
-				${deluxeRoom.room_price}원<br><br>
-			</a>
-			</div>
-		</c:if> --%>
+		<input type="hidden" id="addr" value="${map_addr}">
+	
+	<input type="hidden" id="hotelN" value="${hdto.h_name}">
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f24176f9573eaaf0fc762f8cebc19f7&libraries=services"></script>
+	<div id="map" style="width:1000px;height:500px;"></div>
+	<div id="clickLatlng"></div>
+	<!-- <script>
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+	var hotelName = $("#hotelN").val();
+	
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	// 주소로 좌표를 검색합니다
+	var addr = $("#addr").val();
+	geocoder.addressSearch(addr, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+		var message = result[0].y + ', '+result[0].x;
 		
-		<div class="booking border row">
-			 호텔위치지도
-		</div>
+		var resultDiv = document.getElementById('clickLatlng'); 
+		//resultDiv.innerHTML = message;
+		
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + hotelName + '</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+  	  } 
+	});    
+		function wishCheck1(h_num, u_num, location){
+			var child = window.open("wishRelease2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search","width=10, height=10");
+			window.parent.location.reload();
+			child.close();
+		}
+		function wishCheck2(h_num, u_num, location){
+			var child = window.open("wishCheck2?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search", "width=10, height=10");
+			window.parent.location.reload();
+			child.close();
+		}
+	</script> -->
+		
+		
 		<div class="booking border row">
 			편의시설 및 테마
 		</div>
@@ -357,20 +343,6 @@
 				</c:if>
 			</span>
 		</div>
-		
-		<%-- <div class = "column review border-bottom">
-			<span>
-				후기(${reviewCount})개
-			</span>
-			<span>
-				<a href="review?h_num=2">전체보기</a>
-			</span>
-			<br>
-			<span>
-				<i class="far fa-star"></i>${starAverage} / 5
-			</span>
-		</div> --%>
-		
 		<table align="center" width="80%" border="0">
 			<tr>
 				<td align="left">후기(${reviewCount}개)</td>

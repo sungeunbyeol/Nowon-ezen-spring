@@ -1,20 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../user_top.jsp" %>
 <%@ include file="../user_searchbar.jsp"%>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<form name="f9" id="checkForm" action="user_bookWriteform" method="post">
+	<input type="hidden" id="h_num" name="h_num" value="${hdto.h_num}">
 	<div style="width: 80%; margin: 0 auto;">
 		<div class="Roomcontent">
 		<div class="row border align-center" style="margin-top: 10px;">
 			[${Room.room_name}]${Room.room_type}
 		</div>
+		<div class="row_border_align-center" style="margin-top: 10px;">
+			<select id="room_num" name="room_num">
+			<c:forEach var="rdto" items="${roomList}">
+				<option value="${rdto.room_num}">
+					${rdto.room_num}
+					<c:if test="${rdto.room_booked eq 'n'}">
+						[예약가능]
+					</c:if>
+				</option>
+			</c:forEach>
+			</select>
+		</div>
 		<div class="row border align-center" style="margin-top: 10px;">
 			객실 최대 인원 ${Room.room_capacity}명
 		</div>
 		<div class="row border align-center" style="margin-top: 10px;">
-			${hdto.h_address}
+			${fn:replace(hdto.h_address, '@', ' ')}
 		</div>
 		
 			<div class="selectedImage">
@@ -33,13 +48,13 @@
 		</div>	
 		<div class="row border align-center" style="margin-top: 10px;">
 			${Room.room_price} 원 
-		</div>	
+		</div>
 			<div class="row align-center" style="justify-content:flex-end;">
 				<c:if test="${bookable_roomCount ne 0}">
-					<input type='button' name='booking' value='예약하기' onclick="location.href='user_bookWriteform?h_num=${hdto.h_num}&room_num=${Room.room_num}'" style="width: 80px;">
+					<input type='submit' value='예약하기'>
 				</c:if>
 				<c:if test="${bookable_roomCount eq 0}">
-					<input type='button' name='booking' value='매진' onclick="#" style="width: 80px;">
+					<input type='button' value='매진' onclick="#" style="width: 80px;">
 				</c:if>
 			</div>
 		<div style="margin-top: 10px;">
@@ -72,6 +87,7 @@
     		</div>
 		</div>
 	</div>
+</form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){

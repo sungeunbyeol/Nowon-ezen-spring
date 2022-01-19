@@ -1,10 +1,7 @@
 package com.ezen.project;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,11 +31,17 @@ public class MainController {
 		Date date = cal.getTime();
 		String tmr = sdf.format(date);
         
-		if(session.getAttribute("indate") == null && session.getAttribute("outdate") == null) {
+		session.setAttribute("inwon", 2);
+		
+		if((String)session.getAttribute("indate") == null && (String)session.getAttribute("outdate") == null) {
 			session.setAttribute("indate", today);
 			session.setAttribute("outdate", tmr);
 		}
       
+//		자동완성
+		List<String> allOptions = displayHotelMapper.allOptions();
+		session.setAttribute("allOptions", allOptions);
+
 //		메인 지역별 숙소 갯수
 		Map<String, Integer> map = displayHotelMapper.hotelList();
 		req.setAttribute("map", map);
@@ -48,6 +51,23 @@ public class MainController {
 	
 	@RequestMapping("/main")
 	public String main2(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date time = new Date();
+		String today = sdf.format(time);
+
+		Calendar cal = new GregorianCalendar();
+		cal.add(Calendar.DATE, 1);
+		Date date = cal.getTime();
+		String tmr = sdf.format(date);
+        
+		session.setAttribute("inwon", 2);
+		
+		if((String)session.getAttribute("indate") == null && (String)session.getAttribute("outdate") == null) {
+			session.setAttribute("indate", today);
+			session.setAttribute("outdate", tmr);
+		}
+		
 		Map<String, Integer> map = displayHotelMapper.hotelList();
 		req.setAttribute("map", map);
 		return "user_main";

@@ -84,19 +84,34 @@ public class UserMyPageMapper {
 		map.put("review_nickname", mr.getParameter("review_nickname"));
 		map.put("review_roomtype", mr.getParameter("room_type"));
 	    
+		sqlSession.update("checkReview", mr.getParameter("book_num"));
 		return sqlSession.insert("insertReview", map);
 	}
 	
+	public int editReview(MultipartHttpServletRequest mr, String review_image) throws Exception{
+		Map<String, String> map = new Hashtable<String, String>();
+		
+		map.put("review_num", mr.getParameter("review_num"));
+		map.put("review_contents", mr.getParameter("review_contents"));
+		map.put("review_star", mr.getParameter("star"));
+		map.put("review_image", review_image);
+	    
+		return sqlSession.update("editReview", map);
+	}
+	
+	public int deleteReview(int review_num) {
+		return sqlSession.delete("deleteReview", review_num);
+	}
+	
+	public ReviewDTO getReview(int review_num) {
+		return sqlSession.selectOne("getReview", review_num);
+	}
 	public List<ReviewDTO> review(int u_num){
 		return sqlSession.selectList("review", u_num);
 	}
 	
 	public UserDTO userList(int u_num){
 		return sqlSession.selectOne("userList", u_num);
-	}
-	
-	public int deleteReview(int review_num) {
-		return sqlSession.delete("deleteReview", review_num);
 	}
 	
 	public String getPicture(int review_num) {

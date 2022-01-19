@@ -1,17 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../user_top.jsp" %>
 <%@ include file="../user_searchbar.jsp"%>
 <script type="text/javascript">
+	function sleep(ms) {
+	  const wakeUpTime = Date.now() + ms;
+	  while (Date.now() < wakeUpTime) {}
+	}
 	function wishCheck1(h_num, u_num, location){
 		var child = window.open("wishRelease?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search", "width=10, height=10");
 		window.parent.location.reload();
+		sleep(300);
 		child.close();
 	}
 	function wishCheck2(h_num, u_num, location){
 		var child = window.open("wishCheck?h_num="+h_num+"&u_num="+u_num+"&location="+location, "search", "width=10, height=10");
 		window.parent.location.reload();
+		sleep(300);
 		child.close();
 	}
 </script>
@@ -36,24 +43,12 @@
 			<c:forEach var="hdto" items="${hotelList}">
 				<div class="column review border-bottom">	
 					<div class="row">
-						<a href="display_hotelContent?h_num=${hdto.h_num}"><img class="picture" src="resources/images/hotel/${hdto.h_image1}"/></a>
+						<a href="goNext()"><img class="picture" src="resources/images/hotel/${hdto.h_image1}"/></a>
 						<div class="flex column">
 							<span>
-							<%-- <c:forEach var="star" begin="0" end="4">
-								<c:if test="${ star < 3}">
-								<i class="fas fa-star"></i>
-								</c:if>
-								<c:if test="${ star >= 3}">
-								<i class="far fa-star"></i>
-								</c:if>
-							</c:forEach>
-							<c:set var="count" value="0"/> --%>
 							<label>
 								<i class="fas fa-star"></i>
 								<c:forEach var="average" items="${averageReview}">
-									<%-- <c:forEach var="star" begin="0" end="${average.value}">
-										<i class="fas fa-star"></i>
-									</c:forEach> --%>
 									<c:if test="${hdto.h_num eq average.key}">
 										${average.value}/5점
 									</c:if>
@@ -70,7 +65,7 @@
 								<label>${hdto.h_grade}성급</label>
 							</span>
 							<span>
-								${hdto.h_address}
+								${fn:replace(hdto.h_address, '@', ' ')}
 							</span>
 						</div>
 						<div>

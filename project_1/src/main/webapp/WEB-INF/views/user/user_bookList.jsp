@@ -34,9 +34,15 @@ $.ajax({
 			<c:if test="${bdto.book_status eq 'deny'}">
 				<font color="red">[예약취소]</font>
 			</c:if>
+			<c:if test="${bdto.book_status eq 'checkin'}">
+				<font color="skyblue">[체크인]</font>
+			</c:if>
+			<c:if test="${bdto.book_status eq 'checkout'}">
+				<font color="pink">[체크아웃]</font>
+			</c:if>
 		</td>
 		<td colspan="3">No.${num}</td>
-			<c:set var="num" value = "${num-1}"/>
+		<c:set var="num" value = "${num-1}"/>
 	</tr>
 	<tr>
 		<td rowspan="4" width="100">
@@ -62,7 +68,18 @@ $.ajax({
 			<form name="reviewbutton" method="POST" action="user_reviewform">
 				<input type="hidden" name="h_num" value="${bdto.h_num}">
 				<input type="hidden" name="room_num" value="${bdto.room_num}">
-				<input type="submit" value="리뷰쓰기">
+				<input type="hidden" name="book_num" value="${bdto.book_num}">
+				<c:if test="${bdto.book_status eq 'checkout'}">
+					<c:if test="${bdto.book_review == 0}">
+						<input type="submit" value="리뷰쓰기">
+					</c:if>
+					<c:if test="${bdto.book_review == 1}">
+						<button type="button">작성완료</button>
+					</c:if>
+				</c:if>
+				<c:if test="${bdto.book_status eq 'checkin'}">
+					C/I DAY!
+				</c:if>
 			</form>
 		</td>
 	</tr>

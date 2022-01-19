@@ -28,7 +28,7 @@ public class AdminController {
 	
 	//list에서 유저 목록보여주기
 	@RequestMapping("/admin_user_list")//
-	public ModelAndView adminUserListOk (HttpServletRequest req, 
+	public ModelAndView adminUserList (HttpServletRequest req, 
 			@RequestParam(required = false) String mode) {
 
 		ModelAndView mav = new ModelAndView();

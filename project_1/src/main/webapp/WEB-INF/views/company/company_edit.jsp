@@ -188,7 +188,18 @@
 					<input type = "hidden" name = "addr4" value="${fullAddr[3]}">
 					<button  type="button" onclick="checkall()">수정</button>
 				</td>
-			</tr> 
+			</tr>
 		</table>
-		</form> 
+		</form>
+		<form name = "changePassword" method="post" action = "company_update_password">
+			<table align="center" align="top">
+				<tr>
+					<td>
+						<a href="company_password_edit">비밀번호 변경</a>
+						<a href="company_logout">로그아웃</a>
+						<a href="company_delete">회원탈퇴</a>
+					</td>
+				</tr>
+			</table>
+		</form>		
 	<%@ include file="../bottom.jsp" %>

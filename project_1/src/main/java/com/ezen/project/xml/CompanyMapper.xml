@@ -12,7 +12,7 @@
 	<insert id="insertCompany" parameterType="CompanyDTO">
 		insert into project_companyaccount values(project_companyaccount_SEQ.nextval, 
 		#{c_ceo}, #{c_bnum}, #{c_password}, #{c_name}, #{c_tel}, #{c_email}, #{c_address}, #{a_level}, 
-		#{c_image}, sysdate)
+		#{c_image}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
 	</insert>
 	 
 	<update id="updateCompany" parameterType="CompanyDTO">

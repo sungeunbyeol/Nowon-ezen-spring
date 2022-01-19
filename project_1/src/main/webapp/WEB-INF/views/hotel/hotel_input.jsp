@@ -95,8 +95,8 @@ function getPostcode() {
 			return
 		}
 		
-		var h_address = f_hotelInput.h_address_1.value+f_hotelInput.h_extraAddress.value+' '+
-		f_hotelInput.h_address_2.value+' '+f_hotelInput.h_postcode.value
+		var h_address = f_hotelInput.h_address_1.value+'@'+f_hotelInput.h_extraAddress.value+'@'+
+		f_hotelInput.h_address_2.value+'@'+f_hotelInput.h_postcode.value
 		
 		document.f_hotelInput.h_address.value = h_address
 		document.f_hotelInput.submit()

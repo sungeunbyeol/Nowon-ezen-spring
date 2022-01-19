@@ -132,28 +132,27 @@ public class DisplayController {
 			req.setAttribute("countReview", countReview);
 			req.setAttribute("averageReview", averageReview);
 		}
-		
-//		main.jsp검색창에서 설정한 체크인/아웃 날짜들을 session에 넣어둠(user_bookWrite.jsp에서 사용) 
+		 
+		//		main.jsp검색창에서 설정한 체크인/아웃 날짜들을 session에 넣어둠(user_bookWrite.jsp에서 사용) 
 		HttpSession session = req.getSession();
-		session.setAttribute("indate", params.get("indate"));
-		session.setAttribute("outdate", params.get("outdate"));
 		
-//		main.jsp검색창에서 설정한 체크인/아웃 날짜들을 session에 넣어둠(user_bookWrite.jsp에서 사용) 
 		if(params.get("indate") != null && params.get("outdate") != null ) {
 			session.setAttribute("indate", params.get("indate"));
 			session.setAttribute("outdate", params.get("outdate"));
 		}else {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date time = new Date();
-			String today = sdf.format(time);
+			if((String)session.getAttribute("indate") == null && (String)session.getAttribute("outdate") == null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date time = new Date();
+				String today = sdf.format(time);
 
-	        Calendar cal = new GregorianCalendar();
-	        cal.add(Calendar.DATE, 1);
-	        Date date = cal.getTime();
-	        String tmr = sdf.format(date);
-					
-			session.setAttribute("indate", today);
-			session.setAttribute("outdate", tmr);
+		        Calendar cal = new GregorianCalendar();
+		        cal.add(Calendar.DATE, 1);
+		        Date date = cal.getTime();
+		        String tmr = sdf.format(date);
+						
+				session.setAttribute("indate", today);
+				session.setAttribute("outdate", tmr);
+			}
 		}
 		session.setAttribute("inwon", params.get("inwon"));
 		
@@ -215,6 +214,7 @@ public class DisplayController {
 		HttpSession session = req.getSession();
 		LoginOkBean loginOkBean = (LoginOkBean)session.getAttribute("loginOkBean");
 		List<HotelDTO> hotelList = (List<HotelDTO>)session.getAttribute("hotelList");
+		
 		try{
 			//회원로그인시 u_num으로 확인
 			int u_num = loginOkBean.getU_num();
@@ -229,12 +229,59 @@ public class DisplayController {
 //			비회원은 u_num에서 error발생 위시리스트 체크 필요없음
 			HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
 			req.setAttribute("hdto", hdto);
-		};
+		}
 		
 		
 //		호텔에 대한 리뷰 리스트
 		List<ReviewDTO> reviewList = displayHotelMapper.reviewList(h_num);
 		
+//		비교할 오늘내일날짜 내려주기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date time = new Date();
+		String today = sdf.format(time);
+		Calendar cal = new GregorianCalendar();
+		cal.add(Calendar.DATE, 1);
+		Date date = cal.getTime();
+		String tmr = sdf.format(date);
+		
+//      맵에 쓸 주소값
+		HotelDTO hdtoForAddress = null;
+		
+		try{
+			//회원로그인시 u_num으로 확인
+			int u_num = loginOkBean.getU_num();
+			for(HotelDTO hdto : hotelList) {
+				if(hdto.getH_num() == h_num) {
+					hdto.setWishList(displayHotelMapper.isWishCheck(h_num, u_num));
+					hdtoForAddress = hdto;
+					req.setAttribute("hdto", hdto);
+				}
+			}
+		}catch(Exception e) {
+//	         비회원은 u_num에서 error발생 위시리스트 체크 필요없음
+			HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
+			hdtoForAddress = hdto;
+			req.setAttribute("hdto", hdto);
+		}
+	      
+		String addr = "";
+		String h_address = hdtoForAddress.getH_address();
+
+		for(int i=0; i<h_address.length(); i++) {
+			String letter = String.valueOf(h_address.charAt(i));
+			
+			if(!letter.equals("@")) {
+				addr += letter;
+			} else {
+				break;
+			}
+		}
+		
+		req.setAttribute("map_addr", addr);
+		
+		req.setAttribute("today", today);
+		req.setAttribute("tmr", tmr);
+
 		req.setAttribute("reviewCount", reviewCount);
 		req.setAttribute("starAverage", starAverage);
 		req.setAttribute("twinRoom", twinRoom);
@@ -249,22 +296,59 @@ public class DisplayController {
 	
 //	h_num과 room_num에 일치하는 결과 찾기
 	@RequestMapping("/display_roomContent")
-	public String roomContent(HttpServletRequest req, @RequestParam int room_num, int h_num) {
+	public String roomContent(HttpServletRequest req, @RequestParam(required=false) String room_code, 
+			int h_num, String indate, String outdate) {
 //		호텔정보
 		HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
-		RoomDTO Room = displayHotelMapper.typeRoomDetail(room_num, h_num); //룸번호 추가
+		System.out.println("room_code : "+room_code);
+		List<RoomDTO> roomList = hotelMapper.listRoomInGroupByRoomCode(room_code);
+		RoomDTO room = roomList.get(0);
+		
+		HttpSession session = req.getSession();
+		
+		String Sindate = null, Soutdate = null;
+		if(indate == null && outdate == null) {
+			Sindate = (String)session.getAttribute("indate");
+			Soutdate = (String)session.getAttribute("outdate");
+		}
+		else {
+			Sindate = indate;
+			Soutdate = outdate;
+			session.setAttribute("indate", Sindate);
+			session.setAttribute("outdate", Soutdate);
+		}
+		
+		Map<String, String> map = new Hashtable<>();
+		map.put("book_indate", Sindate);
+		map.put("book_outdate", Soutdate);
+		
+		for(RoomDTO rdto : roomList) {
+			map.put("room_num", String.valueOf(rdto.getRoom_num()));
+			rdto.setRoom_booked(displayHotelMapper.isBookedRoom(map));
+		}
+		
+		List<RoomDTO> roomList2 = new ArrayList<RoomDTO>();
+		for(RoomDTO rdto : roomList) {
+			if(rdto.getRoom_booked().equals("n")) {
+				roomList2.add(rdto);
+			}
+		}
+		
+		roomList = roomList2;
 		
 		req.setAttribute("hdto", hdto);
-		req.setAttribute("Room", Room);
+		req.setAttribute("Room", room);
+		req.setAttribute("roomList", roomList);
 		
 		
-		Map<String, String> map = new Hashtable<String, String>();
+		Map<String, String> map2 = new Hashtable<String, String>();
 		
-		map.put("book_indate", "2022-02-04");
-		map.put("book_outdate", "2022-02-07");
+		map2.put("book_indate", (String)session.getAttribute("indate"));
+		map2.put("book_outdate", (String)session.getAttribute("outdate"));
+		map2.put("room_code", room.getRoom_code());
 		
-		int max_roomCount = hotelMapper.countRoomOnGroup(Room.getRoom_code());
-		List<Integer> bookedRoom = displayHotelMapper.getBookedRoomCount(map);
+		int max_roomCount = hotelMapper.countRoomOnGroup(room.getRoom_code());
+		List<Integer> bookedRoom = displayHotelMapper.getBookedRoomCount(map2);
 		
 		int booked_roomCount = bookedRoom.size();
 		
@@ -283,5 +367,33 @@ public class DisplayController {
 		req.setAttribute("bookable_roomCount", bookable_roomCount);
 		
 		return "display/display_roomContent";
+	}
+
+	@RequestMapping(value="display_selectDate")
+	public String selectDate(HttpServletRequest req, @RequestParam(required = false) Map<String, String> params) {
+		
+		req.setAttribute("room_code", params.get("room_code"));
+		req.setAttribute("h_num", params.get("h_num"));
+		
+		return "display/display_selectDate";
+	}
+	
+	@RequestMapping("/review")
+	public String review(HttpServletRequest req, @RequestParam int h_num) {
+		
+//		호텔에 대한 리뷰 리스트
+		List<ReviewDTO> reviewList = displayHotelMapper.reviewList(h_num);
+		
+//		호텔 리뷰 갯수
+		int reviewCount = displayHotelMapper.reviewCount(h_num);
+		
+//		호텔 별점 평균
+		double starAverage = displayHotelMapper.reviewStar(h_num);
+		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+		
+		req.setAttribute("reviewCount", reviewCount);
+		req.setAttribute("reviewList", reviewList);
+		req.setAttribute("starAverage", starAverage);
+		return "board/review";
 	}
 }

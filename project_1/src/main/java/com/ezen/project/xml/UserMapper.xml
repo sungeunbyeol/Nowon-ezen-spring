@@ -8,7 +8,7 @@
 	<insert id="insertUser" parameterType="UserDTO">
 		insert into project_useraccount values(project_useraccount_SEQ.nextval, 
 		#{u_name}, #{u_password}, #{u_email}, #{u_birth}, #{u_tel}, #{a_level}, #{u_nickname}, #{u_point}, 
-		#{u_black}, sysdate)
+		#{u_black}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
 	</insert>
 	
 	<update id="updateUser" parameterType="UserDTO">

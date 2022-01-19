@@ -99,8 +99,9 @@
 			f_hotelEdit.h_notice.focus()
 			return
 		}
-		var h_address = f_hotelEdit.h_postcode.value+'@'+f_hotelEdit.h_address_1.value+'@'+
-		f_hotelEdit.h_address_2.value+'@'+f_hotelEdit.h_extraAddress.value
+		
+		var h_address = f_hotelEdit.h_address_1.value+'@'+f_hotelEdit.h_extraAddress.value+'@'+
+		f_hotelEdit.h_address_2.value+'@'+f_hotelEdit.h_postcode.value
 		
 		document.f_hotelEdit.h_address.value = h_address
 		document.f_hotelEdit.submit()
@@ -197,11 +198,11 @@
 			<td>호텔 주소</td>
 			<td>
 				<c:set var="fullAddr" value="${fn:split(hdto.h_address,'@')}"/>
-				<input type="text" id="h_postcode" placeholder="우편번호" value="${fullAddr[0]}" readOnly>
+				<input type="text" id="h_postcode" placeholder="우편번호" value="${fullAddr[3]}" readOnly>
 				<input type="button" id="h_postcodeBtn" onclick="getPostcode()" value="검색"><br>
-				<input type="text" id="h_address_1" placeholder="주소 (우편번호를 검색해 주세요)" value="${fullAddr[1]}" style="width:360px" readOnly><br>
+				<input type="text" id="h_address_1" placeholder="주소 (우편번호를 검색해 주세요)" value="${fullAddr[0]}" style="width:360px" readOnly><br>
 				<input type="text" id="h_address_2" placeholder="상세 주소 (직접 입력)" value="${fullAddr[2]}">
-				<input type="text" id="h_extraAddress" placeholder="참고항목" value="${fullAddr[3]}" readOnly>
+				<input type="text" id="h_extraAddress" placeholder="참고항목" value="${fullAddr[1]}" readOnly>
 			</td>
 		</tr>
 		<tr>

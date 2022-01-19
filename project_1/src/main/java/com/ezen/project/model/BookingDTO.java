@@ -17,6 +17,7 @@ public class BookingDTO {
 	private String book_tel;
 	private String book_roomtype;
 	private int book_extra;
+	private int book_review;
 	
 	// DB에 없는 변수
 	private String h_name;
@@ -167,5 +168,11 @@ public class BookingDTO {
 	}
 	public void setRoom_count(int room_count) {
 		this.room_count = room_count;
+	}
+	public int getBook_review() {
+		return book_review;
+	}
+	public void setBook_review(int book_review) {
+		this.book_review = book_review;
 	}
 }

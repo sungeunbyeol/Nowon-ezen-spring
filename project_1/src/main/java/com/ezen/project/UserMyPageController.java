@@ -1,5 +1,6 @@
 package com.ezen.project;
 import java.io.File;
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -115,13 +116,14 @@ public class UserMyPageController {
 	
 	//리뷰쓰는 화면으로
 	@RequestMapping("/user_reviewform")
-	public String userReviewform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
+	public String userReviewform(HttpServletRequest req, @RequestParam int h_num, int room_num, int book_num) {
 		HttpSession session = req.getSession();
 		LoginOkBean loginokbean = (LoginOkBean)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
 		String review_nickname = loginokbean.getU_nickname();
 		String room_type = userMyPageMapper.getRoomType(room_num);
 		
+		req.setAttribute("book_num", book_num);
 		req.setAttribute("room_type", room_type);
 		req.setAttribute("u_num", u_num);
 		req.setAttribute("h_num", h_num);
@@ -146,8 +148,10 @@ public class UserMyPageController {
 		int res = userMyPageMapper.insertReview(mr, review_image);
 		
 		if(res > 0) {
-			File file = new File(upPath+"\\review", review_image);
-			mf.transferTo(file);
+			if(review_image != null) {
+				File file = new File(upPath+"\\review", review_image);
+				mf.transferTo(file);
+			}
 			
 			req.setAttribute("msg", "리뷰 등록 성공!! 리뷰 리스트 페이지로 이동합니다.");
             req.setAttribute("url", "user_reviewList");
@@ -156,6 +160,70 @@ public class UserMyPageController {
 		return "message";
 	}
 	
+	//	리뷰수정페이지
+	@RequestMapping("/editReview")
+	public String editReview(HttpServletRequest req, @RequestParam int review_num) {
+		ReviewDTO rdto = userMyPageMapper.getReview(review_num);
+		req.setAttribute("rdto", rdto);
+		req.setAttribute("upPath", upPath);
+		return "user/user_reviewEdit";
+	}
+	
+//	리뷰수정확인페이지
+	@RequestMapping("/user_reviewEditOk")
+	public String editReviewOk(HttpServletRequest req, @RequestParam String pastImage) throws Exception{
+		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
+		MultipartFile mf = mr.getFile("newImage");
+		
+		String newImage = mf.getOriginalFilename();
+		
+		if(newImage != null && !newImage.trim().equals("")) {
+			pastImage = UUID.randomUUID().toString()+"_"+newImage;
+		}
+		
+		int res = userMyPageMapper.editReview(mr, pastImage);
+		
+		if(res > 0) {
+			File file = new File(upPath+"\\reviewImage", pastImage);
+			mf.transferTo(file);
+			
+			req.setAttribute("msg", "리뷰 수정 성공!! 리뷰 리스트 페이지로 이동합니다.");
+            req.setAttribute("url", "user_reviewList");
+		}
+		
+		return "message";
+	}
+
+	//리뷰 삭제 버튼 눌렀을 때
+	@RequestMapping("/deleteReview")
+	   public String reviewdelete(HttpServletRequest req, @RequestParam int review_num) {
+	      
+	      String msg = null;
+	      String picture = userMyPageMapper.getPicture(review_num);
+	      int res = userMyPageMapper.deleteReview(review_num);
+	      
+	      if(res > 0) {
+	         try {
+	        	 File file = new File(upPath+"\\review", picture);
+	        	 
+	        	 if(file.exists()) {
+	        		 file.delete();
+	        		 msg = "리뷰삭제(이미지삭제)";
+	        	 }else {
+	        		 msg = "리뷰삭제(이미지남음)";
+	        	 }
+	    	  }catch(Exception e) {
+	    		  msg = "리뷰삭제";
+	    	  }
+	      }else {
+	    	  msg = "리뷰삭제 실패";
+	      }
+	      
+	      req.setAttribute("msg", msg);
+	      req.setAttribute("url", "user_reviewList");
+	      return "message";
+	   }
+
 	//내가쓴 리뷰 페이지로 이동
 	@RequestMapping("/user_reviewList")
 	public ModelAndView user_reviewList(HttpServletRequest req, @RequestParam(required = false) String pageNum) {
@@ -216,34 +284,6 @@ public class UserMyPageController {
 		mav.setViewName("user/user_reviewList");
 		return mav;
 	}
-	
-	//리뷰 삭제 버튼 눌렀을 때
-	@RequestMapping("/deleteReview")
-	   public String reviewdelete(HttpServletRequest req, @RequestParam int review_num) {
-	      
-	      String msg = null;
-	      String picture = userMyPageMapper.getPicture(review_num);
-	      int res = userMyPageMapper.deleteReview(review_num);
-	      
-	      if(res > 0) {
-	         File file = new File(upPath+"\\review", picture);
-	         
-	         if(file.exists()) {
-	            file.delete();
-	            msg = "리뷰삭제(이미지삭제)";
-	         }
-	         else {
-	            msg = "리뷰삭제(이미지남음)";
-	         }
-	      }
-	      else {
-	         msg = "리뷰삭제 실패";
-	      }
-	      
-	      req.setAttribute("msg", msg);
-	      req.setAttribute("url", "user_reviewList");
-	      return "message";
-	   }
 	
 	//포인트페이지로 이동할 때
 	@RequestMapping("/user_pointList")
@@ -396,7 +436,6 @@ public class UserMyPageController {
 	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
 		HotelDTO hdto = displayHotelMapper.hotelDetail(h_num);
 		RoomDTO Room = displayHotelMapper.typeRoomDetail(room_num, h_num);
-		
 //		회원, 비회원 구분
 		HttpSession session = req.getSession();
 		LoginOkBean loginInfo = (LoginOkBean)session.getAttribute("loginOkBean");
@@ -499,13 +538,18 @@ public class UserMyPageController {
 		int u_num = loginInfo.getU_num();
 		int res = displayHotelMapper.deleteBook(book_num, u_num);
 		if(res > 0) {
-			req.setAttribute("msg", "예약이 취소되었습니다");
+			req.setAttribute("msg", "예약이 취소되었습니다. 환불처리에 2~3일 정도 소요 될 수 있습니다");
 			req.setAttribute("url", "user_bookList");
 		} else {
-			req.setAttribute("msg", "취소에 실패했습니다. /n다시 시도해주세요.");
+			req.setAttribute("msg", "취소에 실패했습니다. 다시 시도해주세요.");
 			req.setAttribute("url", "user_bookCancel?room_price="+room_price);
 		}
 		return "message";
 	}
 	
+//	비밀번호 삭제 전 확인
+	@RequestMapping("/user_userCheck")
+	public String userCheck(HttpServletRequest req) {
+		return "user/user_passwordCheck";
+	}
 }

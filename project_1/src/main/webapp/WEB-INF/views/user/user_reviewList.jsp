@@ -10,7 +10,7 @@
 		<caption><b>내가 쓴 리뷰 목록</b></caption>
 	<c:if test="${empty listReview}">
 		<tr>
-			<td>작성하신 리뷰가 없습니다.</td>
+			<td align="center">작성하신 리뷰가 없습니다.</td>
 		</tr>
 	</c:if>
 	
@@ -25,7 +25,7 @@
 				<td><i class="fas fa-star"></i>${rdto.review_star} / 5점</td>
 				<td><font color="gray">방 타입: </font>${rdto.review_roomtype}</td>
 				<td><font color="gray">작성일: </font>${rdto.review_joindate}</td>
-				<td><a href="deleteReview?review_num=${rdto.review_num}">삭제</a></td>
+				<td><a href="editReview?review_num=${rdto.review_num}">수정</a></td>
 			</tr>
 			<tr>
 				<td colspan="5" valign="top"><font color="gray">리뷰 내용: </font><br>${rdto.review_contents}</td>
@@ -33,10 +33,13 @@
 			<c:if test="${not empty rdto.review_image}">
 				<tr>
 					<td colspan="5">
-						<img class="picture" src="resources/images/review/${rdto.review_image}" width="150" height="120"/>
+						<img class="picture" src="resources/images/review/${rdto.review_image}"/>
 					</td>
 				</tr>
 			</c:if>
+			<tr>
+				<td colspan="5" align = "right"><a href="deleteReview?review_num=${rdto.review_num}">삭제</a></td>
+			</tr>
 			<c:set var="num" value="${num-1}"/>
 			
 		</c:forEach>

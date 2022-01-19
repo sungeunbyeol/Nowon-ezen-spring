@@ -59,7 +59,7 @@
 		});
 	});
 </script>
-<form name="f" action="display_hotelSearchOk" method="post" id="mForm">
+<form name="f_searchOk" action="display_hotelSearchOk" method="post" id="mForm">
 <table align="center" width="100%" height="200" bgcolor="pink">
 	<tr>
 		<td>
@@ -73,7 +73,12 @@
 				<tr align="center">
 					<td rowspan="3">
 						지역 혹은 숙소 입력<br>
-						<input type="text" name="condition" placeholder="대잔치 검색" size = "25">
+						<input type="text" name="condition" id="location" placeholder="전체 검색" size="25" list="options">
+						<datalist id="options">
+							<c:forEach var="option" items="${sessionScope.allOptions}">
+								<option value="${option}">
+							</c:forEach>
+						</datalist>
 					</td>
 					<td width="20">
 						체크인 
@@ -97,7 +102,7 @@
 					<td rowspan="3">
 						<br>
 						<input type="submit" value="검색">
-					</td>	
+					</td>
 				</tr>
 			</table>
 		</td>

@@ -2,16 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="user_top.jsp"%>
-<%@ include file="user_searchbar.jsp"%>			
+<%@ include file="user_searchbar.jsp"%>
+<script type="text/javascript">
+function goNext(location) {
+	document.getElementById("location").value = location;
+	document.f_searchOk.submit();
+}
+</script>		
 <table align="center" width="65%" height="800" bgcolor="skyblue">			
 	<tr align="center">
 		<td>
-			<a href="display_hotelSearchOk?condition=seoul">서울(각 지역사진은 각각 이미지 추가)</a><br>
+			<a href="javascript:goNext('서울')">서울(각 지역사진은 각각 이미지 추가)</a><br>
 			지역사진<br>
 			<c:out value="${map['서울']}"/>개의 숙소
 		</td>
 		<td>
-			<a href="display_hotelSearchOk?condition=pusan">부산(각 지역사진은 각각 이미지 추가)</a><br>
+			<a href="javascript:goNext('부산')">부산(각 지역사진은 각각 이미지 추가)</a><br>
 			지역사진<br>
 			<c:out value="${map['부산']}"/>개의 숙소
 		</td>

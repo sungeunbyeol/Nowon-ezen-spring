@@ -12,26 +12,32 @@
 		<tr>
 			<td style="width:120px;">비밀번호</td>
 			<td>
-				<input type="text" name="u_password" placeholder="비밀번호를 입력해주세요." required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="setCustomValidity('')">
+				<input type="password" name="u_password" placeholder="비밀번호를 입력해주세요." required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="setCustomValidity('')">
 			</td>
 		</tr>
 		<tr>
 			<td style="width:120px;">비밀번호 확인</td>
 			<td>
-				<input type="text" name="u_password2" placeholder="비밀번호를 입력해주세요." required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="setCustomValidity('')">
+				<input type="password" name="u_password2" placeholder="비밀번호를 입력해주세요." required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="setCustomValidity('')">
 			</td>
 		</tr>
 		<tr> 
 			<td colspan="2" align="center">
+				<input type="hidden" name="pre_password" value="${loginOkBean.u_password}">
 				<input type="button" value="비밀번호 변경" 
 				style="height:40px;width:200px;border:0; border-radius:3px;background:#edf2ff;"
-				onclick = "check()"/> 
+				onclick = "check()"/>
 			</td> 
 		</tr>
 	</table>
 </form> 
 <script>
 function check(){
+	if(f_userpassword_edit.u_password.value == f_userpassword_edit.pre_password.value){
+		alert("기존 비밀번호를 사용할 수 없습니다")
+		f_userJoin_check.u_password.focus()
+		return
+	}
 	if (f_userpassword_edit.u_password.value!=f_userpassword_edit.u_password2.value){
 			alert("비밀번호가 일치하지 않습니다.")
 			f_userJoin_check.u_password2.focus()
