@@ -6,7 +6,7 @@ public class UserListDTO {
 	private String name;
 	private String email;
 	private String password;
-	private String brithday;
+	private String birthday;
 	private String tel;
 	private String address;
 	private String nickname;
@@ -37,11 +37,11 @@ public class UserListDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getBrithday() {
-		return brithday;
+	public String getBirthday() {
+		return birthday;
 	}
-	public void setBrithday(String brithday) {
-		this.brithday = brithday;
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 	public String getTel() {
 		return tel;

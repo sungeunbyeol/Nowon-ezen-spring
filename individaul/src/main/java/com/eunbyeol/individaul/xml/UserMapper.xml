@@ -4,11 +4,13 @@
 
 <mapper namespace="com.eunbyeol.individaul.xml.xml.UserMapper">
 
-<insert id="insertUser" parameterType="UserListDTO">
-	insert into user_list values(#{user_no},#{name}, #{email}, #{password},
-	#{address}, #{nickname}, #{user_type}, sysdate)
-</insert>
-
-
+	<insert id="insertUser" parameterType="UserListDTO">
+		insert into user_list values(#{user_no},#{name}, #{email}, #{password},
+		#{address}, #{nickname}, #{user_type}, sysdate)
+	</insert>
+	
+	<select id="insertUser" resultType="UserListDTO" parameterType="String">
+		SELECT * FROM USER_LIST WHERE email=#{email}  
+	</select>
 
 </mapper>

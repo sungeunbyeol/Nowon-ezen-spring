@@ -1,14 +1,14 @@
 package com.eunbyeol.individaul;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.eunbyeol.individaul.model.UserListDTO;
 import com.eunbyeol.individaul.service.UserMapper;
 
 @Controller
@@ -17,58 +17,70 @@ public class UserController {
 	@Autowired
 	UserMapper userMapper;
 	
-	@RequestMapping(value="/")
-	public ModelAndView Index() {
-		return new ModelAndView("index");
-	}
-	
-	@RequestMapping("/index")
-	public String Main() {
-		return "index";
-	}
-
-	//회원가입 페이지로
-	@RequestMapping("/joinform")
-	public String Joinform() {
-		return "user/joinform";
-	}
-	
 	//이메일 중복체크 
 	@RequestMapping("/checkUseremail")
-	public String CheckUserEmail(HttpServletRequest req, Map<String, String> map) {
+	public String CheckUserEmail(HttpServletRequest req, @RequestParam String email, String password,
+			String password2, String name, String nicname, String tel, String birthday) {
 		
-		if(map.equals("")) {
+		if(email.equals("")) {
 			req.setAttribute("msg", "이메일을 입력해주세요");
 			req.setAttribute("url", "joinform");
 			return "message";
 		}
-		boolean isUser = 
-		
-		return "message";
+		boolean checkuser = userMapper.isUserCheck(email);
+		if(checkuser) {
+			req.setAttribute("msg", "중복된 이메일 입니다.");
+			req.setAttribute("url", "joinform");
+		}else {
+			HttpSession session = req.getSession();
+			session.setAttribute("eamil", email);
+			session.setAttribute("password", password);
+			session.setAttribute("password2", password2);
+			session.setAttribute("name", name);
+			session.setAttribute("nicname", nicname);
+			session.setAttribute("tel", tel);
+			session.setAttribute("birthday", birthday);
+			
+			req.setAttribute("msg", "사용가능한 이메일입니다.");
+			req.setAttribute("url", "joincheck");
+		}
+		return "message";		
 	}
 	
-	//이메일 중복체크 하고 넘어가는 회원가입 페이지
+	//이메일 중복체크 했으면 joincheck(중복확인 된 페이지)
 	@RequestMapping("/joincheck")
-	public String JoinCheck() {
+	public String JoinCheck(String email) {
 		return "user/joincheck";
 	}
 	
 	//회원가입이 성공하면
 	@RequestMapping("/userjoinok")
-	public String Joincheck() {
-		return "user/loginform";
+	public String Joincheck(HttpServletRequest req, UserListDTO dto) {
+		int res = userMapper.insertUser(dto);
+		if(res>0) {
+			req.setAttribute("msg", "회원가입을 축하드립니다.");
+			req.setAttribute("url", "index");
+		}else {
+			req.setAttribute("msg", "회원가입에 실패했습니다. 다시 시도해주세요.");
+			req.setAttribute("url", "joinform");
+		}
+		return "message";
 	}
+	
+	//아이디 찾기
+	
+	
+	//비번찾기
+	
+	
+	//로그아웃
+	
 
-	//로그인 페이지
-	@RequestMapping("/loginform")
-	public String Loginform() {
-		return "user/loginform";
-	}
+	//회원탈퇴
 	
-	//QnA페이지
-	@RequestMapping("/qnaboard")
-	public String Qnaboard() {
-		return "user/qnaboard";
-	}
 	
+
+	
+	
+
 }

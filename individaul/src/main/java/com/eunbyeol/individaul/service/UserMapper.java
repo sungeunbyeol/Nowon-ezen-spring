@@ -17,7 +17,15 @@ public class UserMapper {
 		return sqlSession.insert("insertUser", dto);
 	}
 	
-	
+	//이메일 중복 값 있는지 확인하기
+	public boolean isUserCheck(String email) {
+		UserListDTO dto = sqlSession.selectOne("checkuser", email);
+		if(dto!=null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	
 }
