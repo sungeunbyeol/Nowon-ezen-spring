@@ -20,7 +20,7 @@ public class UserController {
 	//이메일 중복체크 
 	@RequestMapping("/checkUseremail")
 	public String CheckUserEmail(HttpServletRequest req, @RequestParam String email, String password,
-			String password2, String name, String nicname, String tel, String birthday) {
+			String password2, String name, String nickname, String tel, String birthday) {
 		
 		if(email.equals("")) {
 			req.setAttribute("msg", "이메일을 입력해주세요");
@@ -37,7 +37,7 @@ public class UserController {
 			session.setAttribute("password", password);
 			session.setAttribute("password2", password2);
 			session.setAttribute("name", name);
-			session.setAttribute("nicname", nicname);
+			session.setAttribute("nicname", nickname);
 			session.setAttribute("tel", tel);
 			session.setAttribute("birthday", birthday);
 			
@@ -67,14 +67,16 @@ public class UserController {
 		return "message";
 	}
 	
+	
 	//아이디 찾기
 	
 	
 	//비번찾기
 	
 	
-	//로그아웃
+	//회원수정
 	
+
 
 	//회원탈퇴
 	

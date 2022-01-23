@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapper namespace="com.eunbyeol.individaul.LoginMapper">
+
+	<select id="checkLogin" parameterType="String" resultType="UserListDTO">
+		select * from user_list where email = #{email}
+	</select>
+
+</mapper>

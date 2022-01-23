@@ -19,6 +19,7 @@ public class LoginOkBean {
 	private int u_point;
 	private String u_black;
 	private String u_joindate;
+	
 	public int getU_num() {
 		return u_num;
 	}

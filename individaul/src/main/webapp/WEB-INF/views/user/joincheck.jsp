@@ -19,37 +19,37 @@
 			
 			if (f_Joincheck.email.value==""){
 				alert("아이디를 입력하셔야 합니다.")
-				f_userJoin_check.u_email.focus() 
+				f_Joincheck.email.focus() 
 				return
 			}
 			if (f_Joincheck.password.value==""){
 				alert("비밀번호를 입력하셔야 합니다.")
-				f_userJoin_check.u_password.focus()
+				f_Joincheck.password.focus()
 				return
 			}
 			if (f_Joincheck.password.value!=f_Joincheck.password2.value){
 				alert("비밀번호가 일치하지 않습니다.")
-				f_userJoin_check.u_password2.focus()
+				f_Joincheck.password2.focus()
 				return
 			}
 			if (f_Joincheck.name.value==""){
 				alert("이름을 입력하셔야 합니다.")
-				f_userJoin_check.u_name.focus()
+				f_Joincheck.name.focus()
 				return
 			} 
 			if (f_Joincheck.nickname.value==""){
 				alert("닉네임을 입력하셔야 합니다.")
-				f_userJoin_check.u_nickname.focus()
+				f_Joincheck.nickname.focus()
 				return
 			}
 			if (f_Joincheck.tel.value==""){
 				alert("전화번호를 입력하셔야 합니다.")
-				f_userJoin_check.u_tel.focus()
+				f_Joincheck.tel.focus()
 				return
 			}
 			if (f_Joincheck.birthday.value==""){
 				alert("생년월일을 입력하셔야 합니다.")
-				f_userJoin_check.u_birth.focus()
+				f_Joincheck.birthday.focus()
 				return
 			}
 
