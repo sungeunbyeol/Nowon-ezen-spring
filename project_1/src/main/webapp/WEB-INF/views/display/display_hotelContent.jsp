@@ -20,14 +20,6 @@
 		sleep(300);
 		child.close();
 	}
-	function checkNextPage(room_code, h_num, indate, today, tmr, outdate){
-			if(indate == today && outdate == tmr){
-				window.open("display_selectDate?room_code="+room_code+"&h_num="+h_num, "date", "width=350, height=220");
-			}else{
-				location.href="display_roomContent?room_code="+room_code+"&h_num="+h_num;
-			}
-			
-		}
 	
  	$(document).ready(function(){
  		$("#mForm").submit(function(){
@@ -67,17 +59,17 @@
 <%@ include file="../user_searchbar.jsp" %>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
-	<div style="width: 80%; margin: 0 auto;">
+	<div style="width: 1000; margin: 0 auto;">
 		<div class="booking">
 			<div class="selectedImage">
-				<img src="resources/no1.gif" id="selectedImage">
+				<img src="resources/images/hotel/${hdto.h_image1}" id="selectedImage">
 			</div>
-			<div class="row justify-between images" id="bookingImages">
-				<img src="resources/images/hotel/${hdto.h_image1}">
-				<img src="resources/images/hotel/${hdto.h_image2}">
-				<img src="resources/images/hotel/${hdto.h_image3}">
-				<img src="resources/images/hotel/${hdto.h_image4}">
-				<img src="resources/images/hotel/${hdto.h_image5}">
+			<div style="margin-top:2px;" class="row justify-between images" id="bookingImages">
+				<img style="width:19.5%;"src="resources/images/hotel/${hdto.h_image1}">
+				<img style="width:19.5%;"src="resources/images/hotel/${hdto.h_image2}">
+				<img style="width:19.5%;"src="resources/images/hotel/${hdto.h_image3}">
+				<img style="width:19.5%;"src="resources/images/hotel/${hdto.h_image4}">
+				<img style="width:19.5%;"src="resources/images/hotel/${hdto.h_image5}">
 			</div>
 		</div>
 			<!-- 추가내용 -->
@@ -120,118 +112,106 @@
 		<div>
 			${fn:replace(hdto.h_address, '@', ' ')}
 		</div>
-		<c:if test="${empty twinRoom}">
-			<h2 align="center">등록된 방이 없습니다</h2>
-		</c:if>
 		<c:if test="${not empty twinRoom}">
+		<div style="text-align: center; font-weight:bold;">TWIN ROOM</div>
 			<c:forEach var="tRoom" items="${twinRoom}">
-				<table align="center" width = "80%">
+				<c:if test="${tRoom.room_capacity+2 >= sessionScope.inwon}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
+				onclick="location.href='display_roomContent?room_code=${tRoom.room_code}&h_num=${hdto.h_num}' " width="800">
 					<tr>
-						<td rowspan="7">
-							<a href="javascript:checkNextPage('${tRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
-								<img class="picture" src="resources/images/room/${tRoom.room_image1}" width="160" height="90"/>
-							</a>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${tRoom.room_image1}" width="160" height="90"/>
 						</td>
-					</tr>
-					<tr>
-						<td>${tRoom.room_type}&nbsp;[${tRoom.room_name}]</td>
+						<td width="50%">${tRoom.room_type}&nbsp;[${tRoom.room_name}]</td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Late&nbsp;Check-in&nbsp;18시</td>
+						<td align="right">판매가</td>
 					</tr>
 					<tr>
 						<td>기준&nbsp;${tRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${tRoom.room_capacity + 2}명</td>
+						<td align="right">${tRoom.room_price}원</td>					
 					</tr>
 					<tr>
 						<td>숙박&nbsp;18:00&nbsp;부터</td>
-					</tr>
-					<tr>
-						<td align="right">판매가</td>
-					</tr>
-					<tr>
-						<td align="right">${tRoom.room_price}원</td>
-					</tr>
-				</table>
-			</c:forEach>
-		</c:if>
-		
-		<c:if test="${empty doubleRoom}">
-			<h2 align="center">등록된 방이 없습니다</h2>
-		</c:if>
-		<c:if test="${not empty doubleRoom}">
-			<c:forEach var="dbRoom" items="${doubleRoom}">
-				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon}">
-				<table align="center" width = "80%">
-					<tr>
-						<td rowspan="7">
-							<a href="javascript:checkNextPage('${dbRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
-								<img class="picture" src="resources/images/room/${dbRoom.room_image1}" width="160" height="90"/>
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td>${dbRoom.room_type}&nbsp;[${dbRoom.room_name}]</td>
-					</tr>
-					<tr>
-						<td>Late&nbsp;Check-in&nbsp;18시</td>
-					</tr>
-					<tr>
-						<td>기준&nbsp;${dbRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dbRoom.room_capacity + 2}명</td>
-					</tr>
-					<tr>
-						<td>숙박&nbsp;18:00&nbsp;부터</td>
-					</tr>
-					<tr>
-						<td align="right">판매가</td>
-					</tr>
-					<tr>
-						<td align="right">${dbRoom.room_price}원</td>
+						<td></td>
 					</tr>
 				</table>
 				</c:if>
 			</c:forEach>
+			<br>
 		</c:if>
-		<c:if test="${empty deluxeRoom}">
-			<h2 align="center">등록된 방이 없습니다</h2>
-		</c:if>
-		<c:if test="${not empty deluxeRoom}">
-			<c:forEach var="dxRoom" items="${deluxeRoom}">
-				<table align="center" width = "80%">
+		<c:if test="${not empty doubleRoom}">
+			<div style="text-align: center; font-weight:bold;">DOUBLE ROOM</div>
+			<c:forEach var="dbRoom" items="${doubleRoom}">
+				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
+				onclick="location.href='display_roomContent?room_code=${dbRoom.room_code}&h_num=${hdto.h_num}' " width="800">
 					<tr>
-						<td rowspan="7">
-							<a href="javascript:checkNextPage('${dxRoom.room_code}','${hdto.h_num}','${sessionScope.indate}','${today}','${tmr}','${sessionScope.outdate}')">
-								<img class="picture" src="resources/images/room/${dxRoom.room_image1}" width="160" height="90"/>
-							</a>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${dbRoom.room_image1}" width="160" height="90"/>
 						</td>
-					</tr>
-					<tr>
-						<td>${dxRoom.room_type}&nbsp;[${dxRoom.room_name}]</td>
+						<td width="50%">${dbRoom.room_type}&nbsp;[${dbRoom.room_name}]</td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>Late&nbsp;Check-in&nbsp;18시</td>
-					</tr>
-					<tr>
-						<td>기준&nbsp;${dxRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dxRoom.room_capacity + 2}명</td>
-					</tr>
-					<tr>
-						<td>숙박&nbsp;18:00&nbsp;부터</td>
-					</tr>
-					<tr>
 						<td align="right">판매가</td>
 					</tr>
 					<tr>
-						<td align="right">${dxRoom.room_price}원</td>
+						<td>기준&nbsp;${dbRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dbRoom.room_capacity + 2}명</td>
+						<td align="right">${dbRoom.room_price}원</td>					
+					</tr>
+					<tr>
+						<td>숙박&nbsp;18:00&nbsp;부터</td>
+						<td></td>
 					</tr>
 				</table>
+				</c:if>
 			</c:forEach>
+			<br>
 		</c:if>
-		<input type="hidden" id="addr" value="${map_addr}">
-	
+		<c:if test="${not empty deluxeRoom}">
+		<div style="text-align: center; font-weight:bold;">DELUXE ROOM</div>
+			<c:forEach var="dxRoom" items="${deluxeRoom}">
+				<c:if test="${dxRoom.room_capacity+2 >= sessionScope.inwon}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
+				onclick="location.href='display_roomContent?room_code=${dxRoom.room_code}&h_num=${hdto.h_num}' " width="800">
+					<tr>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${dxRoom.room_image1}" width="160" height="90"/>
+						</td>
+						<td width="50%">${dxRoom.room_type}&nbsp;[${dxRoom.room_name}]</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Late&nbsp;Check-in&nbsp;18시</td>
+						<td align="right">판매가</td>
+					</tr>
+					<tr>
+						<td>기준&nbsp;${dxRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dxRoom.room_capacity + 2}명</td>
+						<td align="right">${dxRoom.room_price}원</td>					
+					</tr>
+					<tr>
+						<td>숙박&nbsp;18:00&nbsp;부터</td>
+						<td></td>
+					</tr>
+				</table>
+				</c:if>
+			</c:forEach>
+			<br>
+		</c:if>
+	<input type="hidden" id="addr" value="${map_addr}">
 	<input type="hidden" id="hotelN" value="${hdto.h_name}">
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f24176f9573eaaf0fc762f8cebc19f7&libraries=services"></script>
 	<div id="map" style="width:1000px;height:500px;"></div>
 	<div id="clickLatlng"></div>
-	<!-- <script>
+	
+	<script>
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -285,88 +265,96 @@
 			window.parent.location.reload();
 			child.close();
 		}
-	</script> -->
+	</script>
 		
-		
-		<div class="booking border row">
-			편의시설 및 테마
-		</div>
-		<div class="booking border row">
-			<span>
-				<c:if test="${hdto.h_park eq 'y'}">
-					주차가능&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_meal eq 'y'}">
-					조식운영(뷔페)&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_wifi eq 'y'}">
-					와이파이&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_disabled eq 'y'}">
-					장애인 전용시설&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_ott eq 'y'}">
-					OTT서비스 제공&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_pool eq 'y'}">
-					수영장&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_kids eq 'y'}">
-					키즈존&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_bus eq 'y'}">
-					셔틀버스&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_smoke eq 'y'}">
-					흡연구역&nbsp;&nbsp;
-				</c:if>
-			</span>
-			<span>
-				<c:if test="${hdto.h_front24 eq 'y'}">
-					24시간 프론트 운영&nbsp;&nbsp;
-				</c:if>
-			</span>
-		</div>
-		<table align="center" width="80%" border="0">
+	<div class="booking border row" width="1000">
+		<span align="center">
+			<c:if test="${hdto.h_park eq 'y'}">
+				<img src="resources/images/hotel/service/parking.png" width="100" height="80"><br>
+				주차가능
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_meal eq 'y'}">
+				<img src="resources/images/hotel/service/breakfast.png" width="100" height="80"><br>
+				조식
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_wifi eq 'y'}">
+				<img src="resources/images/hotel/service/wifi.png" width="100" height="80"><br>
+				와이파이
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_disabled eq 'y'}">
+				<img src="resources/images/hotel/service/disabled.png" width="100" height="80"><br>
+				장애인 시설
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_ott eq 'y'}">
+				<img src="resources/images/hotel/service/ott.png" width="100" height="80"><br>
+				OTT서비스
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_pool eq 'y'}">
+				<img src="resources/images/hotel/service/pool.png" width="100" height="80"><br>
+				수영장
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_kids eq 'y'}">
+				<img src="resources/images/hotel/service/kidszone.png" width="100" height="80"><br>
+				키즈존
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_bus eq 'y'}">
+				<img src="resources/images/hotel/service/shuttlebus.png" width="100" height="80"><br>
+				셔틀버스
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_smoke eq 'y'}">
+				<img src="resources/images/hotel/service/smoke.png" width="100" height="80"><br>
+				흡연구역
+			</c:if>
+		</span>
+		<span align="center">
+			<c:if test="${hdto.h_front24 eq 'y'}">
+				<img src="resources/images/hotel/service/24front.png" width="100" height="80"><br>
+				24/7 프론트
+			</c:if>
+		</span>
+	</div>
+		<table align="center" width="1000">
 			<tr>
 				<td align="left">후기(${reviewCount}개)</td>
 				<td align="right"><a href="review?h_num=${hdto.h_num}">전체보기</a></td>
 			</tr>
 			<tr>
 				<td align="left" colspan="2">
-					<i class="far fa-star"></i>${starAverage} / 5<br>
-					최근 12개월 누적 평점
+					<i class="far fa-star"></i>${starAverage} / 5 &nbsp;&nbsp;&nbsp;&nbsp;(최근 12개월 누적 평점)
 				</td>
 			</tr>
 			
 			<c:forEach var="review" items="${reviewList}" begin="0" end="1">
-			<tr><td><br></td></tr>
-				<tr>	
-					<td align="left"><i class="far fa-star"></i>${review.review_star}</td>
-					<td align="right">작성일&nbsp;${review.review_joindate}</td>
-				</tr>
-				<tr>
-					<td align="left" colspan="2">u_nickname / room_name / room_type</td>
-				</tr>
-				<tr>
-					<td align="left" colspan="2">${review.review_contents}</td>
-				</tr>
+			<tr>
+				<td colspan="2"><br></td>
+			</tr>
+			<tr>
+				<td align="left" colspan="2"><i class="far fa-star"></i>${review.review_star}</td>
+				
+			</tr>
+			<tr>
+				<td align="left">${review.review_nickname} / ${review.review_roomtype}</td>
+				<td align="right">작성일&nbsp;${review.review_joindate}</td>
+			</tr>
+			<tr>
+				<td align="left" colspan="2">${review.review_contents}</td>
+			</tr>
 			</c:forEach>
 			<tr>
 				<td align="center" colspan="2"><a href="review?h_num=${hdto.h_num}">전체 후기 보기</a><br>(후기 ${reviewCount}개)</td>

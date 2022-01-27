@@ -20,49 +20,57 @@ import com.ezen.project.service.UserMapper;
 public class AdminController {
 
 	@Autowired
-	UserMapper userMapper;
+	private UserMapper userMapper;
 	
 	@Autowired 
-	CompanyMapper companyMapper;
+	private CompanyMapper companyMapper;
 	
+	@Autowired
+	private LoginOkBeanUser loginOkBean;
+	
+	@Autowired
+	private LoginOkBeanCompany companyLoginOkBean;
 	
 	//list에서 유저 목록보여주기
-	@RequestMapping("/admin_user_list")//
+	@RequestMapping("/admin_user_list")
 	public ModelAndView adminUserList (HttpServletRequest req, 
 			@RequestParam(required = false) String mode) {
 
 		ModelAndView mav = new ModelAndView();
-		//일반적으로 user_list페이지에 들어올 경우 mode ==null 에서 all로 바꿔줘서 전체 다보여주기
-		if (mode==null) {
-			mode = "all";	
-		}
-		//보여줄 list 선언
-		List<UserDTO> list = null;
-		//else 에서는 find일 경우 --> search(찾을 카테고리), searchString(찾는 단어) 
-		if (mode.equals("all")) {
-			//바로 DB에서 꺼내오기 
-			list = userMapper.listUser();
+		
+		if(loginOkBean.getA_level().equals("3")) {
+			if (mode==null) {
+				mode = "all";
+			}
+			
+			List<UserDTO> uList = null; 
+			
+			if (mode.equals("all")) {
+				uList = userMapper.listUser();
+			}else {
+				String search = req.getParameter("search");
+				String searchString = req.getParameter("searchString");
+				uList = userMapper.findUser(search, searchString);
+			}
+			
+			mav.addObject("uList", uList);
+			mav.addObject("mode", mode);
+			mav.setViewName("admin/admin_user_list");
 		}else {
-			//parameter로 받아오기 
-			String search = req.getParameter("search");
-			String searchString = req.getParameter("searchString");
-			//list를 mapper로 보내서 DB에서 꺼내오기
-			list = userMapper.findUser(search, searchString);
-		}
-		//mav로 list mod url 모두 설정해서 admin_user_list페이지로 보내줘서 띄워주기
-		mav.addObject("listUser", list);
-		mav.addObject("mode", mode);
-		mav.setViewName("admin/admin_user_list");
-
+			mav.addObject ("msg","admin만 입장 가능합니다");
+			mav.addObject("url", "/project");
+			mav.setViewName("message");
+			}
 		return mav;
 	}
+	
 	//관리자가 유저 삭제
 	@RequestMapping("/deleteUser")
 	public String deleteUser(HttpServletRequest req, 
 			@RequestParam int u_num) {
 	
 		//num값 받아서 넘겨줘서 유저 목록 삭제
-		int res = userMapper.AdmindeleteUser(u_num);
+		int res = userMapper.deleteUserByAdmin(u_num);
 
 		if (res>0) {
 			req.setAttribute("msg", "회원삭제성공!! 회원관리페이지로 이동합니다.");
@@ -77,17 +85,17 @@ public class AdminController {
 	
 	//blacklist 등록 num값 받아서 실행
 	@RequestMapping("/insertBlackUser")
-	public String insertBlakcUser(HttpServletRequest req,
+	public String insertBlackUser(HttpServletRequest req,
 		int u_num, String u_black) {
 		
 		//dto를 num값으로 DB꺼내주기 
-		UserDTO dto = userMapper.getUserNum(u_num);
+		UserDTO udto = userMapper.getUserByUnum(u_num);
 		
 		//a_level을 0으로 설정하기 
-		dto.setA_level(Integer.toString(0));
-		dto.setU_black(u_black);
+		udto.setA_level(Integer.toString(0));
+		udto.setU_black(u_black);
 		//설정한 a_level을 DB에 등록하기
-		int res = userMapper.registBlackList(dto);
+		int res = userMapper.addBlackList(udto);
 
 		if (res>0) { 
 			req.setAttribute("msg", "블랙리스트 등록 성공!!");
@@ -105,7 +113,7 @@ public class AdminController {
 			int u_num, String u_black) {
 		
 		//u_num으로 dto 가져오기 
-		UserDTO dto = userMapper.getUserNum(u_num); 
+		UserDTO dto = userMapper.getUserByUnum(u_num); 
 		//blacklist에 등록된 이유 dto에 저장하기 
 		dto.setU_black(u_black); 
 
@@ -126,12 +134,12 @@ public class AdminController {
 	public String deleteBlackUser(HttpServletRequest req,
 			@RequestParam int u_num) { 
 		//dto에서 a_level 0에서 1로 변경
-		UserDTO dto = userMapper.getUserNum(u_num);
+		UserDTO dto = userMapper.getUserByUnum(u_num);
 		dto.setA_level(Integer.toString(1));
 		
 		int res = userMapper.deleteBlackList(dto);
  
-		if (res>0) { 
+		if (res>0) {
 			req.setAttribute("msg", "블랙리스트 해제 성공!!");
 			req.setAttribute("url", "admin_user_blacklist");
 		}else {
@@ -143,51 +151,63 @@ public class AdminController {
 
 	//blacklist 목록 보기 & 찾기
 	@RequestMapping("/admin_user_blacklist")
-	public ModelAndView adminBlackListOk (HttpServletRequest req, 
+	public ModelAndView adminUserBlackList (HttpServletRequest req, 
 			@RequestParam(required = false) String mode){
 		
 		//userlist와 마찬가지로 mode값 받아서 진행 
 		ModelAndView mav = new ModelAndView();
-		if (mode==null) {
-			mode = "all";
-		}
-		List<UserDTO> list = null;
-		if (mode.equals("all")) {
-			list = userMapper.blacklistUser();
+		if(loginOkBean.getA_level().equals("3")) {
+			if (mode==null) {
+				mode = "all";
+			}
+			
+			List<UserDTO> buList = null;
+			
+			if (mode.equals("all")) {
+				buList = userMapper.listBlackUser();
+			}else {
+				String search = req.getParameter("search");
+				String searchString = req.getParameter("searchString");
+				buList = userMapper.findUserOnBlack(search, searchString);
+			}
+			
+			mav.addObject("buList", buList);
+			mav.addObject("mode", mode);
+			mav.setViewName("admin/admin_user_blacklist");
 		}else {
-			String search = req.getParameter("search");
-			String searchString = req.getParameter("searchString");
-			list = userMapper.findBlackUser(search, searchString);
-		} 
-		//list뿌려주기 위해서 mav로 보내주기 
-		mav.addObject("listUser", list);
-		mav.addObject("mode", mode);
-		mav.setViewName("admin/admin_user_blacklist");
-
-		return mav; 
+			mav.addObject ("msg","admin만 입장 가능합니다");
+			mav.addObject("url", "main");
+			mav.setViewName("message");
+		}
+		return mav;
 	}
 	
 	//company도 마찬가지
 	@RequestMapping("/admin_company_list")
-	public ModelAndView adminCompanyListOk (HttpServletRequest req, 
+	public ModelAndView adminCompanyList (HttpServletRequest req, 
 			@RequestParam(required = false) String mode) {
 
 		ModelAndView mav = new ModelAndView();
-		if (mode==null) {
-			mode = "all";	
-		} 
-		List<CompanyDTO> list = null;
-		if (mode.equals("all")) {
-			list = companyMapper.listCompany();
+		if(companyLoginOkBean.getA_level().equals("3")) {
+			if (mode==null) {
+				mode = "all";
+			}
+			List<CompanyDTO> cList = null;
+			if (mode.equals("all")) {
+				cList = companyMapper.listCompany();
+			}else {
+				String search = req.getParameter("search");
+				String searchString = req.getParameter("searchString");
+				cList = companyMapper.findCompany(search, searchString);
+			}
+			mav.addObject("cList", cList);
+			mav.addObject("mode", mode);
+			mav.setViewName("admin/admin_company_list");
 		}else {
-			String search = req.getParameter("search");
-			String searchString = req.getParameter("searchString");
-			list = companyMapper.findCompany(search, searchString);
-		}  
-		mav.addObject("listCompany", list);
-		mav.addObject("mode", mode);
-		mav.setViewName("admin/admin_company_list");
-
+			mav.addObject ("msg","admin만 입장 가능합니다");
+			mav.addObject("url", "/company_main");
+			mav.setViewName("message");
+		}
 		return mav;
 	}
 	
@@ -197,7 +217,7 @@ public class AdminController {
 			@RequestParam int c_num) {
 		ModelAndView mav = new ModelAndView();
 
-		int res = companyMapper.adminDeleteCompany(c_num);
+		int res = companyMapper.deleteCompanyByAdmin(c_num);
 
 		if (res>0) {
 			mav.addObject("msg", "기업삭제성공!! 기업관리페이지로 이동합니다.");
@@ -209,8 +229,6 @@ public class AdminController {
 		mav.setViewName("message");
 		return mav;
 	}
-	
-	
 	
 	@RequestMapping("/admin_user_qna")
 	public String adminUserQna() {

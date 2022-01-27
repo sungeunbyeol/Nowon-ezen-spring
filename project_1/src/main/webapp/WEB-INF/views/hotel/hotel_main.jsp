@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>숙소관리</title>
+	<title>호텔관리</title>
 </head>
 <body>
 	<div align ="center">

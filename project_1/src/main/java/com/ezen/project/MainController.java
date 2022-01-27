@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ezen.project.service.DisplayActMapper;
 import com.ezen.project.service.DisplayHotelMapper;
 
 @Controller
@@ -17,6 +18,9 @@ public class MainController {
 	
 	@Autowired
 	DisplayHotelMapper displayHotelMapper;
+	
+	@Autowired
+	DisplayActMapper displayActMapper;
 	
 	@RequestMapping("/")
 	public String main(HttpServletRequest req) {
@@ -46,6 +50,8 @@ public class MainController {
 		Map<String, Integer> map = displayHotelMapper.hotelList();
 		req.setAttribute("map", map);
 		
+		displayHotelMapper.checkToday(today);
+		
 		return "user_main";
 	}
 	
@@ -70,6 +76,9 @@ public class MainController {
 		
 		Map<String, Integer> map = displayHotelMapper.hotelList();
 		req.setAttribute("map", map);
+		
+		displayHotelMapper.checkToday(today);
+		
 		return "user_main";
 	}
 	
@@ -78,4 +87,28 @@ public class MainController {
 		return "company/company_main";
 	}
 	
+	@RequestMapping("/activity_usermain")
+	public String activityUserMain(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date time = new Date();
+		String today = sdf.format(time);
+		
+//		자동완성
+		List<String> allActOptions = displayActMapper.allActOptions();
+		session.setAttribute("allActOptions", allActOptions);
+		
+		if((String)session.getAttribute("bookdate") == null) {
+			session.setAttribute("bookdate", today);
+		}
+
+		req.setAttribute("sport", displayActMapper.countSport());
+		req.setAttribute("study", displayActMapper.countStudy());
+		req.setAttribute("cooking", displayActMapper.countCooking());
+		req.setAttribute("culture", displayActMapper.countCulture());
+		req.setAttribute("ent", displayActMapper.countEnt());
+		req.setAttribute("music", displayActMapper.countMusic());
+		
+		return "activitymain/activity_main";
+	}
 }

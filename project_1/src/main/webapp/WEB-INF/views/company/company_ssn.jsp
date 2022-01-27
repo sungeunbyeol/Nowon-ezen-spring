@@ -9,6 +9,11 @@
 			f_check.c_name.focus()
 			return
 		}
+		if(f_check.c_email.value=="") {
+			alert("대표메일을 입력하셔야합니다.")
+			f_check.c_email.focus()
+			return
+		}
 		if(f_check.c_bnum.value==""){
 			alert("사업자 번호를 입력하셔야 합니다.")
 			f_check.c_bnum.focus()
@@ -27,6 +32,9 @@
 				<th>기업명</th>
 				<td><input type="text" name="c_name"></td>
 			</tr>
+			<tr>
+				<th>대표메일</th>
+				<td><input type="text" name="c_email"></td>
 			<tr>
 				<th>사업자 번호</th>
 				<td><input type="text" name="c_bnum"></td>

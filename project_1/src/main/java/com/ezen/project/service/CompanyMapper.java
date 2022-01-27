@@ -18,27 +18,13 @@ public class CompanyMapper {
 	@Autowired 
 	private SqlSession sqlSession;
 	
-	//insert할때 image 랑 addr map에 넣어서 companymapper.xml로 넘겨주기. dto로 할까 고민하다가 map으로 했습니다 .... 
-	public int insertCompany(MultipartHttpServletRequest mr, String c_image, String addr) {
-		Map<String, String> map = new Hashtable<String, String>();
-		String level = "2"; 
-		map.put("a_level", level); 
-		map.put("c_address", addr);
-		map.put("c_image", c_image);
-		map.put("c_bnum", mr.getParameter("c_bnum"));
-		map.put("c_ceo", mr.getParameter("c_ceo"));
-		map.put("c_email", mr.getParameter("c_email"));
-		map.put("c_password", mr.getParameter("c_password"));
-		map.put("c_tel", mr.getParameter("c_tel"));
-		map.put("c_name", mr.getParameter("c_name"));
-		 
-		return sqlSession.insert("insertCompany", map); 
+	public int insertCompany(CompanyDTO cdto) {
+		return sqlSession.insert("insertCompany", cdto); 
 	}
 	
 	//company 수정
-	public int updateCompany(CompanyDTO dto) {
-		
-		return sqlSession.update("updateCompany", dto); 
+	public int updateCompany(CompanyDTO cdto) {
+		return sqlSession.update("updateCompany", cdto); 
 	}
 	
 	//아이디, 비밀번호 찾기 
@@ -47,7 +33,7 @@ public class CompanyMapper {
 		map.put("c_name", c_name);
 		map.put("c_tel", c_tel); 
 		String msg = null; 
-		 
+		
 	//c_email을 받으면 비밀번호 찾기 이므로 password로 보낸다
 		if(map.get("c_email") != null) {
 			msg = sqlSession.selectOne("searchCompany_password", map);
@@ -58,13 +44,13 @@ public class CompanyMapper {
 	}
 	
 	//email로 company 정보 DB에서 가져오기
-	public CompanyDTO getCompany(String c_email) {
-		return sqlSession.selectOne("getCompany", c_email);
+	public CompanyDTO getCompanyByEmail(String c_email) {
+		return sqlSession.selectOne("getCompanyByEmail", c_email);
 	}
 	
 	//c_num으로 company 정보 DB에서 가져오기
-	public CompanyDTO getCompanyNum(int c_num) { 
-		return sqlSession.selectOne("getCompanyNum", c_num);
+	public CompanyDTO getCompanyByCnum(int c_num) { 
+		return sqlSession.selectOne("getCompanyByCnum", c_num);
 	}
 	
 	//컴퍼니 비밀번호 변경
@@ -79,31 +65,34 @@ public class CompanyMapper {
 	
 	//admin이 list검색할 때 사용 a_level가 2 (기업) 인 것들만 검색
 	public List<CompanyDTO> findCompany(String search, String searchString){
-		String sql = "select * from project_companyaccount where " + search + " like '%" + searchString + "%' and a_level='2'";
+		String sql = "select * from project_companyaccount where " + search + 
+				" like '%" + searchString + "%' and a_level='2'";
 		Map<String, String> map = new Hashtable<String, String>(); 
 		map.put("sql", sql);
 		return sqlSession.selectList("findCompany", map);
 	}
 	
 	//기업이 회원탈퇴할때 사용 
-	public int deleteCompany(Map<String, String> params) {
-		return sqlSession.update("deleteCompany", params);
+	public int deleteCompany(int c_num, String c_password) {
+		Map<String, String> map = new Hashtable<String, String>();
+		map.put("c_num", String.valueOf(c_num));
+		map.put("c_password", c_password);
+		return sqlSession.update("deleteCompany", map);
 	}
 	
 	//admin이 기업 삭제
-	public int adminDeleteCompany(int c_num) {
-		return sqlSession.update("adminDeleteCompany", c_num);
+	public int deleteCompanyByAdmin(int c_num) {
+		return sqlSession.update("deleteCompanyByAdmin", c_num);
 	}
 	
 	//찾은 email값 보내주기 
 	public String findEmail(Map<String, String> params) {
-		String c_email = sqlSession.selectOne("findEmail", params);
-		return  c_email;
+		return  sqlSession.selectOne("findEmail", params);
 	}
 
-	public boolean hasCompanyAccount(String c_name, String c_bnum) {
+	public boolean hasCompanyAccount(String c_email, String c_bnum) {
 		Map<String, String> map = new Hashtable<String, String>();
-		map.put("c_name", c_name);
+		map.put("c_email", c_email);
 		map.put("c_bnum", c_bnum);
 		
 		CompanyDTO cdto = sqlSession.selectOne("hasCompanyAccount", map);
@@ -114,4 +103,5 @@ public class CompanyMapper {
 			return false;
 		}
 	}
+	
 } 

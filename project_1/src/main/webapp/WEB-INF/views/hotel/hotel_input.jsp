@@ -95,8 +95,10 @@ function getPostcode() {
 			return
 		}
 		
-		var h_address = f_hotelInput.h_address_1.value+'@'+f_hotelInput.h_extraAddress.value+'@'+
-		f_hotelInput.h_address_2.value+'@'+f_hotelInput.h_postcode.value
+		var h_address = f_hotelInput.h_address_1.value+'@'+
+		f_hotelInput.h_extraAddress.value+'@'+
+		f_hotelInput.h_address_2.value+'@'+
+		f_hotelInput.h_postcode.value
 		
 		document.f_hotelInput.h_address.value = h_address
 		document.f_hotelInput.submit()
@@ -110,7 +112,7 @@ function getPostcode() {
 	<form name="f_hotelInput" method="post" action="hotel_input_ok" enctype="multipart/form-data" >
 	<input type="hidden" name="c_num" value="${c_num}">
 	<input type="hidden" name="h_address" value="">
-	<table border="1" align="center" width="600" height="500">
+	<table border="1" align="center" width="1000" height="500">
 		<tr>
 			<td>호텔 이미지</td>
 			<td>

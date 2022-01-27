@@ -29,7 +29,7 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr> 
    <td colspan="3">
 
-<textarea class = "outer" style="width: 80%; height:50px; resize: none;"cols="100" readonly>
+<textarea class="outer" style="width: 80%; height:50px; resize: none;"cols="100" readonly>
  제 1 조 (목적)
 1. 본 약관은 해당 사이트가 제공하는 모든 서비스(이하 "서비스")의 이용조건 및 절차, 이용자와 해당 사이트의 권리, 의무, 책임사항과 기타 필요한 사항을 규정함을 목적으로 합니다.
 제 2 조 (약관의 효력과 변경)
@@ -94,10 +94,18 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 </td>
 </tr>
 <tr>
-   <td width="130" align="right">이메일</td>
-   <td width="200">
-      <input type="text" id = "email_input" name="u_email" placeholder="이메일을 입력해 주세요." tabindex="1" 
+	<td width="130" align="right">이메일</td>
+    <td width="200">
+	<c:if test="${not empty kakaoEmail}">
+      <input type="text" id="email_input" name="u_email"  tabindex="1" 
+      readonly value="${kakaoEmail}"
       style="width:200px;height:40px">
+     </c:if>
+     <c:if test="${empty kakaoEmail}">
+       <input type="text" id="email_input" name="u_email"  tabindex="1"
+       placeholder="이메일을 입력해 주세요" 
+      style="width:200px;height:40px">
+      </c:if>
    </td>
    <td width="100">
       <button type="submit" formaction="checkUseremail" 
@@ -127,15 +135,27 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
    <td width="130" align="right">이름</td>
    <td width="300" colspan="2">
+      <c:if test="${not empty kakaoname}">
+      <input type="text" name="u_name" value="${kakaoname}"placeholder="이름을 입력해 주세요." tabindex="1" 
+      style="width:200px;height:40px">
+      </c:if> 
+      <c:if test="${kakaoname==undefined}">
       <input type="text" name="u_name" placeholder="이름을 입력해 주세요." tabindex="1" 
       style="width:200px;height:40px">
+      </c:if>
    </td>
 </tr>
 <tr>
    <td width="130" align="right">닉네임</td>
    <td width="200">
+      <c:if test="${not empty kakaonickname}">
+      <input type="text" name="u_nickname" value="${kakaonickname}"placeholder="별명을 입력해 주세요." tabindex="1" 
+      style="width:200px;height:40px">
+      </c:if>
+      <c:if test="${empty kakaonickname}">
       <input type="text" name="u_nickname" placeholder="별명을 입력해 주세요." tabindex="1" 
       style="width:200px;height:40px">
+   		</c:if>
    </td>
    
 </tr>
@@ -149,8 +169,14 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 <tr>
    <td width="130" align="right">생년월일</td>
    <td width="200">
+      <c:if test="${not empty kakaobirth}">
+      <input type="text" name="u_birth" value="${kakaobirth}" placeholder="생년월일을 입력해 주세요." tabindex="1" 
+      style="width:200px;height:40px">
+      </c:if>
+      <c:if test="${empty kakaobirth}">
       <input type="text" name="u_birth" placeholder="생년월일을 입력해 주세요." tabindex="1" 
       style="width:200px;height:40px">
+      </c:if> 
    </td>
 </tr>
 <tr>

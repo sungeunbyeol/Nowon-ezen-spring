@@ -156,7 +156,7 @@
       
       
       
-      <Context docBase="project_1" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project_1"/><Context docBase="individaul" path="/individaul" reloadable="true" source="org.eclipse.jst.jee.server:individaul"/><Context docBase="kakao" path="/my" reloadable="true" source="org.eclipse.jst.jee.server:kakao"/></Host>
+      <Context docBase="kakao" path="/my" reloadable="true" source="org.eclipse.jst.jee.server:kakao"/><Context docBase="project_1" path="/project" reloadable="true" source="org.eclipse.jst.jee.server:project_1"/></Host>
     </Engine>
   </Service>
 </Server>

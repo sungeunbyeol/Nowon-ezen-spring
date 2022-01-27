@@ -13,7 +13,6 @@ import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
 import com.ezen.project.model.ReviewDTO;
 import com.ezen.project.model.RoomDTO;
-import com.ezen.project.model.UserDTO;
 
 @Service
 public class DisplayHotelMapper {
@@ -21,101 +20,43 @@ public class DisplayHotelMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	public void checkToday(String today) {
+		sqlSession.update("checkToday", today);
+	}
+	
 	//	자동완성
 	public List<String> allOptions(){
 		List<String> totalList = new ArrayList<String>();
 		List<String> allOptions = sqlSession.selectList("getHotelNames");
 		List<String> hotelAddresses = sqlSession.selectList("getHotelAddresses");
-		for(int i=0; i<allOptions.size(); i++) {
+		
+		int forSize = allOptions.size();
+		
+		if(allOptions.size() > 3) {
+			forSize = 3;
+		}
+		
+		for(int i=0; i<forSize; i++) {
 			String allOption = allOptions.get(i);
-			String address = hotelAddresses.get(i);
-			totalList.add(allOption + ","+ address);
+			totalList.add(allOption);
+		}
+		for(int i=0; i<forSize; i++) {
+			String[] address = hotelAddresses.get(i).split("@");
+			totalList.add(address[0]);
 		}
 		return totalList;
 	}
 	
 //	지역별 호텔리스트
-	public List<HotelDTO> hotelLocation(String condition){
-		Map<String,String> sql = new Hashtable<String, String>();
-		
-//		String[] arr = new String[] {"seoul","pusan","a","b","c","d","e"};
-//		
-//		for(int i=0; i < arr.length; i++) {
-//			//지역으로 검색 추후 업데이트
-//			if(condition.equals(arr[i])) {
-//				switch(condition) {
-//				case "seoul" : 
-//					str = "select * from project_hotel where h_address like '%서울%'";
-//					break;
-//				case "pusan" : 
-//					str = "select * from project_hotel where h_address like '%부산%'";
-//					break;
-//				case "jeju" : 
-//					str = "select * from project_hotel where h_address like '%제주%'";
-//					break;
-//				case "sokcho" : 
-//					str = "select * from project_hotel where h_address like '%속초%'";
-//					break;
-//				case "c" : 
-//					str = "select * from project_hotel where h_address like '%서울%'";
-//					break;
-//				case "d" : 
-//					str = "select * from project_hotel where h_address like '%서울%'";
-//					break;
-//				case "e" : 
-//					str = "select * from project_hotel where h_address like '%서울%'";
-//					break;
-//				}
-//			}
-//		}
-		
-		//통합검색
-		String str = "select * from project_hotel where h_name like '%"+
-		condition+"%' or h_address like '%"+condition+"%'";
-		
-		sql.put("sql", str);
-		
-		return sqlSession.selectList("hotelLocation", sql);
+	public List<HotelDTO> listHotelByLocation(String condition){
+		return sqlSession.selectList("listHotelByLocation", "%"+condition+"%");
 	}
 	
 	// 높은 가격순 정렬해서 가져오기
-	public List<HotelDTO> getHotelListByMaxPrice(String condition){
+	public List<HotelDTO> listHotelByMaxPrice(String condition){
 		Map<String,String> sql = new Hashtable<String, String>();
-		String str = null;
-		String[] arr = new String[] {"seoul","pusan","a","b","c","d","e"};
 		
-		for(int i=0; i < arr.length; i++) {
-			//지역으로 검색 추후 업데이트
-			if(condition.equals(arr[i])) {
-				switch(condition) {
-				case "seoul" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "pusan" : 
-					str = "select * from project_hotel where h_address like '%부산%'";
-					break;
-				case "jeju" : 
-					str = "select * from project_hotel where h_address like '%제주%'";
-					break;
-				case "sokcho" : 
-					str = "select * from project_hotel where h_address like '%속초%'";
-					break;
-				case "c" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "d" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "e" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				}
-			}
-		}
-		
-		//통합검색
-		if(str == null) {
-			str = "SELECT h.* "
+		String str = "SELECT h.* "
 					+ "FROM project_hotel h INNER JOIN ("
 					+ "SELECT h_num, MAX(room_price) as topprice "
 					+ "FROM project_room "
@@ -124,50 +65,16 @@ public class DisplayHotelMapper {
 					+ "ON h.h_num=r.h_num "
 					+ "WHERE h_name like '%"+condition+"%' or h_address like '%"+condition+"%' "
 					+ "ORDER BY r.topprice desc";
-		}
+		
 		sql.put("sql", str);
 		
-		return sqlSession.selectList("getHotelListByMaxPrice", sql);
+		return sqlSession.selectList("listHotelByPrice", sql);
 	}
 	
 	// 낮은 가격순 정렬해서 가져오기
-	public List<HotelDTO> getHotelListByMinPrice(String condition){
+	public List<HotelDTO> listHotelByMinPrice(String condition){
 		Map<String,String> sql = new Hashtable<String, String>();
-		String str = null;
-		String[] arr = new String[] {"seoul","pusan","a","b","c","d","e"};
-		
-		for(int i=0; i < arr.length; i++) {
-			//지역으로 검색 추후 업데이트
-			if(condition.equals(arr[i])) {
-				switch(condition) {
-				case "seoul" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "pusan" : 
-					str = "select * from project_hotel where h_address like '%부산%'";
-					break;
-				case "jeju" : 
-					str = "select * from project_hotel where h_address like '%제주%'";
-					break;
-				case "sokcho" : 
-					str = "select * from project_hotel where h_address like '%속초%'";
-					break;
-				case "c" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "d" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				case "e" : 
-					str = "select * from project_hotel where h_address like '%서울%'";
-					break;
-				}
-			}
-		}
-		
-		//통합검색
-		if(str == null) {
-			str = "SELECT h.* "
+		String str = "SELECT h.* "
 					+ "FROM project_hotel h INNER JOIN ("
 					+ "SELECT h_num, MIN(room_price) as lowprice "
 					+ "FROM project_room "
@@ -176,10 +83,10 @@ public class DisplayHotelMapper {
 					+ "ON h.h_num=r.h_num "
 					+ "WHERE h_name like '%"+condition+"%' or h_address like '%"+condition+"%' "
 					+ "ORDER BY r.lowprice asc";
-		}
+		
 		sql.put("sql", str);
 		
-		return sqlSession.selectList("getHotelListByMaxPrice", sql);
+		return sqlSession.selectList("listHotelByPrice", sql);
 	}
 	
 //	전체호텔 전체리뷰수 반환
@@ -253,14 +160,9 @@ public class DisplayHotelMapper {
 		return sqlSession.selectOne("isWishCheck", map);
 	}
 	
-//	호텔상세 호텔정보
-	public HotelDTO hotelDetail(int h_num) {
-		return sqlSession.selectOne("hotelDetail", h_num);
-	}
-	
 //	호텔별 후기 갯수 반환
-	public int reviewCount(int h_num) {
-		return sqlSession.selectOne("reviewCount", h_num);
+	public int getReviewCountByHotel(int h_num) {
+		return sqlSession.selectOne("getReviewCountByHotel", h_num);
 	}
 	
 //	호텔별 별점 반환
@@ -275,41 +177,19 @@ public class DisplayHotelMapper {
 		return averageStar;
 	}
 	
-	//	객실 타입을 기준으로 해당 호텔의 객실 그룹을 가져옴
-	//TWIN, DOUBLE, DELUXE
-	public RoomDTO typeRoom(int h_num, String type) {
-		Map<String, String> map = new Hashtable<String, String>();
-		map.put("h_num",String.valueOf(h_num));
-		map.put("type", type);
-		
-		return sqlSession.selectOne("roomList", map);
-	}
-	
 	//	객실 타입을 기준으로 해당 호텔의 객실 그룹 리스트를 가져옴
 	//TWIN, DOUBLE, DELUXE
-	public List<RoomDTO> typeRoomList(int h_num, String type) {
+	public List<RoomDTO> listRoomByType(int h_num, String type) {
 		Map<String, String> map = new Hashtable<String, String>();
 		map.put("h_num",String.valueOf(h_num));
 		map.put("type", type);
 		
-		return sqlSession.selectList("roomList", map);
+		return sqlSession.selectList("listRoomByType", map);
 	}
-	
-	//룸번호 추가
-//	해당 호텔의 객실별 상세정보
-											//twin, double, deluxe
-	public RoomDTO typeRoomDetail(int room_num, int h_num) {
-		Map<String, Integer> params = new Hashtable<String, Integer>();
-		params.put("room_num", room_num);
-		params.put("h_num", h_num);
-		return sqlSession.selectOne("roomDetail", params);
-	}
-
 	
 //	해당 호텔의 후기를 리스트로 반환
-	public List<ReviewDTO> reviewList(int h_num) {
-		List<ReviewDTO> reviewList = sqlSession.selectList("reviewList", h_num);
-		return reviewList;
+	public List<ReviewDTO> listReviewByHotel(int h_num) {
+		return sqlSession.selectList("listReviewByHotel", h_num);
 	}
 	
 //	위시리스트 해제
@@ -322,47 +202,17 @@ public class DisplayHotelMapper {
 	public void wishCheck(Map<String, String> params) {
 		sqlSession.insert("wishCheck", params);
 	}
-
-	
-//	유저정보 반환
-	public UserDTO userInfo(int u_num) {
-		return sqlSession.selectOne("userInfo",u_num);
-	}
 	
 //	예약저장&유저 포인트 수정
 	public int insertBook(Map<String,String> params) {
-//		sqlSession.update("pointUpdate",params);
 		return sqlSession.insert("insertBook",params);
 	}
 	
-//	객실수량확인
-	public int roomCountCheck(Map<String, String> params) {
-		return sqlSession.selectOne("roomCountCheck",params);
-	}
-	
-//	유저의 예약정보 반환1
-	public BookingDTO bookInfo1() {
-		return sqlSession.selectOne("bookInfo1");	
-	}
-	
-//	유저의 예약정보 반환2
-	public BookingDTO bookInfo2(int book_num) {
-		BookingDTO bdto = sqlSession.selectOne("bookInfo2", book_num);
+//	유저의 예약정보 반환
+	public BookingDTO bookInfo(int book_num) {
+		BookingDTO bdto = sqlSession.selectOne("bookInfo", book_num);
 		return bdto;
 	}
-
-//  유저의 예약정보 반환
-	  public BookingDTO bookInfo(int u_num,int h_num, int book_num) {
-	     Map<String, Integer> map = new Hashtable<String, Integer>();
-	     if(book_num > 0) {
-	        map.put("book_num",book_num);
-	        return sqlSession.selectOne("bookInfo1", map);
-	     } else {
-	     map.put("u_num", u_num);
-	        map.put("h_num", h_num);
-	        return sqlSession.selectOne("bookInfo2", map);
-	     }
-	  }
 	
 //	예약취소
 	public int deleteBook(int book_num, int u_num) {
@@ -405,7 +255,6 @@ public class DisplayHotelMapper {
 		
 		Map<String, String> map = new Hashtable<String, String>();
 		String h_name = sqlSession.selectOne("getHotelName",params);
-		int p_point = (int)Double.parseDouble(params.get("book_savepoint"));
 		int book_num = sqlSession.selectOne("getBookNum", params);
 		int u_point = sqlSession.selectOne("getUserPoint", params.get("u_num"));
 		
@@ -426,7 +275,6 @@ public class DisplayHotelMapper {
 		
 		Map<String, String> map = new Hashtable<String, String>();
 		String h_name = sqlSession.selectOne("getHotelName",params);
-		int p_point = (int)Double.parseDouble(params.get("book_savepoint"));
 		int book_num = sqlSession.selectOne("getBookNum", params);
 		int u_point = sqlSession.selectOne("getUserPoint", params.get("u_num"));
 		map.put("u_num", params.get("u_num"));
@@ -443,7 +291,7 @@ public class DisplayHotelMapper {
 		List<HotelDTO> hotelList = sqlSession.selectList("hotelList");
 		
 //		지역 다 정해지면 추가
-		String[] location = new String[] {"서울","부산","제주","인천","서귀포"};
+		String[] location = new String[] {"서울","부산","제주","속초","강릉","경주","여수","인천","전주","춘천"};
 		Map<String, Integer> map = new Hashtable<String, Integer>();
 		
 		for(int i=0; i<hotelList.size(); i++) {
@@ -471,24 +319,32 @@ public class DisplayHotelMapper {
 	public void wishRelease2(int w_num) {
 		sqlSession.delete("wishRelease2", w_num);
 	}
+	
+//	위시리스트에서 찜하기 해제
+	public void wishRelease3(int w_num) {
+		sqlSession.delete("wishRelease3", w_num);
+	}
 
-	public List<Integer> getBookedRoomCount(Map<String,String> map2) {
-		String sql = "SELECT * FROM project_booking WHERE room_code='"+map2.get("room_code")+"' AND "
-				+ "(book_indate <= '"+map2.get("book_outdate")+
-				"' AND book_outdate >= '"+map2.get("book_indate")+"')";
-		Map<String, String> map = new Hashtable<>();
+	// 특정 객실그룹에서 예약된 방의 개수를 가져오는 메소드
+	public int countBookedRoom(Map<String,String> map) {
+		String sql = "SELECT count(*) FROM project_booking WHERE room_code='"+map.get("room_code")+"' AND "
+				+ "(book_indate <= '"+map.get("book_outdate")+
+				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
+		Map<String, String> map2 = new Hashtable<>();
 		
-		map.put("sql", sql);
-		return sqlSession.selectList("getBookedRoomCount", map);
+		map2.put("sql", sql);
+		
+		return sqlSession.selectOne("countBookedRoom", map2);
 	}
 	
+	// 특정 객실이 예약중인지 아닌지 리턴하는 메소드
 	public String isBookedRoom(Map<String,String> map) {
 		String sql = "SELECT count(*) FROM project_booking WHERE room_num="+map.get("room_num")+" AND "
 				+ "(book_indate <= '"+map.get("book_outdate")+
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
 		
 		Map<String, String> map2 = new Hashtable<>();
-		System.out.println(sql);
+		System.out.println("isBookedRoom : "+sql);
 		map2.put("sql", sql);
 		
 		int res = sqlSession.selectOne("isBookedRoom", map2);
@@ -497,4 +353,5 @@ public class DisplayHotelMapper {
 		
 		return isBooked;
 	}
+	
 }

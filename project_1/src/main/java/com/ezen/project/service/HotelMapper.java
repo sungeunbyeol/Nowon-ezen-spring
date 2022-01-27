@@ -1,6 +1,5 @@
 package com.ezen.project.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -126,6 +125,10 @@ public class HotelMapper {
 		return sqlSession.selectOne("getRoomByRoomNum", room_num);
 	}
 	
+	public String getRoomType(int room_num) {
+		return sqlSession.selectOne("getRoomType", room_num);
+	}
+	
 	// room_code를 통해 특정 객실그룹의 객실리스트를 가져오는 메소드
 	public List<RoomDTO> listRoomInGroupByRoomCode(String room_code) {
 		return sqlSession.selectList("listRoomInGroupByRoomCode", room_code);
@@ -142,8 +145,8 @@ public class HotelMapper {
 	}
 	
 	// 호텔의 예약 목록을 가져오는 메소드
-	public List<BookingDTO> listBooking(int h_num) {
-		return sqlSession.selectList("listBooking", h_num);
+	public List<BookingDTO> listBookingByHotel(int h_num) {
+		return sqlSession.selectList("listBookingByHotel", h_num);
 	}
 	
 	// 호텔 번호로 호텔 이름을 가져오는 메소드

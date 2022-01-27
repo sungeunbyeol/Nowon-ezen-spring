@@ -37,7 +37,7 @@
 				style="width:350px;height:50px;background-color:black;color:white;border-color:black">이메일 찾기</button>
 			</c:if>
 			<c:if test="${param.mode.equals('u_password')}">
-				<button type="submit" formaction="user_search_ok" 
+				<button type="submit" formaction="user_search_ok"
 				style="width:350px;height:50px;background-color:black;color:white;border-color:black">비밀번호 찾기</button>
 			</c:if>
 			</td>

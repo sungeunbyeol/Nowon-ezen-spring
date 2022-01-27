@@ -11,12 +11,12 @@
 		<div class="row justify-center align-center border-bottom" style="height: 80px;">
 			예약 상세 내역
 		</div>
-		<div class="column review border-bottom">	
+		<div class="column review border-bottom">
 					<div class="row">
 						<div class="flex column">
 							<span>
 										<!-- 경로수정필요 -->
-							<label><img src="resources/images/hotel/${hdto.h_image1}"></label>
+							<label><img src="resources/images/hotel/${hdto.h_image1}" width="390"></label>
 							<label>${hdto.h_name}</label>
 							<label>${hdto.h_grade}</label>
 							<label>${bdto.book_roomtype}</label>
@@ -63,7 +63,9 @@
 			</div>
 		<div class="row justify-center button-actions">
 			<a href = "javascript:window.history.back();"><button type="button" style="background:#8797D4;">돌아가기</button></a>
+			<c:if test="${bdto.book_status == 'wait' || bdto.book_status == 'confirm'}">
 			<button type="submit" style="background:#F5D19C;">예약취소</button>
+			</c:if>
 		</div>
 	</div>
 	</div>

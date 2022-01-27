@@ -97,7 +97,7 @@
 		INNER JOIN(
 		SELECT MIN(room_num) as room_num FROM project_room GROUP BY room_code)A
 		ON project_room.room_num = A.room_num
-		WHERE h_num=#{h_num}
+		WHERE h_num=#{h_num} order by room_type asc
     </select>
     
     <select id="listRoom" parameterType="String" resultType="RoomDTO">
@@ -106,6 +106,10 @@
 	
 	<select id="getRoomByRoomNum" parameterType="int" resultType="RoomDTO">
 		select * from project_room where room_num=#{room_num}
+	</select>
+	
+	<select id="getRoomType" parameterType="int" resultType="String">
+		select room_type from project_room where room_num = #{room_num}
 	</select>
 	
 	<select id="listRoomInGroupByRoomCode" parameterType="String" resultType="RoomDTO">
@@ -120,7 +124,7 @@
 		update project_room set room_enable='y' where room_num=#{room_num}
 	</update>
 	
-	<select id="listBooking" parameterType="int" resultType="BookingDTO">
+	<select id="listBookingByHotel" parameterType="int" resultType="BookingDTO">
 		select * from project_booking where h_num=#{h_num} order by book_num desc
     </select>
     

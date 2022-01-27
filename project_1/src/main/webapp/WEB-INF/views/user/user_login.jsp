@@ -1,9 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
 <!-- user_login.jsp -->
 <%@ include file="../user_top.jsp"%>
 <div align="center">
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script type="text/javascript">
+//카카오로그인 
+Kakao.init('fd470f1b6a887556abbbaafff7719fff');
+Kakao.isInitialized()
+console.log();
+  function loginWithKakao() {
+    Kakao.Auth.loginForm({
+      success: function(authObj) {
+	   	Kakao.API.request({
+		    url: '/v2/user/me',  
+		    data: {    
+		        property_keys: ["kakao_account.email", "properties.nickname", "kakao_account.name", "kakao_account.birthday", "kakao_account.birthyear"]
+		    },  
+		    success: function(response) {
+		    	const kakaoEmail = response.kakao_account.email
+		    	const kakaonickname = response.properties.nickname 
+		    	const kakaoname = response.kakao_account.name
+		    	const kakaobirth = response.kakao_account.birthday
+		    	const kakaobirthyear = response.kakao_account.birthyear 
+		    	document.f_login.kakaoEmail.value = kakaoEmail  
+		    	document.f_login.kakaonickname.value = kakaonickname
+		    	document.f_login.kakaoname.value = kakaoname
+		    	document.f_login.kakaobirth.value = kakaobirth	
+		    	document.f_login.kakaobirthyear.value = kakaobirthyear
+		    	document.f_login.submit()
+		    },
+		    fail: function(error) {
+		        console.log(error);
+		    }
+		});
+      },
+      fail: function(err) {
+        alert(JSON.stringify(err))
+      },
+    })
+  }
+
 //mode값으로 Email찾기인지 비밀번호 찾기인지 알려줌 
 function searchUser(mode){
 	location.href = "user_search?mode=" + mode
@@ -24,6 +63,11 @@ function checkLogin() {
 }
 </script>
 <form name="f_login" method="POST" action="user_login_ok">
+<input type="hidden" name="kakaoEmail">
+<input type="hidden" name="kakaonickname">
+<input type="hidden" name="kakaoname"> 
+<input type="hidden" name="kakaobirth">
+<input type="hidden" name="kakaobirthyear">
 <table border="0" width="280" align="center">
 <tr>
 	<td colspan="2" align="center"><h3>회원 로그인</h3></td>
@@ -67,27 +111,27 @@ function checkLogin() {
 <tr>
 	<td>&nbsp;</td>
 </tr>
-<tr>
-	<td colspan="2">
-		<img src="resources/naverLogin.png" width="350" height="60">
-		<br>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<img src="resources/kakaoLogin.png" width="350" height="60">
-		<br>
-	</td>
-</tr>
-<tr>
-	<td>&nbsp;</td>
-</tr>
+
 <tr>
 	<td colspan="2" align="center">
 		<b>아직 회원이 아니신가요?</b>&nbsp;&nbsp;&nbsp;
 		<button type="button" name="userJoin" onclick="location.href='user_join'" 
 		style="width:80px;height:35px;background-color:grey;color:white;border-color:grey">회원 가입</button>
 	</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+	<a id="custom-login-btn" href="javascript:loginWithKakao()">
+  <img
+    src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+    width=280
+    alt="카카오 로그인 버튼"
+  /> 
+</a>
+	</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
 </tr>
 </table>
 </form>

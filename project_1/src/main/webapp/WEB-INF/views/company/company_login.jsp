@@ -72,7 +72,7 @@
 		<tr>
 			<td colspan="2" align="center">
 				<b>아직 회원이 아니신가요?</b>&nbsp;&nbsp;&nbsp;
-				<button type="button" name="companyRegister" onclick="location.href='company_register'" 
+				<button type="button" name="companyRegister" onclick="location.href='company_ssn'" 
 				style="width:80px;height:35px;background-color:grey;color:white;border-color:grey">회원 가입</button>
 			</td>
 		</tr>

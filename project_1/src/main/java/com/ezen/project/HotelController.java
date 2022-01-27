@@ -35,7 +35,7 @@ public class HotelController {
 	@RequestMapping("/hotel_main")
 	public String hotelMain(HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		CompanyLoginOkBean companyLoginOkBean = (CompanyLoginOkBean)session.getAttribute("companyLoginOkBean");
+		LoginOkBeanCompany companyLoginOkBean = (LoginOkBeanCompany)session.getAttribute("companyLoginOkBean");
 		session.setAttribute("c_num", companyLoginOkBean.getC_num());
 		
 		return "hotel/hotel_main";
@@ -303,7 +303,7 @@ public class HotelController {
 		
 		req.setAttribute("h_num", h_num);
 		
-		return "hotel/room_input";
+		return "hotel/room_group_input";
 	}
 	
 	@RequestMapping("/room_group_input_ok")
@@ -401,7 +401,7 @@ public class HotelController {
 		
 		req.setAttribute("rdto", rdto);
 		
-		return "hotel/room_edit";
+		return "hotel/room_group_edit";
 	}
 	
 	@RequestMapping("/room_group_edit_ok")
@@ -542,7 +542,7 @@ public class HotelController {
 	
 	@RequestMapping("/hotel_booklist")
 	public String hotelBooklist(HttpServletRequest req, int h_num) {
-		List<BookingDTO> bookList = hotelMapper.listBooking(h_num);
+		List<BookingDTO> bookList = hotelMapper.listBookingByHotel(h_num);
 		
 		for(BookingDTO bdto : bookList) {
 			RoomDTO rdto = hotelMapper.getRoomByRoomNum(bdto.getRoom_num());

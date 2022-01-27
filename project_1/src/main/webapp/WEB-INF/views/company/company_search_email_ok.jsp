@@ -11,12 +11,12 @@
 			<tr> 
 				<td colspan="2">
 					회원님의 아이디는 ${c_email} 입니다.
-					<input type="hidden" name="c_email" value="${msg}">	
+					<input type="hidden" name="c_email" value="${c_email}">	
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<button type="submit" formaction="company_search?mode=c_password" 
+					<button type="submit" formaction="company_update_password" 
 					style="width:175px;height:50px;background-color:black;color:white;border-color:black">비밀번호 찾기</button>
 				</td>
 				<td>

@@ -43,9 +43,7 @@
 	<tr>
 		<td bgcolor="lightgrey" align="center" width="15%">내 용</td>
 		<td width="85%">
-			<textarea name="cqa_contents" cols="65" rows="12">
-				param.c_num_parent:${param.c_num_parent}, companyLoginOkBean.c_num:${companyLoginOkBean.c_num}
-			</textarea>
+			<textarea name="cqa_contents" cols="65" rows="12"></textarea>
 		</td>
 	</tr>
 	<tr>

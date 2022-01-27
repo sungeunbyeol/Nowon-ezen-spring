@@ -61,18 +61,31 @@
 		<tr>
 			<td width="20%" style="background: #2E3F54;" class="mypageMenu">
 				<ul>
-					<li onclick="location.href='user_info'">내 정보관리</li>
+					<li onclick="onInfoListClicked()">
+					<span style="display:inline-block; text-indent:0; width:100px;">내 정보관리</span>
+					<span class="arrowIcon">
+						<i class="infoListIcon fas fa-chevron-down"></i>
+						<i class="infoListIcon fas fa-chevron-up" style="display: none;"></i>
+					</span>
+					</li> 
+					<li class="infoListLi" style="display:none;">
+						<ol class="infoList">
+							<li onclick="location.href='user_info'">정보 수정</li>
+							<li onclick="location.href='user_passwordCheck'">비밀번호 변경</li>
+							<li onclick="location.href='user_delete'">회원 탈퇴</li>
+						</ol>
+					</li>
 					<li onclick="onBookListClicked()">
 					<span style="display:inline-block; text-indent:0; width:100px;">예약내역</span>
 					<span class="arrowIcon">
-						<i class="fas fa-chevron-down"></i>
-						<i class="fas fa-chevron-up" style="display: none;"></i>
+						<i class="bookListIcon fas fa-chevron-down"></i>
+						<i class="bookListIcon fas fa-chevron-up" style="display: none;"></i>
 					</span>
 					</li> 
 					<li class="bookListLi" style="display:none;">
 						<ol class="bookList">
 								<li onclick="location.href='user_bookList'">호텔 예약내역</li>
-								<li onclick="location.href=''">엑티비티 예약내역</li>
+								<li onclick="location.href='user_bookActList'">액티비티 예약내역</li>
 						</ol>
 					</li>
 					<li onclick="onReviewListClicked()">
@@ -86,40 +99,44 @@
 					<li class="reviewListLi" style="display:none;">
 						<ol class="reviewList">
 							<li onclick="location.href='user_reviewList'">호텔 리뷰</li>
-							<li onclick="location.href=''">엑티미티 리뷰</li>
+							<li onclick="location.href='user_reviewListAct'">액티비티 리뷰</li>
 						</ol>
 					</li>
 					<li onclick="location.href='user_pointList'">포인트</li>
 					<li onclick="location.href='list_userQnA'">Q&A</li>
 				</ul>
-				<!--  <h3><a href="user_info">내 정보관리</a></h3><br>
-				<h3>예약내역</h3><br>
-				<h5><a href="user_bookList">호텔 예약내역</a></h5><br>
-				<h5><a href="">엑티비티 예약내역</a></h5><br>
-				<h3>내가쓴리뷰</h3><br>
-				<h5><a href="user_reviewList">호텔 리뷰</a></h5>
-				<h5><a href= "">엑티미티 리뷰</a></h5> 
-				<h3><a href="user_pointList">포인트</a></h3><br>
-				<h3><a href="list_userQnA">Q&A</a></h3><br>-->
 			</td>
 			<td>
-			
-			
-			
 <script>
+	function onInfoListClicked() {
+		const infoList = document.querySelectorAll(".infoList")
+		infoList.forEach(list => {
+			if(list.style.display === 'none' || !list.style.display) {
+				list.style.display = "block"
+				document.querySelectorAll('.infoListLi')[0].style.display = "block"
+				document.querySelectorAll('.infoListIcon.fa-chevron-up')[0].style.display = "block"
+				document.querySelectorAll('.infoListIcon.fa-chevron-down')[0].style.display = "none"
+			} else {
+				list.style.display = "none"
+					document.querySelectorAll('.infoListLi')[0].style.display = "none"
+				document.querySelectorAll('.infoListIcon.fa-chevron-up')[0].style.display = "none"
+				document.querySelectorAll('.infoListIcon.fa-chevron-down')[0].style.display = "block"
+			}
+		})
+	}
 	function onBookListClicked() {
 		const bookList = document.querySelectorAll(".bookList")
 		bookList.forEach(list => {
 			if(list.style.display === 'none' || !list.style.display) {
 				list.style.display = "block"
 				document.querySelectorAll('.bookListLi')[0].style.display = "block"
-				document.querySelectorAll('.fa-chevron-up')[0].style.display = "block"
-				document.querySelectorAll('.fa-chevron-down')[0].style.display = "none"
+				document.querySelectorAll('.bookListIcon.fa-chevron-up')[0].style.display = "block"
+				document.querySelectorAll('.bookListIcon.fa-chevron-down')[0].style.display = "none"
 			} else {
 				list.style.display = "none"
 					document.querySelectorAll('.bookListLi')[0].style.display = "none"
-				document.querySelectorAll('.fa-chevron-up')[0].style.display = "none"
-				document.querySelectorAll('.fa-chevron-down')[0].style.display = "block"
+				document.querySelectorAll('.bookListIcon.fa-chevron-up')[0].style.display = "none"
+				document.querySelectorAll('.bookListIcon.fa-chevron-down')[0].style.display = "block"
 			}
 		})
 	}

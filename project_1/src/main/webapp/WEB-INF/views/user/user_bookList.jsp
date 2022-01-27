@@ -91,7 +91,7 @@ $.ajax({
 				<input type="hidden" name="h_num" value="${bdto.h_num}">
 				<input type="hidden" name="room_num" value="${bdto.room_num}">
 				<input type="hidden" name="book_num" value="${bdto.book_num}">
-				<c:if test="${bdto.book_status != 'deny'}">
+				<c:if test="${bdto.book_status == 'wait' || bdto.book_status == 'confirm'}">
 					<input type="submit" value="예약취소">
 				</c:if>
 				<c:if test="${bdto.book_status == 'deny'}">

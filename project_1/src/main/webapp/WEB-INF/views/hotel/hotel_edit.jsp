@@ -100,8 +100,10 @@
 			return
 		}
 		
-		var h_address = f_hotelEdit.h_address_1.value+'@'+f_hotelEdit.h_extraAddress.value+'@'+
-		f_hotelEdit.h_address_2.value+'@'+f_hotelEdit.h_postcode.value
+		var h_address = f_hotelEdit.h_address_1.value+'@'+
+		f_hotelEdit.h_extraAddress.value+'@'+
+		f_hotelEdit.h_address_2.value+'@'+
+		f_hotelEdit.h_postcode.value
 		
 		document.f_hotelEdit.h_address.value = h_address
 		document.f_hotelEdit.submit()

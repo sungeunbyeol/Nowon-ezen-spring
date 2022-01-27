@@ -2,20 +2,26 @@
     pageEncoding="UTF-8"%>
 <%@ include file="user_myPage.jsp" %>
 
-<form name = "f_userpassword_edit" method = "Post" action = "user_password_edit">
-<input type = "hidden" name = "u_email" value = "${loginOkBean.u_email}">
+<form name="f_userpassword_edit" method="Post" action="user_password_edit_ok">
+<input type="hidden" name="u_email" value="${loginOkBean.u_email}">
 	<table align = "center" align = "top" border="0">
-		<caption style="line-height: 60px; font-size:25px;"><b>비밀번호 확인</b></caption>
+		<caption style="line-height: 60px; font-size:25px;"><b>비밀번호 변경</b></caption>
 		<tr>
-			<td colspan="2">
-			현재 비밀번호를 입력해 주세요
+			<td style="width: 120px;">현재 비밀번호</td>
+			<td>
+				<input style="width:180px;" type="password" name="raw_pre_password" placeholder="현재 비밀번호를 입력" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput = "setCustomValidity('')">
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 120px;">비밀번호</td>
+			<td style="width: 120px;">새 비밀번호</td>
 			<td>
-				<input type="password" name="u_password" placeholder="비밀번호를 입력해주세요." required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput = "setCustomValidity('')">
-				<input type="hidden" name="pre_password" value="${loginOkBean.u_password}">
+				<input style="width:180px;" type="password" name="raw_new_password" placeholder="새 비밀번호를 입력" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput = "setCustomValidity('')">
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 120px;">새 비밀번호2</td>
+			<td>
+				<input style="width:180px;" type="password" name="raw_new_password2" placeholder="새 비밀번호를 다시 입력" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput = "setCustomValidity('')">
 			</td>
 		</tr>
 		<tr> 
@@ -35,13 +41,12 @@
  
 <script>
 function check(){
-	
-	if (f_userpassword_edit.u_password.value!=f_userpassword_edit.pre_password.value){
-			alert("비밀번호가 일치하지 않습니다.")
-			f_userJoin_check.pre_password.focus()
+	if (f_userpassword_edit.raw_new_password.value != f_userpassword_edit.raw_new_password2.value){
+			alert("비밀번호를 동일하게 입력해주세요.")
+			f_userpassword_edit.raw_new_password2.focus()
 			return
 		}
 	  
-	document.f_userpassword_edit.submit()  
-} 
+	document.f_userpassword_edit.submit()
+}
 </script>

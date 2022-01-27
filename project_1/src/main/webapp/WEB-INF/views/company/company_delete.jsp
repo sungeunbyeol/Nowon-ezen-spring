@@ -4,14 +4,14 @@
 <script>
 //비밀번호 확인후 삭제 
 function check2(){
-	if (f_companyDelete.c_password.value != f_companyDelete.c_password2.value ){
-			alert("비밀번호가 일치하지 않습니다.")
-			f_companyDelete.c_password2.focus()
+	if (f_companyDelete.raw_password.value != f_companyDelete.raw_password2.value ){
+			alert("비밀번호를 동일하게 입력해주세요.")
+			f_companyDelete.raw_password2.focus()
 			return false
 	} 
-	if (f_companyDelete.c_password.value == "" && f_companyDelete.c_password2.value == ""){
+	if (f_companyDelete.raw_password.value == "" && f_companyDelete.raw_password2.value == ""){
 			alert("공백 금지")
-			f_companyDelete.c_password2.focus()
+			f_companyDelete.raw_password2.focus()
 			return false 
 	}
 	return true
@@ -27,11 +27,11 @@ function check2(){
 		</tr>
 		<tr>
 			<td style="width: 120px;">비밀번호</td>
-			<td><input type="text" name="c_password" placeholder="비밀번호를 입력해주세요."></td>
+			<td><input type="password" name="raw_password" placeholder="비밀번호를 입력해주세요." required></td>
 		</tr>
 		<tr>
 			<td style="width: 120px;">비밀번호 확인</td>
-			<td><input type="text" name="c_password2" placeholder="비밀번호를 입력해주세요."></td>
+			<td><input type="password" name="raw_password2" placeholder="비밀번호를 다시 입력해주세요." required></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">

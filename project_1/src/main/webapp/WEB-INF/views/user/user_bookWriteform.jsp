@@ -115,6 +115,23 @@
         		alert("포인트가 부족합니다");
         	}
         });
+        
+        $("#bwform").submit(function(){
+        	event.preventDefault();
+        	var isSubmit = false;
+        	var check;
+        	var usePoint = $("#usePoint").val();
+        	var userPoint = $("#userPoint").val();
+        	if( parseInt(userPoint) >= parseInt(usePoint) ){
+        		check = confirm("결제 하시겠습니까?");
+            	if(check) {
+            		this.submit();
+            	}
+        	}else{
+        		isSubmit = false;
+        		alert("포인트가 부족합니다");
+        	}
+        });
      });
 	
 </script>
@@ -253,7 +270,8 @@
 					</div>
 					<div class="row justify-center" style="padding: 15px;">
 						<button id="check_module" type="button" style="background:#F58B7B; width: 100%;">결제하기</button>
-					</div>					
+						<button style="background:#F58B7B; width: 100%;">가짜결제</button>
+					</div>
 				</div>
 			</div>
 		</div>
