@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.byeol.library.LibraryMapper">
+
+	<insert id="insertbook" parameterType="LibraryDTO">
+		insert into library values(#{bookname}, #{publisher}, #{author}, #{price}, sysdate)
+	</insert>
+
+	<select id="listpage" resultType="LibraryDTO">
+		select * from library
+	</select>
+	
+	<delete id="1" parameterType="String">
+		delete from Library where bookname = #{bookname}
+	</delete>
+	
+	<select id="find" parameterType="Map"  resultType="LibraryDTO"> 
+		${sql}
+	</select>
+	
+</mapper>
