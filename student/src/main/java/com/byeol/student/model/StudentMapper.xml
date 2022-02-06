@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.byeol.student.service.StudentMapper">
+
+	<insert id="insert" parameterType="StudentDTO"> 
+		insert into st values(#{id}, #{name}, #{cname})
+	</insert>
+	
+	<select id="list" resultType="StudentDTO">
+		select * from st
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete from st where id = #{id}
+	</delete>
+	
+	<select id="find" resultType="StudentDTO" parameterType="String">
+		select * from st where name = #{name}
+	</select>
+	
+</mapper>
