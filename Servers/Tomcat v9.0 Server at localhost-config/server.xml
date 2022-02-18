@@ -156,7 +156,7 @@
       
       
       
-      <Context docBase="student" path="/student" reloadable="true" source="org.eclipse.jst.jee.server:student"/></Host>
+      <Context docBase="maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/></Host>
     </Engine>
   </Service>
 </Server>

@@ -156,7 +156,7 @@
       
       
       
-      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\student" path="/student" reloadable="true" source="org.eclipse.jst.jee.server:student"/></Host>
+      <Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\javaAPI\springstudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\maven" path="/maven" reloadable="true" source="org.eclipse.jst.jee.server:maven"/></Host>
     </Engine>
   </Service>
 </Server>

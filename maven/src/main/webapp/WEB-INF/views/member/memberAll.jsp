@@ -5,10 +5,12 @@
 <%@ include file="top.jsp"%>
 <div align="center">
 	<hr color="green" width="300">
-	<c:if test="${empty param.mode}">
+	
+	<c:if test="${mode eq 'all'}">
 		<h2>회 원 목 록 보 기</h2>
 	</c:if>
-	<c:if test="${not empty param.mode}">
+	
+	<c:if test="${mode eq 'find'}">
 		<h2>회 원 찾 기</h2>
 		<form name="f" method="post" action="memberAll.do">
 			<input type="hidden" name="mode" value="find"/>
@@ -20,6 +22,7 @@
 			<input type="submit" value="찾기">
 		</form>
 	</c:if>
+	
 	<hr color="green" width="300">
 	<table width="100%" class="outline">
 		<tr bgcolor="yellow">
@@ -36,6 +39,7 @@
 			<td colspan="7">등록된 회원이 없습니다.</td>
 		</tr>
 	</c:if>	
+	<c:if test="${not empty listMember}">
 	<c:forEach var="dto" items="${listMember}">
 		<tr>
 			<td>${dto.no}</td>
@@ -48,6 +52,7 @@
 			<a href="deleteMember.do?no=${dto.no}">삭제</a></td>
 		</tr>	
 	</c:forEach>	
+	</c:if>
 	</table>
 </div>
 <%@ include file="bottom.jsp"%>

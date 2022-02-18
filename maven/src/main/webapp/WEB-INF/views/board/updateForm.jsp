@@ -33,7 +33,7 @@
 </head>
 <body>
 <div align="center">
-	<form name="f" action="updatePro_board.do" method="post" onsubmit="return check()">
+	<form name="f" action="update_board.do" method="post" onsubmit="return check()">
 		<input type="hidden" name="num" value="${param.num}"/>
 		<h3>±Û¼öÁ¤</h3>
 		<table border="1" width="500">

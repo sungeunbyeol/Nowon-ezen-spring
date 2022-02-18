@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!-- top.jsp -->
 <html>
 <head>	
-	<title>mvcÈ¸¿ø°ü¸®</title>
+	<title>mvcíšŒì›ê´€ë¦¬</title>
 	<link rel="stylesheet" type="text/css" href="style.css"> 
 </head>
 <body>
@@ -11,11 +11,11 @@
 		<table border="1" width="800" height="600">
 			<tr>
 				<td align="center">
-					<a href="member.do">index</a> | 
-					<a href="memberSsn.do">È¸¿ø°¡ÀÔ</a> | 
-					<a href="memberAll.do">È¸¿øº¸±â</a> |
-					<a href="memberAll.do?mode=find">È¸¿øÃ£±â</a> |
-					<a href="main.do">home</a></td>
+					<a href="memberindex">index</a> | 
+					<a href="memberSsn">íšŒì›ê°€ìž…</a> | 
+					<a href="memberAll">íšŒì›ë³´ê¸°</a> |
+					<a href="memberAll?mode=find">íšŒì›ì°¾ê¸°</a> |
+					<a href="main">home</a></td>
 			</tr>
 			<tr>
 				<td height="80%">

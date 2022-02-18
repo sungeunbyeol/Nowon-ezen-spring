@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="EUC-KR" %>
 <!-- member_edit.jsp -->
 <%@ include file="top.jsp"%>
 	<script type="text/javascript">

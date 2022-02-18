@@ -1,28 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8C-KR"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <html>
 <head>
-	<title>mvcÈ¨ÆäÀÌÁö</title>
+	<title>mavení™ˆíŽ˜ì´ì§€</title>
 </head>
 <body>
-	<h1 align="center">MVC·Î ¸¸µé¾î º¸´Â È¨ÆäÀÌÁö</h1>
+	<h1 align="center">MVCë¡œ ë§Œë“¤ì–´ ë³´ëŠ” í™ˆíŽ˜ì´ì§€</h1>
 	<c:if test="${not empty loginOkBean}">
-		<h3 align="center">${loginOkBean.name}[${loginOkBean.id}]´Ô ·Î±×ÀÎ Áß......</h3>
+		<h3 align="center">${loginOkBean.name}[${loginOkBean.id}]ë‹˜ ë¡œê·¸ì¸ ì¤‘......</h3>
 	</c:if>
 	<ul>	
-		<li><h3><a href="main.do">main</a></h3></li>
-		<li><h3><a href="member.do">È¸¿ø°ü¸®</a></h3></li>
+		<li><h3><a href="main">main</a></h3></li>
+		<li><h3><a href="memberindex">íšŒì›ê´€ë¦¬</a></h3></li>
 		<li><h3>
 			<c:if test="${empty loginOkBean}">
-				<a href="login.do">·Î±×ÀÎ</a>
+				<a href="login">ë¡œê·¸ì¸</a>
 			</c:if>
 			<c:if test="${not empty loginOkBean}">
-				<a href="logout.do">·Î±×¾Æ¿ô</a>
+				<a href="logout">ë¡œê·¸ì•„ì›ƒ</a>
 			</c:if>
 		</h3></li>
-		<li><h3><a href="shopAdmin.do">¼îÇÎ¸ô</a></h3></li>
-		<li><h3><a href="list_board.do">°Ô½ÃÆÇ</a></h3></li>
+		<li><h3><a href="shopAdmin">ì‡¼í•‘ëª°</a></h3></li>
+		<li><h3><a href="list_board">ê²Œì‹œíŒ</a></h3></li>
 	</ul>
 </body>
 </html>

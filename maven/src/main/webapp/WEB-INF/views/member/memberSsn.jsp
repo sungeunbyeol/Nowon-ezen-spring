@@ -6,7 +6,7 @@
 	<hr color="green" width="300">
 	<h2>회 원 가 입 유 무</h2>
 	<hr color="green" width="300">
-	<form name="f" action="checkMember.do" method="post">
+	<form name="f" action="checkMember" method="post">
 		<table width="500" class="outline">
 			<tr>
 				<th>회원명</th>
